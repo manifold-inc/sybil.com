@@ -69,13 +69,13 @@ function Thread(props: {
 }) {
   const router = useRouter();
   const controllerStore = useControllerStore();
-  const hasPendingQuery = useRef(false);
+  const [isLoading, setIsLoading] = useState(true);
   const isFirstRun = useRef(true);
   const [page, setPage] = useState(1);
 
   const doSearch = useCallback(
     (payload: { query: string; files: ThreadFile[] }) => {
-      hasPendingQuery.current = true;
+      setIsLoading(true);
 
       const validFiles = payload.files
         .filter((v) => v.status === "uploaded")
@@ -127,7 +127,7 @@ function Thread(props: {
               });
           },
           onFinished(reason) {
-            hasPendingQuery.current = false;
+            setIsLoading(false);
             controllerStore.stop("query");
             if (reason === "normal") {
               props.setData((d) => ({
@@ -138,7 +138,7 @@ function Thread(props: {
             }
           },
           onError() {
-            hasPendingQuery.current = false;
+            setIsLoading(false);
           },
         },
       );
@@ -152,8 +152,6 @@ function Thread(props: {
   );
 
   const retry = useCallback(() => {
-    if (hasPendingQuery.current) return;
-    hasPendingQuery.current = false;
     controllerStore.stop("query");
     props.setData((d) => ({ ...d, answer: "" }));
     void doSearch({ query: props.data.query, files: [] });
@@ -217,7 +215,7 @@ function Thread(props: {
       <div className="w-full">
         {herocard}
         <AnswerBox
-          isLoading={props.data.answer.length === 0}
+          isLoading={props.data.answer.length === 0 && isLoading}
           answer={props.data.answer ?? ""}
           retry={retry}
         />

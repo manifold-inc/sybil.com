@@ -33,6 +33,7 @@ export function search(
   const finish = () => {
     if (context.finished) return;
     context.finished = true;
+    context.finishReason = "unexpected"
     options.onFinished(context.finishReason);
   };
 
