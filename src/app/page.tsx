@@ -8,8 +8,8 @@ import { UserBox } from "@/components/navbar";
 import { XLogo } from "@/components/x-logo";
 import { Path } from "@/constant";
 import AskBox from "./_components/AskBox";
-import ClientUtils from "./_components/ClientUtils";
 import ChromeExtension from "./_components/ChromeExtension";
+import ClientUtils from "./_components/ClientUtils";
 
 export default function Home() {
   const trendings = [
@@ -22,7 +22,7 @@ export default function Home() {
   return (
     <div>
       <div className="fixed left-0 right-0 top-0 z-10 flex w-full justify-between gap-2 px-4 pt-2">
-        <ChromeExtension/>
+        <ChromeExtension />
         <div className="flex-grow" />
         <div className="hidden gap-4 px-2 text-gray-600">
           <a

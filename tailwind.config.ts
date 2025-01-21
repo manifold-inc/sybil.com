@@ -6,7 +6,7 @@ export default {
   theme: {
     extend: {
       boxShadow: {
-        center: 'rgba(0, 0, 0, 0.15) 0px 5px 15px 0px'
+        center: "rgba(0, 0, 0, 0.15) 0px 5px 15px 0px",
       },
       colors: {
         sblue: {

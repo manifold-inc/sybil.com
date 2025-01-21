@@ -8,7 +8,6 @@ export const env = createEnv({
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_REDIRECT_URI: z.string(),
 
-
     S3_API_URL: z.string().url(),
     S3_API_KEY: z.string().min(1),
     S3_API_KEY_ID: z.string().min(1),

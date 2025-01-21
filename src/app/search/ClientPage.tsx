@@ -248,29 +248,29 @@ function Thread(props: {
                     <div className="space-y-2 pt-3">
                       {props.data.followups?.length
                         ? props.data.followups.map((r, i) => (
-                          <button
-                            onClick={() => {
-                              void router.push(`/search?q=${r}`);
-                            }}
-                            className="flex w-full justify-between py-1 text-left text-black hover:text-gray-600 dark:text-zinc-400 dark:hover:text-zinc-300"
-                            key={i}
-                          >
-                            <span className="line-clamp-1 text-ellipsis text-sm font-semibold">
-                              {r}
-                            </span>
-                            {/* Bold and uniform text */}
-                            <Plus className="h-5 w-5" />
-                            {/* Appropriately sized plus sign */}
-                          </button>
-                        ))
+                            <button
+                              onClick={() => {
+                                void router.push(`/search?q=${r}`);
+                              }}
+                              className="flex w-full justify-between py-1 text-left text-black hover:text-gray-600 dark:text-zinc-400 dark:hover:text-zinc-300"
+                              key={i}
+                            >
+                              <span className="line-clamp-1 text-ellipsis text-sm font-semibold">
+                                {r}
+                              </span>
+                              {/* Bold and uniform text */}
+                              <Plus className="h-5 w-5" />
+                              {/* Appropriately sized plus sign */}
+                            </button>
+                          ))
                         : new Array(2).fill(0).map((_, i) => (
-                          <div key={i} className="py-2">
-                            <Skeleton className={`h-4 w-3/4 `} />
-                            <Skeleton className={`my-2 h-4 w-1/2 `} />
-                            {/* Add spacing for the description */}
-                            <Skeleton className={`my-4 h-4 w-5/6`} />
-                          </div>
-                        ))}
+                            <div key={i} className="py-2">
+                              <Skeleton className={`h-4 w-3/4 `} />
+                              <Skeleton className={`my-2 h-4 w-1/2 `} />
+                              {/* Add spacing for the description */}
+                              <Skeleton className={`my-4 h-4 w-5/6`} />
+                            </div>
+                          ))}
                     </div>
                   </div>
                 );
