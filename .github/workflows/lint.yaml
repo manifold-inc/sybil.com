@@ -1,0 +1,32 @@
+name: Build and Test Next.js with Bun
+
+on:
+  pull_request:
+    branches:
+      - "main"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Set environment variable
+        run: |
+          echo "SKIP_ENV_VALIDATION=True" >> $GITHUB_ENV
+
+      - name: Lint and Type Check
+        run: bun run lint
+
+      - name: Check Formatting
+        run: bun run check-format

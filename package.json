@@ -5,6 +5,7 @@
   "scripts": {
     "build": "next build",
     "format": "prettier -w .",
+    "check-format": "prettier . --check",
     "dev": "next dev",
     "lint": "next lint && tsc --noEmit",
     "start": "next start"

@@ -33,7 +33,7 @@ export function search(
   const finish = () => {
     if (context.finished) return;
     context.finished = true;
-    context.finishReason = "unexpected"
+    context.finishReason = "unexpected";
     options.onFinished(context.finishReason);
   };
 
@@ -56,7 +56,7 @@ export function search(
         try {
           const resJson = (await res.clone().json()) as object;
           extraInfo = prettyObject(resJson);
-        } catch { }
+        } catch {}
 
         if (extraInfo) {
           responseTexts.push(extraInfo);

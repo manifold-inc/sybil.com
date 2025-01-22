@@ -70,7 +70,9 @@ export default function AskBox(params: {
             <div
               className={clsx(
                 "z-10 flex h-fit w-full items-center rounded-full px-3.5 py-1.5 text-sm transition-colors",
-                open && query.length !== 0 ? "bg-white" : "bg-white shadow-center",
+                open && query.length !== 0
+                  ? "bg-white"
+                  : "bg-white shadow-center",
               )}
             >
               <Combobox.Input
