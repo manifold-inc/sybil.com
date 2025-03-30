@@ -44,10 +44,10 @@ export default function Page() {
     createAccouint.mutate(data);
   };
   return (
-    <div className="flex h-screen w-full items-center justify-center">
+    <div className="flex w-full h-[80vh] items-center justify-center">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex w-full max-w-sm flex-col gap-4">
-          <div className="pb-2 text-center text-3xl font-extrabold">
+        <div className="flex w-full max-w-sm flex-col gap-">
+          <div className="pb-2 text-center text-3xl font-semibold">
             Sign Up
           </div>
           <div>

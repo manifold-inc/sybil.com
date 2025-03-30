@@ -7,7 +7,7 @@ import clsx from "clsx";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
-
+import Image from "next/image";
 import { reactClient } from "@/trpc/react";
 import { useAuth } from "../_components/providers";
 
@@ -17,7 +17,7 @@ type Inputs = {
 };
 const errorStyle = "text-xs text-red-500";
 const baseStyles =
-  "border-1 flex disabled:text-gray-600 dark:disabled:text-gray-300  bg-transparent w-full items-center justify-center gap-3 whitespace-nowrap rounded-md border px-2 py-2 outline-none placeholder: invalid:border-red-500 focus:border-black dark:focus:border-white";
+  "border-1 flex disabled:text-gray-600 dark:disabled:text-gray-300 bg-mf-ash-500 w-full items-center justify-center gap-3 whitespace-nowrap rounded-full px-4 py-2 outline-none placeholder: invalid:border-red-500 focus:border-black dark:focus:border-white";
 export default function Page() {
   const router = useRouter();
   const [visable, setVisable] = useState(false);
@@ -42,51 +42,19 @@ export default function Page() {
     signIn.mutate(data);
   };
   return (
-    <div className="flex h-screen w-full items-center justify-center">
+    <div className="relative flex p-8">
+      <div className="absolute left-0 hidden sm:block">
+        <Link className="flex items-center gap-2 pl-12" href="/">
+          <Image src="/sybil-bg.svg" alt="Sybil" width={16} height={16} />
+          <span className="text-xl font-semibold text-mf-milk-300">
+            SYBIL
+          </span>
+        </Link>
+      </div>
+    <div className="flex h-[80vh] w-full items-center justify-center">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex w-full max-w-sm flex-col gap-4">
-          <div className="text-center text-3xl font-extrabold">Sign In</div>
-          <Link
-            href="/sign-in/google"
-            className="border-1 border-gray-400 dark:bg-black dark:active:border-white flex w-full items-center justify-center gap-3 whitespace-nowrap rounded-md border py-2"
-          >
-            <svg viewBox="0 0 128 128" className="h-5 w-5">
-              <path
-                fill="#fff"
-                d="M44.59 4.21a63.28 63.28 0 004.33 120.9 67.6 67.6 0 0032.36.35 57.13 57.13 0 0025.9-13.46 57.44 57.44 0 0016-26.26 74.33 74.33 0 001.61-33.58H65.27v24.69h34.47a29.72 29.72 0 01-12.66 19.52 36.16 36.16 0 01-13.93 5.5 41.29 41.29 0 01-15.1 0A37.16 37.16 0 0144 95.74a39.3 39.3 0 01-14.5-19.42 38.31 38.31 0 010-24.63 39.25 39.25 0 019.18-14.91A37.17 37.17 0 0176.13 27a34.28 34.28 0 0113.64 8q5.83-5.8 11.64-11.63c2-2.09 4.18-4.08 6.15-6.22A61.22 61.22 0 0087.2 4.59a64 64 0 00-42.61-.38z"
-              ></path>
-              <path
-                fill="#e33629"
-                d="M44.59 4.21a64 64 0 0142.61.37 61.22 61.22 0 0120.35 12.62c-2 2.14-4.11 4.14-6.15 6.22Q95.58 29.23 89.77 35a34.28 34.28 0 00-13.64-8 37.17 37.17 0 00-37.46 9.74 39.25 39.25 0 00-9.18 14.91L8.76 35.6A63.53 63.53 0 0144.59 4.21z"
-              ></path>
-              <path
-                fill="#f8bd00"
-                d="M3.26 51.5a62.93 62.93 0 015.5-15.9l20.73 16.09a38.31 38.31 0 000 24.63q-10.36 8-20.73 16.08a63.33 63.33 0 01-5.5-40.9z"
-              ></path>
-              <path
-                fill="#587dbd"
-                d="M65.27 52.15h59.52a74.33 74.33 0 01-1.61 33.58 57.44 57.44 0 01-16 26.26c-6.69-5.22-13.41-10.4-20.1-15.62a29.72 29.72 0 0012.66-19.54H65.27c-.01-8.22 0-16.45 0-24.68z"
-              ></path>
-              <path
-                fill="#319f43"
-                d="M8.75 92.4q10.37-8 20.73-16.08A39.3 39.3 0 0044 95.74a37.16 37.16 0 0014.08 6.08 41.29 41.29 0 0015.1 0 36.16 36.16 0 0013.93-5.5c6.69 5.22 13.41 10.4 20.1 15.62a57.13 57.13 0 01-25.9 13.47 67.6 67.6 0 01-32.36-.35 63 63 0 01-23-11.59A63.73 63.73 0 018.75 92.4z"
-              ></path>
-            </svg>
-            Sign in with Google
-          </Link>
-          <div className="relative">
-            <div
-              className="absolute inset-0 flex items-center"
-              aria-hidden="true"
-            >
-              <div className="border-gray-300 w-full border-t" />
-            </div>
-            <div className="relative flex justify-center">
-              <span className="bg-white text-gray-500  px-2 dark:bg-sgray-800">
-                or
-              </span>
-            </div>
-          </div>
+        <div className="flex max-w-sm flex-col gap-10 w-72">
+          <div className="text-center text-3xl font-semibold">WELCOME BACK</div>
           <div>
             <input
               disabled={signIn.isLoading}
@@ -136,34 +104,61 @@ export default function Page() {
             </div>
             <span className={errorStyle}>{errors.password?.message}</span>
           </div>
-          <div>
+          <div className="flex gap-2 justify-center">
+            <Link className="whitespace-nowrap rounded-full px-4 py-1 font-semibold text-mf-green-700 hover:bg-mf-green-700/10" href="/create-account">
+              Sign up
+            </Link>
             <button
               type="submit"
               disabled={signIn.isLoading}
-              className="border-1 border-gray-400 hover:bg-gray-100 focus:border-white dark:bg-black dark:hover:bg-neutral-700 inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-md border px-2 py-2 outline-none transition-colors disabled:opacity-60"
+              className="hover:bg-mf-green-800 whitespace-nowrap rounded-full bg-mf-green-700 px-4 py-1  font-semibold text-mf-ash-700 hover:bg-mf-green-700/80"
             >
               {signIn.isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
-              Sign In
+              Log In
             </button>
-            <div className="text-gray-500 dark:text-gray-400  pt-1 text-center">
-              or{" "}
-              <Link className="underline" href="/create-account">
-                create an account
-              </Link>
+          </div>
+          <div className="relative">
+            <div className="relative flex justify-center">
+              <span className="text-gray-500 px-2 text-sm">
+                Or Continue with
+              </span>
             </div>
           </div>
-          <div className="text-gray-500 dark:text-gray-400 text-balance  pt-2 text-center">
-            By signing up, you agree to the{" "}
-            <Link href="/terms-of-service" className="underline">
-              Terms of Service
-            </Link>{" "}
-            and{" "}
-            <Link href="/privacy-policy" className="underline">
-              Privacy Policy
+          <div className="flex justify-center">
+            <Link
+              href={`/sign-in/google`}
+              className="flex h-9 w-32 items-center justify-center gap-3 whitespace-nowrap rounded-full bg-[#FFFFFF] py-2"
+            >
+              <svg
+                className="h-5 w-5"
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12.0003 4.75C13.7703 4.75 15.3553 5.36002 16.6053 6.54998L20.0303 3.125C17.9502 1.19 15.2353 0 12.0003 0C7.31028 0 3.25527 2.69 1.28027 6.60998L5.27028 9.70498C6.21525 6.86002 8.87028 4.75 12.0003 4.75Z"
+                  fill="#EA4335"
+                />
+                <path
+                  d="M23.49 12.275C23.49 11.49 23.415 10.73 23.3 10H12V14.51H18.47C18.18 15.99 17.34 17.25 16.08 18.1L19.945 21.1C22.2 19.01 23.49 15.92 23.49 12.275Z"
+                  fill="#4285F4"
+                />
+                <path
+                  d="M5.26498 14.2949C5.02498 13.5699 4.88501 12.7999 4.88501 11.9999C4.88501 11.1999 5.01998 10.4299 5.26498 9.7049L1.275 6.60986C0.46 8.22986 0 10.0599 0 11.9999C0 13.9399 0.46 15.7699 1.28 17.3899L5.26498 14.2949Z"
+                  fill="#FBBC05"
+                />
+                <path
+                  d="M12.0004 24.0001C15.2404 24.0001 17.9654 22.935 19.9454 21.095L16.0804 18.095C15.0054 18.82 13.6204 19.245 12.0004 19.245C8.8704 19.245 6.21537 17.135 5.2654 14.29L1.27539 17.385C3.25539 21.31 7.3104 24.0001 12.0004 24.0001Z"
+                  fill="#34A853"
+                />
+              </svg>
+              <span className="text-sm font-semibold leading-6 text-mf-ash-700">
+                Google
+              </span>
             </Link>
           </div>
         </div>
       </form>
+    </div>
     </div>
   );
 }

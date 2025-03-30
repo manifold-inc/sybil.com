@@ -14,13 +14,13 @@ export default function UserBox() {
       <div className="flex items-center gap-2">
         <Link
           href="/sign-in"
-          className="whitespace-nowrap rounded-full px-4 py-2 font-semibold text-mf-green-700 hover:bg-mf-green-700/10"
+          className="whitespace-nowrap rounded-full px-4 py-1 font-semibold text-mf-green-700 hover:bg-mf-green-700/10"
         >
           Log in
         </Link>
         <Link
           href="/create-account"
-          className="hover:bg-mf-green-800 whitespace-nowrap rounded-full bg-mf-green-700 px-4 py-2  font-semibold text-mf-ash-700 hover:bg-mf-green-700/80"
+          className="hover:bg-mf-green-800 whitespace-nowrap rounded-full bg-mf-green-700 px-4 py-1 font-semibold text-mf-ash-700 hover:bg-mf-green-700/80"
         >
           Sign up
         </Link>
