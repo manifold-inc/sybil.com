@@ -88,7 +88,7 @@ export const Images = ({ query }: { query: string }) => {
                 className="lozad h-56 min-w-full max-w-md rounded-xl object-cover align-bottom"
               />
             </Link>
-            <div className="flex items-center gap-2 pt-1 text-xs text-gray-600 dark:text-gray-400">
+            <div className="text-gray-600 dark:text-gray-400 flex items-center gap-2 pt-1 text-xs">
               <img
                 className="h-3 w-3"
                 onError={(a) => a.currentTarget.classList.add("hidden")}
@@ -98,7 +98,7 @@ export const Images = ({ query }: { query: string }) => {
               />
               {idx < loaded + CONCURRENT ? img.parsed_url.at(1) : undefined}
             </div>
-            <div className="lozad w-full max-w-sm overflow-hidden text-ellipsis whitespace-nowrap pt-0.5 text-sm text-gray-800 dark:text-gray-200">
+            <div className="lozad text-gray-800 dark:text-gray-200 w-full max-w-sm overflow-hidden text-ellipsis  whitespace-nowrap pt-0.5">
               {getDesc(img)}
             </div>
           </div>
@@ -109,7 +109,7 @@ export const Images = ({ query }: { query: string }) => {
           <button
             disabled={imageQuery.isLoading}
             onClick={() => setPage((p) => p + 1)}
-            className="rounded-md bg-black/10 px-2.5 py-1.5 text-sm font-semibold text-black shadow-sm hover:bg-black/20 disabled:cursor-default disabled:opacity-80 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
+            className="bg-black/10 text-black hover:bg-black/20 dark:bg-white/10  dark:text-white dark:hover:bg-white/20 rounded-md px-2.5 py-1.5 font-semibold shadow-sm disabled:cursor-default disabled:opacity-80"
           >
             Load More
           </button>

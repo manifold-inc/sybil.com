@@ -24,7 +24,7 @@ export default function Popover({
             leaveFrom="opacity-100 translate-y-0"
             leaveTo="opacity-0 translate-y-1"
           >
-            <HPopover.Panel className="absolute right-0 z-10 -ml-4 mt-1 rounded-md border bg-white text-sm shadow-md dark:border-gray-700 dark:bg-sgray-800">
+            <HPopover.Panel className="bg-white dark:border-gray-700 absolute right-0 z-10 -ml-4 mt-1 rounded-md  border shadow-md dark:bg-sgray-800">
               {children}
             </HPopover.Panel>
           </Transition>

@@ -17,7 +17,7 @@ type Inputs = {
   password2: string;
 };
 const baseStyles =
-  "border-1 flex disabled:text-gray-600 dark:disabled:text-gray-300 w-full items-center justify-center gap-3 whitespace-nowrap rounded-md border dark:bg-transparent px-2 py-2 outline-none placeholder:text-sm invalid:border-red-500 focus:border-black dark:focus:border-white";
+  "border-1 flex disabled:text-gray-600 dark:disabled:text-gray-300 w-full items-center justify-center gap-3 whitespace-nowrap rounded-md border dark:bg-transparent px-2 py-2 outline-none placeholder: invalid:border-red-500 focus:border-black dark:focus:border-white";
 const errorStyle = "text-xs text-red-500";
 
 export default function Page() {
@@ -92,7 +92,7 @@ export default function Page() {
                   e.preventDefault();
                   setVisable((s) => !s);
                 }}
-                className="absolute bottom-0 right-3 top-0 text-gray-500 dark:text-gray-400"
+                className="text-gray-500 dark:text-gray-400 absolute bottom-0 right-3 top-0"
               >
                 {visable ? (
                   <Eye className="h-5 w-5" />
@@ -131,7 +131,7 @@ export default function Page() {
                   e.preventDefault();
                   setVisable((s) => !s);
                 }}
-                className="absolute bottom-0 right-3 top-0 text-gray-500 dark:text-gray-400"
+                className="text-gray-500 dark:text-gray-400 absolute bottom-0 right-3 top-0"
               >
                 {visable ? (
                   <Eye className="h-5 w-5" />
@@ -146,7 +146,7 @@ export default function Page() {
             <button
               type="submit"
               disabled={createAccouint.isLoading}
-              className="border-1 inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-md border border-gray-400 px-2 py-2 outline-none transition-colors hover:bg-gray-100 focus:border-white disabled:opacity-60 dark:bg-black dark:hover:bg-black"
+              className="border-1 border-gray-400 hover:bg-gray-100 focus:border-white dark:bg-black dark:hover:bg-black inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-md border px-2 py-2 outline-none transition-colors disabled:opacity-60"
             >
               {createAccouint.isLoading && (
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -154,7 +154,7 @@ export default function Page() {
               Create Account
             </button>
           </div>
-          <div className="text-balance pt-2 text-center text-sm text-gray-500 dark:text-gray-400">
+          <div className="text-gray-500 dark:text-gray-400 text-balance  pt-2 text-center">
             By signing up, you agree to the{" "}
             <Link href="/terms-of-service" className="underline">
               Terms of Service

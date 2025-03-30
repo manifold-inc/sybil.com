@@ -69,12 +69,19 @@ export default function AskBox(params: {
           <div className="relative z-10">
             <div
               className={clsx(
-                "z-10 flex h-fit w-full items-center rounded-full px-3.5 py-1.5 text-sm transition-colors",
+                "z-10 flex h-fit w-full items-center rounded-full py-1.5 pl-2 pr-3.5  transition-colors",
                 open && query.length !== 0
-                  ? "bg-white"
-                  : "bg-white shadow-center",
+                  ? "bg-mf-night-300"
+                  : "bg-mf-night-300 shadow-center",
               )}
             >
+              <div className="mr-2 flex min-h-8 min-w-8 items-center justify-center rounded-full bg-mf-green-700">
+                <img
+                  src="/sybil-dark.svg"
+                  alt="Sybil"
+                  className="h-5 w-5 flex-shrink-0"
+                />
+              </div>
               <Combobox.Input
                 displayValue={({ query }: { query: string }) => query}
                 value={query}
@@ -83,7 +90,7 @@ export default function AskBox(params: {
                 }
                 ref={comboRef}
                 autoFocus={params.autofocus}
-                className="min-h-7 w-full bg-transparent outline-none dark:text-gray-800"
+                className="min-h-7 w-full bg-mf-night-300 text-mf-milk-300 outline-none placeholder:text-mf-milk-700/80"
                 placeholder={Locale.Home.SearchInput}
                 onFocus={() => {
                   setOpen(true);
@@ -103,15 +110,17 @@ export default function AskBox(params: {
                 }}
               />
               <div className="relative flex h-full items-center">
-                <button
-                  onClick={() => {
-                    setQuery("");
-                    setAutocomplete([]);
-                    comboRef.current?.focus();
-                  }}
-                >
-                  <X className="h-6 w-6 pr-2 text-gray-600" />
-                </button>
+                {query.length > 0 && (
+                  <button
+                    onClick={() => {
+                      setQuery("");
+                      setAutocomplete([]);
+                      comboRef.current?.focus();
+                    }}
+                  >
+                    <X className="h-4 w-4 text-mf-milk-300" />
+                  </button>
+                )}
               </div>
             </div>
             <Transition
@@ -123,12 +132,12 @@ export default function AskBox(params: {
               leaveFrom="opacity-100 max-h-80"
               leaveTo="opacity-0"
               className={clsx(
-                "absolute left-0 right-0 top-0 -z-10 overflow-hidden rounded-3xl bg-white pt-6 shadow-center transition-all",
+                "absolute left-0 right-0 top-0 -z-10 overflow-hidden rounded-3xl bg-mf-night-300 pt-6 shadow-center transition-all",
               )}
             >
               <Combobox.Options
                 static
-                className="max-h-72 scroll-py-2 overflow-y-auto px-2 py-2 text-sm text-gray-800"
+                className="max-h-72 scroll-py-2 overflow-y-auto px-2 py-2 text-mf-milk-300"
               >
                 {query !== "" && (
                   <div className="mt-2 w-full">
@@ -140,7 +149,7 @@ export default function AskBox(params: {
                       }}
                       className={({ active }) =>
                         clsx(
-                          active && "bg-gray-200 text-black",
+                          active && "bg-mf-night-300 text-mf-milk-300",
                           "flex h-9 w-full cursor-pointer select-none items-center gap-2 overflow-hidden truncate whitespace-nowrap rounded-md px-2 py-2",
                         )
                       }
@@ -150,7 +159,9 @@ export default function AskBox(params: {
                           <div>
                             <Search
                               className={clsx(
-                                active ? "text-gray-800" : "text-gray-700",
+                                active
+                                  ? "text-mf-milk-300"
+                                  : "text-mf-milk-300",
                                 "pointer-events-none w-5",
                               )}
                             />
@@ -160,7 +171,7 @@ export default function AskBox(params: {
                           </span>
                           <span
                             className={clsx(
-                              active ? "text-gray-700" : "text-gray-600 ",
+                              active ? "text-mf-milk-300" : "text-mf-milk-300 ",
                               "whitespace-nowrap",
                             )}
                           >
@@ -180,7 +191,7 @@ export default function AskBox(params: {
                           value={{ query: a, option: "search" }}
                           className={({ active }) =>
                             clsx(
-                              active && "bg-gray-200 text-black",
+                              active && "bg-mf-night-300 text-mf-milk-300",
                               "flex h-9 w-full cursor-pointer select-none items-center gap-2 overflow-hidden truncate whitespace-nowrap rounded-md px-2 py-2",
                             )
                           }
@@ -190,7 +201,9 @@ export default function AskBox(params: {
                               <div>
                                 <Search
                                   className={clsx(
-                                    active ? "text-gray-800" : "text-gray-700",
+                                    active
+                                      ? "text-mf-milk-300"
+                                      : "text-mf-milk-300",
                                     "pointer-events-none w-5",
                                   )}
                                 />

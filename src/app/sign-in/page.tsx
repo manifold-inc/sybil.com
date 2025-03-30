@@ -17,7 +17,7 @@ type Inputs = {
 };
 const errorStyle = "text-xs text-red-500";
 const baseStyles =
-  "border-1 flex disabled:text-gray-600 dark:disabled:text-gray-300  bg-transparent w-full items-center justify-center gap-3 whitespace-nowrap rounded-md border px-2 py-2 outline-none placeholder:text-sm invalid:border-red-500 focus:border-black dark:focus:border-white";
+  "border-1 flex disabled:text-gray-600 dark:disabled:text-gray-300  bg-transparent w-full items-center justify-center gap-3 whitespace-nowrap rounded-md border px-2 py-2 outline-none placeholder: invalid:border-red-500 focus:border-black dark:focus:border-white";
 export default function Page() {
   const router = useRouter();
   const [visable, setVisable] = useState(false);
@@ -48,7 +48,7 @@ export default function Page() {
           <div className="text-center text-3xl font-extrabold">Sign In</div>
           <Link
             href="/sign-in/google"
-            className="border-1 flex w-full items-center justify-center gap-3 whitespace-nowrap rounded-md border border-gray-400 py-2 dark:bg-black dark:active:border-white"
+            className="border-1 border-gray-400 dark:bg-black dark:active:border-white flex w-full items-center justify-center gap-3 whitespace-nowrap rounded-md border py-2"
           >
             <svg viewBox="0 0 128 128" className="h-5 w-5">
               <path
@@ -79,10 +79,10 @@ export default function Page() {
               className="absolute inset-0 flex items-center"
               aria-hidden="true"
             >
-              <div className="w-full border-t border-gray-300" />
+              <div className="border-gray-300 w-full border-t" />
             </div>
             <div className="relative flex justify-center">
-              <span className="bg-white px-2 text-sm text-gray-500 dark:bg-sgray-800">
+              <span className="bg-white text-gray-500  px-2 dark:bg-sgray-800">
                 or
               </span>
             </div>
@@ -125,7 +125,7 @@ export default function Page() {
                   e.preventDefault();
                   setVisable((s) => !s);
                 }}
-                className="absolute bottom-0 right-3 top-0 text-gray-500 dark:text-gray-400"
+                className="text-gray-500 dark:text-gray-400 absolute bottom-0 right-3 top-0"
               >
                 {visable ? (
                   <Eye className="h-5 w-5" />
@@ -140,19 +140,19 @@ export default function Page() {
             <button
               type="submit"
               disabled={signIn.isLoading}
-              className="border-1 inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-md border border-gray-400 px-2 py-2 outline-none transition-colors hover:bg-gray-100 focus:border-white disabled:opacity-60 dark:bg-black dark:hover:bg-neutral-700"
+              className="border-1 border-gray-400 hover:bg-gray-100 focus:border-white dark:bg-black dark:hover:bg-neutral-700 inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-md border px-2 py-2 outline-none transition-colors disabled:opacity-60"
             >
               {signIn.isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
               Sign In
             </button>
-            <div className="pt-1 text-center text-sm text-gray-500 dark:text-gray-400">
+            <div className="text-gray-500 dark:text-gray-400  pt-1 text-center">
               or{" "}
               <Link className="underline" href="/create-account">
                 create an account
               </Link>
             </div>
           </div>
-          <div className="text-balance pt-2 text-center text-sm text-gray-500 dark:text-gray-400">
+          <div className="text-gray-500 dark:text-gray-400 text-balance  pt-2 text-center">
             By signing up, you agree to the{" "}
             <Link href="/terms-of-service" className="underline">
               Terms of Service

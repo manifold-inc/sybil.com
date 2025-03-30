@@ -6,7 +6,7 @@ export function ShareBox() {
   return (
     <button
       title="Share Link"
-      className="flex h-full flex-col justify-center rounded-md p-1 pr-1.5 hover:bg-gray-100 dark:hover:bg-zinc-700"
+      className="hover:bg-gray-100 dark:hover:bg-zinc-700 flex h-full flex-col justify-center rounded-md p-1 pr-1.5"
       onClick={() => {
         void navigator.clipboard.writeText(window.location.href);
         toast.success("Copied Link!");

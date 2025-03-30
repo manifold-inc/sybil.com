@@ -1,6 +1,6 @@
 export default function Page() {
   return (
-    <main className="prose mx-auto max-w-2xl px-4 py-20 dark:prose-invert">
+    <main className="prose mx-auto max-w-2xl px-4 py-40 dark:prose-invert">
       <h1 id="sybil-s-privacy-policy">Sybil&#39;s Privacy Policy</h1>
       <p>Last updated: February 21st, 2024</p>
       <p>
