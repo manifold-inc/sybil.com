@@ -13,25 +13,13 @@ export const env = createEnv({
     S3_API_KEY_ID: z.string().min(1),
     S3_BUCKET_NAME: z.string().min(1),
 
-    RELEASE_FLAG: z.preprocess((val) => {
-      if (typeof val === "string") {
-        if (['1', 'true'].includes(val.toLowerCase())) return true;
-        if (['0', 'false'].includes(val.toLowerCase())) return false;
-      }
-      return val;
-    }, z.coerce.boolean()),
+    RELEASE_FLAG: z.string(),
   },
   client: {
     NEXT_PUBLIC_POSTHOG_KEY: z.string(),
     NEXT_PUBLIC_POSTHOG_HOST: z.string(),
     NEXT_PUBLIC_SEARCH_API: z.string().url(),
-    NEXT_PUBLIC_RELEASE_FLAG: z.preprocess((val) => {
-      if (typeof val === "string") {
-        if (['1', 'true'].includes(val.toLowerCase())) return true;
-        if (['0', 'false'].includes(val.toLowerCase())) return false;
-      }
-      return val;
-    }, z.coerce.boolean()),
+    NEXT_PUBLIC_RELEASE_FLAG: z.string(),
   },
 
   runtimeEnv: {

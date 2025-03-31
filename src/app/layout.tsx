@@ -72,7 +72,7 @@ export default function RootLayout({
       >
         <WithGlobalProvider>
           <PostHogPageView />
-          {env.RELEASE_FLAG === true ? (
+          {env.RELEASE_FLAG === "true" ? (
             <>
               <Header />
               {children}
