@@ -62,6 +62,7 @@ export default function Page() {
             information with analytics service providers that assist us in the
             improvement and optimization of our website. For example, Google
             Analytics:
+            <br />
             <a href="https://policies.google.com/technologies/partner-sites">
               https://policies.google.com/technologies/partner-sites
             </a>

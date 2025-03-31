@@ -10,6 +10,7 @@ import { emitCustomEvent, useCustomEvent } from "@/hooks/event";
 import { useKeyDown } from "@/hooks/keydown";
 import { Locale } from "@/locales";
 import { reactClient } from "@/trpc/react";
+import Link from "next/link";
 
 export default function AskBox(params: {
   query?: string;
@@ -75,13 +76,13 @@ export default function AskBox(params: {
                   : "bg-mf-night-300 shadow-center",
               )}
             >
-              <div className="mr-2 flex min-h-8 min-w-8 items-center justify-center rounded-full bg-mf-green-700">
+              <Link href="/" className="mr-2 flex min-h-8 min-w-8 items-center justify-center rounded-full bg-mf-green-700">
                 <img
                   src="/sybil-dark.svg"
                   alt="Sybil"
                   className="h-5 w-5 flex-shrink-0"
                 />
-              </div>
+              </Link>
               <Combobox.Input
                 displayValue={({ query }: { query: string }) => query}
                 value={query}

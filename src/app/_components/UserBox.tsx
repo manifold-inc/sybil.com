@@ -19,8 +19,8 @@ export default function UserBox() {
           Log in
         </Link>
         <Link
-          href="/create-account"
-          className="hover:bg-mf-green-800 whitespace-nowrap rounded-full bg-mf-green-700 px-4 py-1 font-semibold text-mf-ash-700 hover:bg-mf-green-700/80"
+          href="/sign-up"
+          className="hover:bg-mf-green-800 hidden whitespace-nowrap rounded-full bg-mf-green-700 px-4 py-1 font-semibold text-mf-ash-700 hover:bg-mf-green-700/80 md:block"
         >
           Sign up
         </Link>
@@ -29,8 +29,11 @@ export default function UserBox() {
   }
 
   return (
-    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-mf-green-700">
+    <a
+      href="/sign-out"
+      className="flex h-9 w-9 items-center justify-center rounded-full bg-mf-green-700"
+    >
       <Image src="/user.svg" alt="SYBIL" width={16} height={16} />
-    </div>
+    </a>
   );
 }

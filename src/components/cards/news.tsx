@@ -9,7 +9,6 @@ export function NewsCard(props: {
     <a
       className={`text-white block h-20 animate-fade overflow-hidden rounded-md opacity-100 duration-200 ${props.className}`}
       style={{
-        backgroundImage: `url(${props.news.image})`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         ...getCardSizeStyle(props.news.size),
@@ -17,7 +16,7 @@ export function NewsCard(props: {
       href={props.news.url}
       target="_blank"
     >
-      <div className="bg-black flex h-full w-full items-end bg-opacity-50 p-2 transition-all hover:bg-opacity-70">
+      <div className="bg-black flex h-full w-full items-end bg-mf-green-700/15 bg-opacity-50 p-2 transition-all">
         <div className="flex flex-col gap-1">
           <div className="font-sans text-xs">Top Result</div>
           <span className="line-clamp-1 text-xl">{props.news.title}</span>

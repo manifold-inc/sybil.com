@@ -4,7 +4,7 @@ export function Skeleton({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={"bg-gray-200 dark:bg-zinc-600 animate-pulse " + className}
+      className={"dark:bg-zinc-600 animate-pulse bg-mf-ash-300 " + className}
       {...props}
     />
   );

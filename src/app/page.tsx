@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Path } from "@/constant";
 import AskBox from "./_components/AskBox";
 import ClientUtils from "./_components/ClientUtils";
-import Header from "./_components/header";
 
 export default function Home() {
   const trendings = [
@@ -15,14 +14,12 @@ export default function Home() {
   ];
   return (
     <div>
-      <Header />
       <div className="relative flex h-screen w-full flex-col items-center justify-center">
         <div className="h-2/6 w-[80%] max-w-2xl">
           <h1 className="text-center text-2xl font-bold">SYBIL</h1>
-          <div className="p-8">
+          <div className="py-8 sm:p-8">
             <AskBox autofocus />
           </div>
-
           <div className="mt-4">
             <div className="mt-2 flex flex-col items-center justify-center gap-2">
               {trendings.map((t, i) => {

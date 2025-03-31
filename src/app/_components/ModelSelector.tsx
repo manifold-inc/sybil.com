@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Listbox } from "@headlessui/react";
 import clsx from "clsx";
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
@@ -8,24 +8,29 @@ import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { reactClient as api } from "@/trpc/react";
 
 export default function ModelSelector() {
-  const [selectedModel, setSelectedModel] = useState<string>("");
+  const { data: models, isLoading } = api.model.getAll.useQuery();
+  const [selectedModel, setSelectedModel] =
+    useState<string>("Loading models...");
 
-  const { data: models, isLoading } = api.model.getAll.useQuery(undefined, {
-    onSuccess: (data) => {
-      if (data.length > 0 && !selectedModel) {
-        setSelectedModel(data[0]?.model ?? "");
-      }
-    },
-  });
+  useMemo(() => {
+    if (models && models.length > 0) {
+      setSelectedModel(models[0]?.model ?? "Loading models...");
+    }
+  }, [models]);
 
   return (
-    <div className="w-fit py-3 lg:ml-auto lg:py-0">
+    <div className="w-42 sm:w-fit">
       <Listbox value={selectedModel} onChange={setSelectedModel}>
         <div className="relative">
-          <Listbox.Button className="flex w-full items-center justify-between rounded-full px-4 py-2.5 font-semibold text-mf-milk-700 hover:text-mf-milk-500 lg:px-3 lg:py-2">
+          <Listbox.Button className="w-42 flex items-center justify-between overflow-hidden rounded-full px-4 py-2 font-semibold text-mf-milk-700 hover:text-mf-milk-500 sm:w-full">
             {({ open }) => (
               <>
-                <div className="flex min-w-0 items-center gap-2">
+                <div
+                  className={clsx(
+                    "flex min-w-0 items-center gap-2",
+                    open && "w-42 sm:w-72",
+                  )}
+                >
                   <div className="h-2 w-2 shrink-0 rounded-full bg-mf-green-700" />
                   <span className="truncate">
                     {isLoading

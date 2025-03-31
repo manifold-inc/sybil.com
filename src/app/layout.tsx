@@ -10,6 +10,7 @@ import { AxiomWebVitals } from "next-axiom";
 import { Toaster } from "sonner";
 
 import Footer from "./_components/footer";
+import Header from "./_components/header";
 import { WithGlobalProvider } from "./_components/providers";
 
 const blinker = Blinker({
@@ -48,6 +49,7 @@ export default function RootLayout({
       >
         <WithGlobalProvider>
           <PostHogPageView />
+          <Header />
           {children}
           <Footer />
         </WithGlobalProvider>

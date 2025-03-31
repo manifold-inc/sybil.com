@@ -8,12 +8,13 @@ import {
   type Dispatch,
   type SetStateAction,
 } from "react";
-import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import {
   Bookmark,
-  Bot,
   ChevronDown,
   ChevronUp,
   Copy,
@@ -56,7 +57,7 @@ export default function ClientPage({
 
   return (
     <div className="relative box-border flex">
-      <div className="relative w-full pb-32 pt-8 sm:px-8 lg:px-36">
+      <div className="relative w-full px-4 pb-32 pt-8 sm:px-8 lg:px-36">
         <Thread data={data} setData={setData} />
       </div>
     </div>
@@ -72,6 +73,7 @@ function Thread(props: {
   const [isLoading, setIsLoading] = useState(true);
   const isFirstRun = useRef(true);
   const [page, setPage] = useState(1);
+  const query = useSearchParams();
 
   const doSearch = useCallback(
     (payload: { query: string; files: ThreadFile[] }) => {
@@ -212,14 +214,29 @@ function Thread(props: {
 
   return (
     <div className="flex flex-col items-start gap-6">
+      <div className="flex flex-row gap-4">
+        <Link
+          href={`/search?q=${encodeURIComponent(query.get("q") ?? "")}`}
+          className="after:dark:bg-white relative px-0.5 after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-full after:bg-mf-green-700"
+        >
+          General
+        </Link>
+        <Link
+          href={`/images?q=${encodeURIComponent(query.get("q") ?? "")}`}
+          className="relative px-0.5"
+        >
+          Images
+        </Link>
+      </div>
       <div className="w-full">
         {herocard}
+        <div className="pt-4 sm:pt-6" />
         <AnswerBox
           isLoading={props.data.answer.length === 0 && isLoading}
           answer={props.data.answer ?? ""}
           retry={retry}
         />
-        <div className="flex justify-between">
+        <div className="flex justify-between pt-6">
           <ThreadSectionTitle icon={<List />} title={Locale.Thread.Sources} />
         </div>
         <div className="divide-gray-200 dark:divide-zinc-600 divide-y">
@@ -354,13 +371,16 @@ const AnswerBox = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className="text-gray-700 dark:border-zinc-700 dark:text-zinc-300 flex  flex-col pb-2 pt-6">
+    <div className="text-gray-700 dark:border-zinc-700 dark:text-zinc-300 flex flex-col rounded-md  bg-mf-ash-300 p-6">
       <div className="flex items-center gap-2">
         <button
           onClick={() => setIsOpen((s) => !s)}
           className="flex flex-grow items-center justify-between "
         >
-          <ThreadSectionTitle icon={<Bot />} title={Locale.Thread.Answer} />
+          <ThreadSectionTitle
+            icon={<Image src="/sybil.svg" alt="SYBIL" width={16} height={16} />}
+            title={Locale.Thread.Answer}
+          />
           <div className="flex items-center justify-between gap-2 rounded-md">
             {!isOpen ? <ChevronDown /> : <ChevronUp />}
           </div>

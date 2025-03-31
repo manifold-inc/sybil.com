@@ -62,8 +62,23 @@ export const Images = ({ query }: { query: string }) => {
     lzd.observe();
     return () => lzd.observer.disconnect();
   }, []);
+
   return (
     <div className="w-screen overflow-hidden">
+      <div className="flex flex-row gap-4 px-4 pt-8 sm:px-8 lg:px-36">
+        <Link
+          href={`/search?q=${encodeURIComponent(query)}`}
+          className="relative px-0.5"
+        >
+          General
+        </Link>
+        <Link
+          href={`/images?q=${encodeURIComponent(query)}`}
+          className="after:dark:bg-white relative px-0.5 after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-full after:bg-mf-green-700"
+        >
+          Images
+        </Link>
+      </div>
       <section className="flex flex-wrap px-0.5">
         {images.map((img, idx) => (
           <div
