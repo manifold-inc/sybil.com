@@ -76,12 +76,6 @@ export default function RootLayout({
           <PostHogPageView />
           {env.RELEASE_FLAG === "true" ? (
             <>
-              <Header />
-              {children}
-              <Footer />
-            </>
-          ) : (
-            <>
               <FakeHeader />
               <div className="flex my-auto sm:my-auto-0 sm:h-screen flex-col items-center justify-center">
                 <h1 className="pb-16 text-xl font-bold text-mf-green-500">
@@ -91,6 +85,12 @@ export default function RootLayout({
                 <div className="pb-16" />
               </div>
               <FakeFooter />
+            </>
+          ) : (
+            <>
+              <Header />
+              {children}
+              <Footer />
             </>
           )}
         </WithGlobalProvider>
