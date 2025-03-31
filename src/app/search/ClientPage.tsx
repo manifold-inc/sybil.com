@@ -217,7 +217,7 @@ function Thread(props: {
       <div className="flex flex-row gap-4">
         <Link
           href={`/search?q=${encodeURIComponent(query.get("q") ?? "")}`}
-          className="after:dark:bg-white relative px-0.5 after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-full after:bg-mf-green-700 text-mf-green-700"
+          className="after:dark:bg-white relative px-0.5 text-mf-green-700 after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-full after:bg-mf-green-700"
         >
           General
         </Link>

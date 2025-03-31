@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Combobox, Transition } from "@headlessui/react";
 import { clsx } from "clsx";
@@ -10,7 +11,6 @@ import { emitCustomEvent, useCustomEvent } from "@/hooks/event";
 import { useKeyDown } from "@/hooks/keydown";
 import { Locale } from "@/locales";
 import { reactClient } from "@/trpc/react";
-import Link from "next/link";
 
 export default function AskBox(params: {
   query?: string;
@@ -76,7 +76,10 @@ export default function AskBox(params: {
                   : "bg-mf-night-300 shadow-center",
               )}
             >
-              <Link href="/" className="mr-2 flex min-h-8 min-w-8 items-center justify-center rounded-full bg-mf-green-700">
+              <Link
+                href="/"
+                className="mr-2 flex min-h-8 min-w-8 items-center justify-center rounded-full bg-mf-green-700"
+              >
                 <img
                   src="/sybil-dark.svg"
                   alt="Sybil"

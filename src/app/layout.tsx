@@ -9,12 +9,13 @@ import { Analytics } from "@vercel/analytics/react";
 import { AxiomWebVitals } from "next-axiom";
 import { Toaster } from "sonner";
 
-import Footer from "./_components/footer";
-import Header from "./_components/header";
-import { WithGlobalProvider } from "./_components/providers";
 import Countdown from "./_components/Countdown";
 import FakeFooter from "./_components/FakeFooter";
 import FakeHeader from "./_components/FakeHeader";
+import Footer from "./_components/footer";
+import Header from "./_components/header";
+import { WithGlobalProvider } from "./_components/providers";
+
 const blinker = Blinker({
   subsets: ["latin"],
   variable: "--font-blinker",
@@ -59,13 +60,15 @@ export default function RootLayout({
             </>
           ) : (
             <>
-              <FakeHeader />  
+              <FakeHeader />
               <div className="flex h-screen flex-col items-center justify-center">
-                <h1 className="text-xl font-bold pb-16 text-mf-green-500">THINK BIGGER</h1>
+                <h1 className="pb-16 text-xl font-bold text-mf-green-500">
+                  THINK BIGGER
+                </h1>
                 <Countdown />
-                <div className="pb-16" /> 
+                <div className="pb-16" />
               </div>
-              <FakeFooter /> 
+              <FakeFooter />
             </>
           )}
         </WithGlobalProvider>
