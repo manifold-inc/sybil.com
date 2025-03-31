@@ -15,6 +15,7 @@ import FakeHeader from "./_components/FakeHeader";
 import Footer from "./_components/footer";
 import Header from "./_components/header";
 import { WithGlobalProvider } from "./_components/providers";
+import { env } from "@/env.mjs";
 
 const blinker = Blinker({
   subsets: ["latin"],
@@ -71,7 +72,7 @@ export default function RootLayout({
       >
         <WithGlobalProvider>
           <PostHogPageView />
-          {process.env.RELEASE_FLAG === "true" ? (
+          {env.RELEASE_FLAG === true ? (
             <>
               <Header />
               {children}
