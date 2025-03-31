@@ -40,7 +40,7 @@ const en = {
     },
   },
 
-  SignIn: "Sign in",
+  SignIn: "Log in",
   SignUp: "Sign up",
 
   UI: {

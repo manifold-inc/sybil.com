@@ -12,11 +12,14 @@ export const env = createEnv({
     S3_API_KEY: z.string().min(1),
     S3_API_KEY_ID: z.string().min(1),
     S3_BUCKET_NAME: z.string().min(1),
+
+    RELEASE_FLAG: z.boolean(),
   },
   client: {
     NEXT_PUBLIC_POSTHOG_KEY: z.string(),
     NEXT_PUBLIC_POSTHOG_HOST: z.string(),
     NEXT_PUBLIC_SEARCH_API: z.string().url(),
+    NEXT_PUBLIC_RELEASE_FLAG: z.boolean(),
   },
 
   runtimeEnv: {
@@ -33,6 +36,9 @@ export const env = createEnv({
 
     NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
     NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+
+    RELEASE_FLAG: process.env.RELEASE_FLAG,
+    NEXT_PUBLIC_RELEASE_FLAG: process.env.NEXT_PUBLIC_RELEASE_FLAG,
   },
 
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,

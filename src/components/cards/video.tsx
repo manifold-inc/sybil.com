@@ -8,7 +8,7 @@ export function VideoCard(props: {
   return (
     <video
       src={props.video.url}
-      className={`overflow-hidden rounded-md bg-gray-400 dark:bg-zinc-800 ${props.className}`}
+      className={`bg-gray-400 dark:bg-zinc-800 overflow-hidden rounded-md ${props.className}`}
       controls
       style={{
         ...getCardSizeStyle(props.video.size),

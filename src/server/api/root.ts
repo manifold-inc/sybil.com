@@ -5,6 +5,7 @@ import { createTRPCRouter } from "@/server/api/trpc";
 import { accountRouter } from "./account";
 import { fileRouter } from "./file";
 import { mainRouter } from "./main";
+import { modelRouter } from "./routers/model";
 
 /**
  * This is the primary router for your server.
@@ -15,6 +16,7 @@ export const appRouter = createTRPCRouter({
   main: mainRouter,
   file: fileRouter,
   account: accountRouter,
+  model: modelRouter,
 });
 
 export type ReactQueryOptions = inferReactQueryProcedureOptions<AppRouter>;

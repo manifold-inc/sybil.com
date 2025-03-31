@@ -1,7 +1,7 @@
 export default function Page() {
   return (
-    <main className="prose mx-auto max-w-2xl px-4 py-20 dark:prose-invert">
-      <h1 id="sybil-s-terms-of-service">Sybil&#39;s Terms of Service</h1>
+    <main className="prose-headings:font-blinker prose-p:text-mf-edge-500 prose-a:text-mf-edge-500 prose-strong:text-mf-edge-500 prose-code:text-mf-edge-500 prose-pre:bg-transparent prose-pre:text-mf-edge-500 prose-ol:marker:text-mf-edge-500 prose-ul:marker:text-mf-edge-500 prose-li:text-mf-edge-500 prose prose-sm prose-invert mx-auto w-full max-w-lg px-4 py-40 text-mf-milk-300 md:prose-base lg:prose-lg prose-headings:font-semibold prose-h1:font-semibold prose-h1:text-mf-milk-500 prose-h3:text-mf-milk-300 prose-pre:w-full prose-pre:max-w-[calc(100vw-2rem)] prose-pre:overflow-x-auto prose-pre:whitespace-pre-wrap prose-pre:break-words prose-pre:border prose-pre:border-mf-ash-300 prose-pre:text-xs md:max-w-2xl md:prose-pre:text-sm lg:max-w-4xl lg:prose-pre:text-base [&_a]:break-all">
+      <h1 id="sybil-s-terms-of-service">SYBIL&apos;S TERMS OF SERVICE</h1>
       <p>Last updated: February 21st, 2024</p>
       <p>
         Please read these Terms of Service (&quot;Terms&quot;, &quot;Terms of
@@ -14,12 +14,12 @@ export default function Page() {
         by these Terms. Manifold reserves the right, in its sole discretion, to
         restrict, suspend, or terminate your access to and use of the Service.
       </p>
-      <h3 id="our-services">Our Services</h3>
+      <h3 id="our-services">OUR SERVICES</h3>
       <p>
         Sybil provides a text generation service. Sybil is available via{" "}
         <a href="https://www.sybil.com">https://www.sybil.com</a>.
       </p>
-      <h3 id="acceptable-use">Acceptable Use</h3>
+      <h3 id="acceptable-use">ACCEPTABLE USE</h3>
       <p>
         You must be at least 13 years old to use the Service. If you are under
         18 you must have your parent or legal guardian&#39;s permission to use
@@ -39,7 +39,7 @@ export default function Page() {
         associated with the content. Misrepresentation of the source of the
         content or the nature of its creation is strictly prohibited.
       </p>
-      <h3 id="user-generated-content">User-Generated Content</h3>
+      <h3 id="user-generated-content">USER-GENERATED CONTENT</h3>
       <p>
         The Service may allow you to upload, submit, store, send or receive
         content. You retain ownership of any intellectual property rights that
@@ -76,7 +76,7 @@ export default function Page() {
         preserve Content and may also disclose Content if required to do so by
         law.
       </p>
-      <h3 id="intellectual-property-rights">Intellectual Property Rights</h3>
+      <h3 id="intellectual-property-rights">INTELLECTUAL PROPERTY RIGHTS</h3>
       <p>
         Manifold acknowledges and respects the intellectual property rights of
         all individuals and entities and expects all users of the Service to do
@@ -90,7 +90,7 @@ export default function Page() {
         a manner that constitutes copyright infringement, please email us at
         operations@manifold.inc.
       </p>
-      <h3 id="limitation-of-liability">Limitation of Liability</h3>
+      <h3 id="limitation-of-liability">LIMITATION OF LIABILITY</h3>
       <p>
         In no event shall Manifold, nor its directors, employees, partners,
         agents, suppliers, or affiliates, be liable for any indirect,
@@ -105,7 +105,7 @@ export default function Page() {
         been informed of the possibility of such damage, and even if a remedy
         set forth herein is found to have failed of its essential purpose.
       </p>
-      <h3 id="disclaimer">Disclaimer</h3>
+      <h3 id="disclaimer">DISCLAIMER</h3>
       <p>
         Your use of the Service is at your sole risk. The Service is provided on
         an &quot;AS IS&quot; and &quot;AS AVAILABLE&quot; basis. The Service is
@@ -119,7 +119,7 @@ export default function Page() {
         harmful components; nor d) the results of using the Service will meet
         your requirements.
       </p>
-      <h3 id="indemnification">Indemnification</h3>
+      <h3 id="indemnification">INDEMNIFICATION</h3>
       <p>
         You agree to defend, indemnify and hold harmless Manifold and its
         licensee and licensors, and their employees, contractors, agents,
@@ -130,7 +130,7 @@ export default function Page() {
         your account and password; b) a breach of these Terms, or c) Content
         posted on the Service.
       </p>
-      <h3 id="changes">Changes</h3>
+      <h3 id="changes">CHANGES</h3>
       <p>
         We reserve the right, at our sole discretion, to modify or replace these
         Terms at any time. If a revision is material we will try to provide at
@@ -142,7 +142,7 @@ export default function Page() {
         the revised terms. If you do not agree to the new terms, please cease
         using the Service.
       </p>
-      <h3 id="contact-us">Contact Us</h3>
+      <h3 id="contact-us">CONTACT US</h3>
       <p>
         If you have any questions about these Terms, please contact us at
         operations@manifold.inc.

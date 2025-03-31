@@ -8,12 +8,13 @@ import {
   type Dispatch,
   type SetStateAction,
 } from "react";
-import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import {
   Bookmark,
-  Bot,
   ChevronDown,
   ChevronUp,
   Copy,
@@ -55,8 +56,8 @@ export default function ClientPage({
   } as Data);
 
   return (
-    <div className="relative box-border flex w-screen px-4">
-      <div className="relative w-full max-w-5xl pb-32 pt-4 sm:pl-8 lg:pl-36">
+    <div className="relative box-border flex">
+      <div className="relative w-full px-4 pb-32 pt-8 sm:px-8 lg:px-36">
         <Thread data={data} setData={setData} />
       </div>
     </div>
@@ -72,6 +73,7 @@ function Thread(props: {
   const [isLoading, setIsLoading] = useState(true);
   const isFirstRun = useRef(true);
   const [page, setPage] = useState(1);
+  const query = useSearchParams();
 
   const doSearch = useCallback(
     (payload: { query: string; files: ThreadFile[] }) => {
@@ -212,17 +214,32 @@ function Thread(props: {
 
   return (
     <div className="flex flex-col items-start gap-6">
+      <div className="flex flex-row gap-4">
+        <Link
+          href={`/search?q=${encodeURIComponent(query.get("q") ?? "")}`}
+          className="after:dark:bg-white relative px-0.5 text-mf-green-700 after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-full after:bg-mf-green-700"
+        >
+          General
+        </Link>
+        <Link
+          href={`/images?q=${encodeURIComponent(query.get("q") ?? "")}`}
+          className="relative px-0.5"
+        >
+          Images
+        </Link>
+      </div>
       <div className="w-full">
         {herocard}
+        <div className="pt-4 sm:pt-6" />
         <AnswerBox
           isLoading={props.data.answer.length === 0 && isLoading}
           answer={props.data.answer ?? ""}
           retry={retry}
         />
-        <div className="flex justify-between">
+        <div className="flex justify-between pt-6">
           <ThreadSectionTitle icon={<List />} title={Locale.Thread.Sources} />
         </div>
-        <div className="divide-y divide-gray-200 dark:divide-zinc-600">
+        <div className="divide-gray-200 dark:divide-zinc-600 divide-y">
           {props.data.sources.length === 0 &&
             new Array(4).fill(0).map((_, i) => (
               <div key={i} className="py-4">
@@ -238,7 +255,7 @@ function Thread(props: {
                 return (
                   <div
                     key="threads"
-                    className="py-5 text-gray-700 dark:border-zinc-700 dark:text-zinc-300"
+                    className="text-gray-700 dark:border-zinc-700 dark:text-zinc-300 py-5"
                   >
                     <ThreadSectionTitle
                       icon={<Bookmark />}
@@ -252,10 +269,10 @@ function Thread(props: {
                               onClick={() => {
                                 void router.push(`/search?q=${r}`);
                               }}
-                              className="flex w-full justify-between py-1 text-left text-black hover:text-gray-600 dark:text-zinc-400 dark:hover:text-zinc-300"
+                              className="text-black hover:text-gray-600 dark:text-zinc-400 dark:hover:text-zinc-300 flex w-full justify-between py-1 text-left"
                               key={i}
                             >
-                              <span className="line-clamp-1 text-ellipsis text-sm font-semibold">
+                              <span className="line-clamp-1 text-ellipsis  font-semibold">
                                 {r}
                               </span>
                               {/* Bold and uniform text */}
@@ -300,15 +317,15 @@ function Thread(props: {
                       height={20}
                     />
                     <div className="w-full">
-                      <div className="line-clamp-1 overflow-hidden text-ellipsis font-semibold text-gray-800 group-hover:underline dark:text-zinc-300">
+                      <div className="text-gray-800 dark:text-zinc-300 line-clamp-1 overflow-hidden text-ellipsis font-semibold group-hover:underline">
                         {s.title}
                       </div>
-                      <div className="text-xs text-gray-500 dark:text-zinc-400">
+                      <div className="text-gray-500 dark:text-zinc-400 text-xs">
                         {hostname}
                       </div>
                     </div>
                   </a>
-                  <div className="mt-2 line-clamp-2 text-sm text-gray-500 dark:text-zinc-400">
+                  <div className="text-gray-500 dark:text-zinc-400  mt-2 line-clamp-2">
                     {s.content ?? "No description available."}
                   </div>
                 </div>
@@ -318,7 +335,7 @@ function Thread(props: {
             <button
               onClick={() => loadMoreSources.mutate(page + 1)}
               disabled={loadMoreSources.isLoading}
-              className="inline-flex items-center gap-2 rounded-full bg-white px-2.5 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 active:bg-gray-100 disabled:opacity-70 dark:bg-black dark:text-gray-100 dark:ring-gray-600 dark:hover:bg-gray-900 active:dark:bg-gray-800"
+              className="inline-flex items-center gap-2 px-2.5 py-1 font-semibold text-mf-milk-300"
             >
               {loadMoreSources.isLoading && (
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -354,13 +371,16 @@ const AnswerBox = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className="flex flex-col pb-2 pt-6 text-sm text-gray-700 dark:border-zinc-700 dark:text-zinc-300">
+    <div className="text-gray-700 dark:border-zinc-700 dark:text-zinc-300 flex flex-col rounded-md  bg-mf-ash-300 p-6">
       <div className="flex items-center gap-2">
         <button
           onClick={() => setIsOpen((s) => !s)}
-          className="flex flex-grow items-center justify-between text-sm"
+          className="flex flex-grow items-center justify-between "
         >
-          <ThreadSectionTitle icon={<Bot />} title={Locale.Thread.Answer} />
+          <ThreadSectionTitle
+            icon={<Image src="/sybil.svg" alt="SYBIL" width={16} height={16} />}
+            title={Locale.Thread.Answer}
+          />
           <div className="flex items-center justify-between gap-2 rounded-md">
             {!isOpen ? <ChevronDown /> : <ChevronUp />}
           </div>
@@ -415,7 +435,7 @@ function ThreadSectionTitle(props: {
 }) {
   return (
     <div
-      className={`text-md flex items-center font-bold dark:text-zinc-200 ${props.className}`}
+      className={`text-md dark:text-zinc-200 flex items-center font-bold ${props.className}`}
     >
       {props.icon}
       <div className="ml-2">{props.title}</div>

@@ -1,7 +1,7 @@
 export default function Page() {
   return (
-    <main className="prose mx-auto max-w-2xl px-4 py-20 dark:prose-invert">
-      <h1 id="sybil-s-privacy-policy">Sybil&#39;s Privacy Policy</h1>
+    <main className="prose-headings:font-blinker prose-p:text-mf-edge-500 prose-a:text-mf-edge-500 prose-strong:text-mf-edge-500 prose-code:text-mf-edge-500 prose-pre:bg-transparent prose-pre:text-mf-edge-500 prose-ol:marker:text-mf-edge-500 prose-ul:marker:text-mf-edge-500 prose-li:text-mf-edge-500 prose prose-sm prose-invert mx-auto w-full max-w-lg px-4 py-40 text-mf-milk-300 md:prose-base lg:prose-lg prose-headings:font-semibold prose-h1:font-semibold prose-h1:text-mf-milk-500 prose-h3:text-mf-milk-300 prose-pre:w-full prose-pre:max-w-[calc(100vw-2rem)] prose-pre:overflow-x-auto prose-pre:whitespace-pre-wrap prose-pre:break-words prose-pre:border prose-pre:border-mf-ash-300 prose-pre:text-xs md:max-w-2xl md:prose-pre:text-sm lg:max-w-4xl lg:prose-pre:text-base [&_a]:break-all">
+      <h1 id="sybil-s-privacy-policy">SYBIL&apos;S PRIVACY POLICY</h1>
       <p>Last updated: February 21st, 2024</p>
       <p>
         This privacy policy (&quot;Policy&quot;) describes how www.sybil.com and
@@ -10,12 +10,12 @@ export default function Page() {
         you when you use our website, products and services (collectively, the
         &quot;Services&quot;).
       </p>
-      <h3 id="our-services">Our Services</h3>
+      <h3 id="our-services">OUR SERVICES</h3>
       <p>
         Sybil provides a text generation service. Sybil is available via
         sybil.com.
       </p>
-      <h3 id="information-sybil-collects">Information Sybil Collects</h3>
+      <h3 id="information-sybil-collects">INFORMATION SYBIL COLLECTS</h3>
       <p>
         When you visit our website, we may collect certain information
         automatically from your device. This information may include your IP
@@ -34,14 +34,14 @@ export default function Page() {
         you with customer support.
       </p>
       <h3 id="information-sybil-does-not-collect">
-        Information Sybil Does Not Collect
+        INFORMATION SYBIL DOES NOT COLLECT
       </h3>
       <p>
         We do not knowingly collect any sensitive information from you, such as
         information about your race or ethnic origin, political opinions,
         religion, or health.
       </p>
-      <h3 id="sharing-of-information">Sharing of Information</h3>
+      <h3 id="sharing-of-information">SHARING OF INFORMATION</h3>
       <p>
         We do not sell, trade, or otherwise share your personal information with
         third parties, except as described in this Policy. We may share your
@@ -62,6 +62,7 @@ export default function Page() {
             information with analytics service providers that assist us in the
             improvement and optimization of our website. For example, Google
             Analytics:
+            <br />
             <a href="https://policies.google.com/technologies/partner-sites">
               https://policies.google.com/technologies/partner-sites
             </a>
@@ -69,7 +70,7 @@ export default function Page() {
           </p>
         </li>
       </ul>
-      <h3 id="third-party-services">Third Party Services</h3>
+      <h3 id="third-party-services">THIRD PARTY SERVICES</h3>
       <p>
         We may use third party services, such as Application Programming
         Interfaces (APIs), to maintain and improve our services. For example,
@@ -83,14 +84,14 @@ export default function Page() {
         technical information. We use this information to improve the quality
         and relevance of our website to our visitors.
       </p>
-      <h3 id="security">Security</h3>
+      <h3 id="security">SECURITY</h3>
       <p>
         We take reasonable measures to protect the personal information that we
         collect from you. Data is stored securely on Planet Scale. However, no
         security measure is perfect, and we cannot guarantee the security of
         your personal information.
       </p>
-      <h3 id="data-retention">Data Retention</h3>
+      <h3 id="data-retention">DATA RETENTION</h3>
       <p>
         We retain your personal information for as long as your account is
         active or as needed to provide you with our Services. You may opt out of
@@ -100,7 +101,7 @@ export default function Page() {
         your personal information from our servers within 30 days. Please
         contact us at operations@manifold.inc to request deletion.
       </p>
-      <h3 id="changes-to-our-privacy-policy">Changes to our Privacy Policy</h3>
+      <h3 id="changes-to-our-privacy-policy">CHANGES TO OUR PRIVACY POLICY</h3>
       <p>
         We may change this Policy from time to time. If we make changes, we will
         post the revised Policy on our website and update the &quot;Last
@@ -109,7 +110,7 @@ export default function Page() {
         informed about our information practices and the choices available to
         you.
       </p>
-      <h3 id="contact-us">Contact Us</h3>
+      <h3 id="contact-us">CONTACT US</h3>
       <p>
         If you have any questions about this Policy, please contact us at
         operations@manifold.inc

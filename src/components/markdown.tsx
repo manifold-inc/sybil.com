@@ -83,7 +83,7 @@ export function PreCode(props: {
       )}
       <pre ref={ref} className={`hljs relative ${lang ? "pt-6" : ""}`}>
         {lang ? (
-          <div className="absolute left-0 top-0 flex w-full justify-between rounded-t-sm bg-gray-700 px-2 py-1 text-xs capitalize text-gray-50">
+          <div className="bg-gray-700 text-gray-50 absolute left-0 top-0 flex w-full justify-between rounded-t-sm px-2 py-1 text-xs capitalize">
             {lang}
             <button
               className="cursor-pointer"
@@ -94,7 +94,7 @@ export function PreCode(props: {
                 }
               }}
             >
-              <Copy className="z-10 h-4 w-4 text-gray-300" />
+              <Copy className="text-gray-300 z-10 h-4 w-4" />
             </button>
           </div>
         ) : (
@@ -107,7 +107,7 @@ export function PreCode(props: {
               }
             }}
           >
-            <Copy className="z-10 h-4 w-4 text-gray-300" />
+            <Copy className="text-gray-300 z-10 h-4 w-4" />
           </button>
         )}
         {props.children}

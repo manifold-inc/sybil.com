@@ -6,7 +6,7 @@ export function CopilotTextField(props: {
 }) {
   return (
     <div className="flex flex-col gap-2">
-      <div className="text-sm">{props.field.description}</div>
+      <div className="">{props.field.description}</div>
       <input placeholder={props.field.placeholder} />
     </div>
   );
