@@ -1,1 +1,1 @@
-## Sybil.com
+## Sybil
