@@ -17,7 +17,7 @@ export default function Countdown() {
       {isClient ? (
         <div className="animate-fade-in">
       <FlipClockCountdown 
-        to={new Date(1743706800 * 1000)}
+        to={new Date(1743537600 * 1000)}
         digitBlockStyle={{ 
           fontWeight: 'bold',
           color: '#C5DBFF',
