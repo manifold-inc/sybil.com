@@ -9,13 +9,13 @@ import { Analytics } from "@vercel/analytics/react";
 import { AxiomWebVitals } from "next-axiom";
 import { Toaster } from "sonner";
 
+import { env } from "@/env.mjs";
 import Countdown from "./_components/Countdown";
 import FakeFooter from "./_components/FakeFooter";
 import FakeHeader from "./_components/FakeHeader";
 import Footer from "./_components/footer";
 import Header from "./_components/header";
 import { WithGlobalProvider } from "./_components/providers";
-import { env } from "@/env.mjs";
 
 const blinker = Blinker({
   subsets: ["latin"],
@@ -25,27 +25,29 @@ const blinker = Blinker({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://sybil.com'),
+  metadataBase: new URL("https://sybil.com"),
   title: "Sybil",
   description: "Reshape your search",
   icons: [{ rel: "icon", url: "/sybil-bg.svg" }],
   openGraph: {
-    title: 'Sybil',
-    description: 'Reshape your search',
-    images: [{
-      url: '/sybil-preview.png',
-      width: 1200,
-      height: 630,
-      alt: 'Sybil'
-    }],
+    title: "Sybil",
+    description: "Reshape your search",
+    images: [
+      {
+        url: "/sybil-preview.png",
+        width: 1200,
+        height: 630,
+        alt: "Sybil",
+      },
+    ],
   },
   // For iMessage/SMS previews
   twitter: {
-    card: 'summary_large_image',
-    title: 'Sybil',
-    description: 'Reshape your search',
-    images: ['/sybil-preview.png'],
-  }
+    card: "summary_large_image",
+    title: "Sybil",
+    description: "Reshape your search",
+    images: ["/sybil-preview.png"],
+  },
 };
 
 const PostHogPageView = dynamic(() => import("./_components/PosthogPageView"), {
@@ -81,7 +83,7 @@ export default function RootLayout({
           ) : (
             <>
               <FakeHeader />
-              <div className="flex h-screen flex-col items-center justify-center">
+              <div className="flex h-[50vh] flex-col items-center justify-center sm:h-screen">
                 <h1 className="pb-16 text-xl font-bold text-mf-green-500">
                   THINK BIGGER
                 </h1>
