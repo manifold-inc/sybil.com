@@ -2,12 +2,22 @@
 
 import FlipClockCountdown from '@leenguyen/react-flip-clock-countdown';
 import '@leenguyen/react-flip-clock-countdown/dist/index.css';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 export default function Countdown() {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
-    <div className="scale-[0.8] sm:scale-100 md:scale-125 lg:scale-150 origin-center">
+    <div className="origin-center scale-[0.8] sm:scale-100 md:scale-125 lg:scale-150">
+      {isClient ? (
+        <div className="animate-fade-in">
       <FlipClockCountdown 
-        to={new Date(1743714000 * 1000)}
+        to={new Date(1743706800 * 1000)}
         digitBlockStyle={{ 
           fontWeight: 'bold',
           color: '#C5DBFF',
@@ -23,8 +33,12 @@ export default function Countdown() {
         dividerStyle={{
           color: '#17181F',
           height: '2px'
-        }}
-      />
+          }}
+        />
+      </div>
+    ) : (
+      <div className="h-28 w-12" />
+    )}
     </div>
   );
 }
