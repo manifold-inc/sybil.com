@@ -24,8 +24,27 @@ const blinker = Blinker({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://sybil.com'),
   title: "Sybil",
   description: "Reshape your search",
+  icons: [{ rel: "icon", url: "/sybil-bg.svg" }],
+  openGraph: {
+    title: 'Sybil',
+    description: 'Reshape your search',
+    images: [{
+      url: '/sybil-preview.png',
+      width: 1200,
+      height: 630,
+      alt: 'Sybil'
+    }],
+  },
+  // For iMessage/SMS previews
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Sybil',
+    description: 'Reshape your search',
+    images: ['/sybil-preview.png'],
+  }
 };
 
 const PostHogPageView = dynamic(() => import("./_components/PosthogPageView"), {
