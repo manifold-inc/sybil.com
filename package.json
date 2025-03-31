@@ -16,6 +16,7 @@
     "@fortaine/fetch-event-source": "^3.0.6",
     "@headlessui/react": "^1.7.18",
     "@headlessui/tailwindcss": "^0.2.0",
+    "@leenguyen/react-flip-clock-countdown": "^1.6.1",
     "@planetscale/database": "^1.16.0",
     "@t3-oss/env-nextjs": "^0.9.2",
     "@tanstack/react-query": "^4.36.1",
