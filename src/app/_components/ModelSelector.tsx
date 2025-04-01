@@ -34,10 +34,10 @@ export default function ModelSelector({
   };
 
   return (
-    <div className="w-42 sm:w-fit">
+    <div className="w-42">
       <Listbox value={storeModel} onChange={handleModelChange}>
         <div className="relative z-[100]">
-          <Listbox.Button className="w-42 flex items-center justify-between overflow-hidden rounded-full px-4 py-2 font-semibold text-mf-milk-500 hover:text-mf-milk-700 sm:w-full">
+          <Listbox.Button className="w-42 flex items-center justify-between overflow-hidden rounded-full px-4 py-2 font-semibold text-mf-milk-500 hover:text-mf-milk-700">
             {({ open }) => (
               <>
                 <div
@@ -52,19 +52,19 @@ export default function ModelSelector({
                       ? "Model"
                       : storeModel?.split("/").pop() ?? storeModel}
                   </span>
+                  {open ? (
+                    <ChevronUpIcon className="ml-2 h-4 w-4 shrink-0 text-mf-green-500" />
+                  ) : (
+                    <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 text-mf-green-500" />
+                  )}
                 </div>
-                {open ? (
-                  <ChevronUpIcon className="ml-2 h-4 w-4 shrink-0 text-mf-green-500" />
-                ) : (
-                  <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 text-mf-green-500" />
-                )}
               </>
             )}
           </Listbox.Button>
 
           <Listbox.Options
             className={clsx(
-              "bg-white dark:border-mf-ash-600 absolute mt-2 rounded-3xl py-2 shadow-lg focus:outline-none dark:bg-mf-ash-700 sm:right-4",
+              "bg-white absolute mt-2 rounded-3xl bg-mf-ash-700 py-2 shadow-lg focus:outline-none sm:right-4",
               search
                 ? "no-scrollbar right-20 h-40 translate-x-32 overflow-y-auto dark:overflow-y-auto"
                 : "right-2 w-full",

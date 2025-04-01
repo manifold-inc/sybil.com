@@ -374,7 +374,6 @@ function AnswerBox({
   const [isOpen, setIsOpen] = useState(false);
   const [isCopying, setIsCopying] = useState(false);
   const [showThinking, setShowThinking] = useState(false);
-  const [thinkTagShown, setThinkTagShown] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [charLimit, setCharLimit] = useState(650);
 
@@ -395,20 +394,12 @@ function AnswerBox({
     return () => window.removeEventListener("resize", calculateCharLimit);
   }, []);
 
-  console.log(answer);
-
   // Parse out thinking section if present
   const thinkMatch = answer.match(/(?:^<think>)?([\s\S]*?)<\/think>/);
   const thinking = thinkMatch?.[1]?.trim();
   const cleanAnswer = answer
     .replace(/(?:^<think>)?[\s\S]*?<\/think>/, "")
     .trim();
-
-  // Update thinkTagShown based on whether we're currently inside a think tag
-  useEffect(() => {
-    const thinkTagClose = answer.includes("</think>");
-    setThinkTagShown(!thinkTagClose);
-  }, [answer]);
 
   const handleCopy = () => {
     void copyToClipboard(cleanAnswer); // Copy only the clean answer without thinking
@@ -468,7 +459,6 @@ function AnswerBox({
         className={clsx(
           `flex flex-col gap-2 overflow-hidden transition-[margin]`,
           isOpen ? "mb-0 max-h-full" : "-mb-2 h-28 pb-2",
-          thinkTagShown && "text-mf-green-500",
         )}
         style={{
           maskImage:
