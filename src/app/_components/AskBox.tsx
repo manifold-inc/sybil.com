@@ -78,7 +78,7 @@ export default function AskBox(params: {
             >
               <Link
                 href="/"
-                className="mr-2 flex min-h-8 min-w-8 items-center justify-center rounded-full bg-mf-green-700"
+                className="mr-2 flex min-h-8 min-w-8 items-center justify-center rounded-full bg-mf-green-500"
               >
                 <img
                   src="/sybil-dark.svg"

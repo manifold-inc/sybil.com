@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { tryCatch } from "rambda";
 import { toast } from "sonner";
+import ModelSelector from "src/app/_components/ModelSelector";
 import { match } from "ts-pattern";
 
 import { Card } from "@/components/cards";
@@ -217,7 +218,7 @@ function Thread(props: {
       <div className="flex flex-row gap-4">
         <Link
           href={`/search?q=${encodeURIComponent(query.get("q") ?? "")}`}
-          className="after:dark:bg-white relative px-0.5 text-mf-green-700 after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-full after:bg-mf-green-700"
+          className="after:dark:bg-white relative px-0.5 text-mf-green-500 after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-full after:bg-mf-green-500"
         >
           General
         </Link>
@@ -239,7 +240,7 @@ function Thread(props: {
         <div className="flex justify-between pt-6">
           <ThreadSectionTitle icon={<List />} title={Locale.Thread.Sources} />
         </div>
-        <div className="divide-gray-200 dark:divide-zinc-600 divide-y">
+        <div className="divide-gray-200 divide-y dark:divide-mf-ash-300">
           {props.data.sources.length === 0 &&
             new Array(4).fill(0).map((_, i) => (
               <div key={i} className="py-4">
@@ -360,7 +361,7 @@ function Thread(props: {
   );
 }
 
-const AnswerBox = ({
+function AnswerBox({
   answer,
   isLoading,
   retry,
@@ -368,41 +369,73 @@ const AnswerBox = ({
   answer: string;
   isLoading: boolean;
   retry: () => void;
-}) => {
+}) {
   const [isOpen, setIsOpen] = useState(false);
-  return (
-    <div className="text-gray-700 dark:border-zinc-700 dark:text-zinc-300 flex flex-col rounded-md  bg-mf-ash-300 p-6">
-      <div className="flex items-center gap-2">
-        <button
-          onClick={() => setIsOpen((s) => !s)}
-          className="flex flex-grow items-center justify-between "
-        >
-          <ThreadSectionTitle
-            icon={<Image src="/sybil.svg" alt="SYBIL" width={16} height={16} />}
-            title={Locale.Thread.Answer}
-          />
-          <div className="flex items-center justify-between gap-2 rounded-md">
-            {!isOpen ? <ChevronDown /> : <ChevronUp />}
-          </div>
-        </button>
-        <button
-          className="mr-2 cursor-pointer rounded-md"
-          title={Locale.Thread.Actions.Rewrite}
-          onClick={retry}
-        >
-          <RotateCw />
-        </button>
+  const [isCopying, setIsCopying] = useState(false);
 
-        <button
-          title={Locale.Thread.Actions.Copy}
-          className="mr-2 cursor-pointer rounded-md"
-          onClick={() => {
-            void copyToClipboard(answer);
-            toast.success("Copied answer to clipboard");
-          }}
-        >
-          <Copy />
-        </button>
+  const handleCopy = () => {
+    void copyToClipboard(answer);
+    setIsCopying(true);
+    toast("Copied answer to clipboard", {
+      className: "bg-mf-ash-300 text-mf-milk-700 border-none",
+    });
+    setTimeout(() => setIsCopying(false), 3000);
+  };
+
+  return (
+    <div
+      className={clsx(
+        "text-gray-700 dark:border-zinc-700 dark:text-zinc-300 flex flex-col rounded-md bg-mf-ash-300 p-4 pt-2 sm:p-6",
+        isCopying ? "inset-0 ring-2 ring-mf-green-500" : "border-0",
+      )}
+    >
+      <div className="flex items-center gap-2">
+        <ThreadSectionTitle
+          icon={<Image src="/sybil.svg" alt="SYBIL" width={16} height={16} />}
+          title={Locale.Thread.Answer}
+        />
+        <div className="z-20 block -translate-x-4 sm:hidden sm:translate-x-0">
+          <ModelSelector search={true} />
+        </div>
+        <div className="z-20 hidden -translate-x-4 sm:block sm:translate-x-0">
+          <ModelSelector search={false} />
+        </div>
+        <div className="ml-auto flex items-center gap-2">
+          <div className="flex items-center justify-end gap-2 rounded-md">
+            <button
+              onClick={() => setIsOpen((s) => !s)}
+              className="flex items-center justify-between"
+            >
+              <div className="flex items-center justify-between gap-2 rounded-md">
+                {!isOpen ? (
+                  <ChevronDown className="h-4 w-4 sm:h-6 sm:w-6" />
+                ) : (
+                  <ChevronUp className="h-4 w-4 sm:h-6 sm:w-6" />
+                )}
+              </div>
+            </button>
+            <button
+              className="mr-2 cursor-pointer rounded-md"
+              title={Locale.Thread.Actions.Rewrite}
+              onClick={retry}
+            >
+              <RotateCw className="h-4 w-4 sm:h-6 sm:w-6" />
+            </button>
+
+            <button
+              title={Locale.Thread.Actions.Copy}
+              className={clsx("mr-2 cursor-pointer rounded-md")}
+              onClick={handleCopy}
+            >
+              <Copy
+                className={clsx(
+                  "h-4 w-4 sm:h-6 sm:w-6",
+                  isCopying && "text-mf-green-500",
+                )}
+              />
+            </button>
+          </div>
+        </div>
       </div>
       <div
         className={clsx(
@@ -426,7 +459,7 @@ const AnswerBox = ({
       </div>
     </div>
   );
-};
+}
 
 function ThreadSectionTitle(props: {
   icon: React.ReactNode;

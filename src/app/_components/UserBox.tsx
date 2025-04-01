@@ -14,13 +14,13 @@ export default function UserBox() {
       <div className="flex items-center gap-2">
         <Link
           href="/sign-in"
-          className="whitespace-nowrap rounded-full px-4 py-1 font-semibold text-mf-green-700 hover:bg-mf-green-700/10"
+          className="whitespace-nowrap rounded-full px-4 py-1 font-semibold text-mf-green-500 hover:bg-mf-green-500/10"
         >
           Log in
         </Link>
         <Link
           href="/sign-up"
-          className="hover:bg-mf-green-800 hidden whitespace-nowrap rounded-full bg-mf-green-700 px-4 py-1 font-semibold text-mf-ash-700 hover:bg-mf-green-700/80 md:block"
+          className="hover:bg-mf-green-800 hidden whitespace-nowrap rounded-full bg-mf-green-500 px-4 py-1 font-semibold text-mf-ash-700 hover:bg-mf-green-500/80 md:block"
         >
           Sign up
         </Link>
@@ -31,7 +31,7 @@ export default function UserBox() {
   return (
     <a
       href="/sign-out"
-      className="flex h-9 w-9 items-center justify-center rounded-full bg-mf-green-700"
+      className="flex h-9 w-9 items-center justify-center rounded-full bg-mf-green-500"
     >
       <Image src="/user.svg" alt="SYBIL" width={16} height={16} />
     </a>

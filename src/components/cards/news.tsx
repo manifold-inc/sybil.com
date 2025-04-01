@@ -16,7 +16,7 @@ export function NewsCard(props: {
       href={props.news.url}
       target="_blank"
     >
-      <div className="bg-black flex h-full w-full items-end bg-mf-green-700/15 bg-opacity-50 p-2 transition-all">
+      <div className="bg-black flex h-full w-full items-end bg-mf-green-500/15 bg-opacity-50 p-2 transition-all">
         <div className="flex flex-col gap-1">
           <div className="font-sans text-xs">Top Result</div>
           <span className="line-clamp-1 text-xl">{props.news.title}</span>
