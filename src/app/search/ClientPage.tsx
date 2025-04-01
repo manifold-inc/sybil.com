@@ -491,7 +491,7 @@ function AnswerBox({
             {showThinking ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
           </button>
           {showThinking && (
-            <div className="mt-2 text-sm text-gray-500 dark:text-gray-400 bg-mf-ash-600 p-3 rounded">
+            <div className="mt-2 text-sm text-mf-green-100 bg-mf-ash-600 p-3 rounded">
               {thinking}
             </div>
           )}
