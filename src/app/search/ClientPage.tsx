@@ -10,17 +10,14 @@ import {
 } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import {
-  Bookmark,
   ChevronDown,
   ChevronUp,
   Copy,
   List,
   Loader2,
-  Plus,
   RotateCw,
 } from "lucide-react";
 import { tryCatch } from "rambda";
@@ -39,6 +36,8 @@ import { useControllerStore } from "@/store/controller";
 import { copyToClipboard } from "@/utils/os";
 import { search } from "@/utils/search";
 import { type Data } from "./reducer";
+import { useSearchParams } from "next/navigation";
+import { useModelStore } from "@/store/model";
 
 export default function ClientPage({
   query,
@@ -55,12 +54,12 @@ export default function ClientPage({
     relatedCards: [],
     finished: false,
   } as Data);
-  const [selectedModel, setSelectedModel] = useState<string>("deepseek-ai/DeepSeek-R1");
+  const { selectedModel } = useModelStore();
 
   return (
     <div className="relative box-border flex">
       <div className="relative w-full px-4 pb-32 pt-8 sm:px-8 lg:px-36">
-        <Thread data={data} setData={setData} selectedModel={selectedModel} onModelChange={setSelectedModel} />
+        <Thread data={data} setData={setData} selectedModel={selectedModel} />
       </div>
     </div>
   );
@@ -70,9 +69,7 @@ function Thread(props: {
   data: Data;
   setData: Dispatch<SetStateAction<Data>>;
   selectedModel: string;
-  onModelChange: (model: string) => void;
 }) {
-  const router = useRouter();
   const controllerStore = useControllerStore();
   const [isLoading, setIsLoading] = useState(true);
   const isFirstRun = useRef(true);
@@ -90,7 +87,7 @@ function Thread(props: {
       let answerText = "";
       const controller = search(
         {
-          model: props.selectedModel,
+          model: props.selectedModel, 
           query: payload.query,
           files: validFiles,
         },
@@ -240,8 +237,6 @@ function Thread(props: {
           answer={props.data.answer ?? ""}
           isLoading={props.data.answer.length === 0 && isLoading}
           retry={retry}
-          selectedModel={props.selectedModel}
-          onModelChange={props.onModelChange}
         />
         <div className="flex justify-between pt-6">
           <ThreadSectionTitle icon={<List />} title={Locale.Thread.Sources} />
@@ -371,20 +366,49 @@ function AnswerBox({
   answer,
   isLoading,
   retry,
-  selectedModel,
-  onModelChange,
 }: {
   answer: string;
   isLoading: boolean;
   retry: () => void;
-  selectedModel: string;
-  onModelChange: (model: string) => void;
 }): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
   const [isCopying, setIsCopying] = useState(false);
+  const [showThinking, setShowThinking] = useState(false);
+  const [thinkTagShown, setThinkTagShown] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [charLimit, setCharLimit] = useState(650);
+
+  // Calculate character limit based on container width
+  useEffect(() => {
+    const calculateCharLimit = () => {
+      if (containerRef.current) {
+        // Approximate characters per line based on container width
+        // Assuming average char width is ~8px at fontSize 22
+        const charsPerLine = Math.floor(containerRef.current.offsetWidth / 8);
+        // Set limit to roughly 3 lines of text
+        setCharLimit(charsPerLine * 3);
+      }
+    };
+
+    calculateCharLimit();
+    window.addEventListener('resize', calculateCharLimit);
+    return () => window.removeEventListener('resize', calculateCharLimit);
+  }, []);
+
+  // Parse out thinking section if present
+  const thinkMatch = answer.match(/<think>(.*?)<\/think>/s);
+  const thinking = thinkMatch?.[1]?.trim();
+  const cleanAnswer = answer.replace(/<think>.*?<\/think>/s, '').trim(); 
+
+  // Update thinkTagShown based on whether we're currently inside a think tag
+  useEffect(() => {
+    const thinkTagOpen = answer.includes('<think>');
+    const thinkTagClose = answer.includes('</think>');
+    setThinkTagShown(thinkTagOpen && !thinkTagClose);
+  }, [answer]);
 
   const handleCopy = () => {
-    void copyToClipboard(answer);
+    void copyToClipboard(cleanAnswer); // Copy only the clean answer without thinking
     setIsCopying(true);
     toast("Copied answer to clipboard", {
       className: "bg-mf-ash-300 text-mf-milk-700 border-none",
@@ -394,8 +418,9 @@ function AnswerBox({
 
   return (
     <div
+      ref={containerRef}
       className={clsx(
-        "text-gray-700 dark:border-zinc-700 dark:text-zinc-300 flex flex-col rounded-md bg-mf-ash-300 p-4 pt-2 sm:p-6",
+        "text-gray-700 dark:border-zinc-700 dark:text-zinc-300 flex flex-col rounded-md bg-mf-ash-500 p-4 pt-2 sm:p-6",
         isCopying ? "inset-0 ring-2 ring-mf-green-500" : "border-0",
       )}
     >
@@ -405,25 +430,13 @@ function AnswerBox({
           title={Locale.Thread.Answer}
         />
         <div className="z-20 block -translate-x-4 sm:hidden sm:translate-x-0">
-          <ModelSelector search={true} onModelChange={onModelChange} selectedModel={selectedModel} />
+          <ModelSelector search={true} onModelChange={retry} />
         </div>
         <div className="z-20 hidden -translate-x-4 sm:block sm:translate-x-0">
-          <ModelSelector search={false} onModelChange={onModelChange} selectedModel={selectedModel} />
+          <ModelSelector search={false} onModelChange={retry} />
         </div>
         <div className="ml-auto flex items-center gap-2">
           <div>
-            <button
-              onClick={() => setIsOpen((s) => !s)}
-              className="flex items-center justify-between"
-            >
-              <div className="flex items-center justify-between gap-2 rounded-md">
-                {!isOpen ? (
-                  <ChevronDown className="h-4 w-4 sm:h-6 sm:w-6" />
-                ) : (
-                  <ChevronUp className="h-4 w-4 sm:h-6 sm:w-6" />
-                )}
-              </div>
-            </button>
             <button
               className="mr-2 cursor-pointer rounded-md"
               title={Locale.Thread.Actions.Rewrite}
@@ -447,26 +460,58 @@ function AnswerBox({
           </div>
         </div>
       </div>
+      
       <div
         className={clsx(
           `flex flex-col gap-2 overflow-hidden transition-[margin]`,
           isOpen ? "mb-0 max-h-full" : "-mb-2 h-28 pb-2",
+          thinkTagShown && "text-mf-green-500"
         )}
         style={{
-          maskImage: isOpen
-            ? ""
-            : "linear-gradient(to bottom, black 50%, transparent 100%)",
-          WebkitMaskImage: isOpen
-            ? ""
-            : "linear-gradient(to bottom, black 50%, transparent 100%)",
+          maskImage: !isOpen && cleanAnswer.length > charLimit
+            ? "linear-gradient(to bottom, black 50%, transparent 100%)"
+            : "",
+          WebkitMaskImage: !isOpen && cleanAnswer.length > charLimit
+            ? "linear-gradient(to bottom, black 50%, transparent 100%)"
+            : "",
         }}
       >
         <Markdown
           isLoading={isLoading}
-          content={(answer ?? "") || "No Content."}
+          content={cleanAnswer || "No Content."}
           fontSize={22}
         />
+        {thinking && (
+        <div className="my-4">
+          <button
+            onClick={() => setShowThinking(!showThinking)}
+            className="text-sm text-mf-green-500 flex items-center gap-1"
+          >
+            Thinking process
+            {showThinking ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+          </button>
+          {showThinking && (
+            <div className="mt-2 text-sm text-gray-500 dark:text-gray-400 bg-mf-ash-600 p-3 rounded">
+              {thinking}
+            </div>
+          )}
+        </div>
+      )}
       </div>
+      {cleanAnswer.length > charLimit && (
+        <button
+          onClick={() => setIsOpen((s) => !s)}
+          className="flex items-center justify-between"
+        >
+          <div className="flex items-center justify-between gap-2 rounded-md">
+            {!isOpen ? (
+              <ChevronDown className="h-4 w-4 sm:h-6 sm:w-6" />
+            ) : (
+              <ChevronUp className="h-4 w-4 sm:h-6 sm:w-6" />
+            )}
+          </div>
+        </button>
+      )}
     </div>
   );
 }

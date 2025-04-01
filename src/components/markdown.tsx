@@ -14,6 +14,7 @@ import { useDebouncedCallback } from "use-debounce";
 
 import { copyToClipboard } from "@/utils/os";
 import { Skeleton } from "./ui/skeleton";
+import clsx from "clsx";
 
 export function Mermaid(props: { code: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -117,6 +118,7 @@ export function PreCode(props: {
 }
 
 function _MarkDownContent(props: { content: string }) {
+  // Process content to move <think> tags content and add newline
   return (
     <div className="relative max-w-full text-justify">
       <ReactMarkdown
@@ -162,7 +164,7 @@ export function Markdown(
 
   return (
     <div
-      className="prose-sm text-justify"
+      className={clsx("prose-sm sm:prose-lg text-justify [&_p]:!leading-tight [&_p]:!my-2")}
       ref={mdRef}
       onContextMenu={props.onContextMenu}
       onDoubleClickCapture={props.onDoubleClickCapture}
@@ -175,7 +177,9 @@ export function Markdown(
           <Skeleton className="mb-2 h-4 w-[80%]" />
         </div>
       ) : (
-        <MarkdownContent content={props.content} />
+        <MarkdownContent content={props.content.replace(/<think>/g, '')
+            .replace(/<\/think>/g, '')
+            .trim()} />
       )}
     </div>
   );
