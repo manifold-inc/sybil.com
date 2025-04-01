@@ -19,6 +19,25 @@
   border: 1px solid transparent;
 }
 
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .scrollbar {
+    -ms-overflow-style: auto; /* IE and Edge */
+    scrollbar-width: auto; /* Firefox */
+  }
+
+  .scrollbar::-webkit-scrollbar {
+    display: block;
+  }
+}
+
 /*
 body::before {
   background: var(--third-glow);

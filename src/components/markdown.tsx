@@ -5,6 +5,7 @@ import ReactMarkdown from "react-markdown";
 import "katex/dist/katex.min.css";
 
 import React, { useEffect, useRef, useState, type RefObject } from "react";
+import clsx from "clsx";
 import { Copy } from "lucide-react";
 import mermaid from "mermaid";
 import RehypeHighlight from "rehype-highlight";
@@ -117,6 +118,7 @@ export function PreCode(props: {
 }
 
 function _MarkDownContent(props: { content: string }) {
+  // Process content to move <think> tags content and add newline
   return (
     <div className="relative max-w-full text-justify">
       <ReactMarkdown
@@ -162,7 +164,9 @@ export function Markdown(
 
   return (
     <div
-      className="prose-sm text-justify"
+      className={clsx(
+        "prose-sm text-justify sm:prose-lg [&_p]:!my-2 [&_p]:!leading-tight",
+      )}
       ref={mdRef}
       onContextMenu={props.onContextMenu}
       onDoubleClickCapture={props.onDoubleClickCapture}
@@ -175,7 +179,12 @@ export function Markdown(
           <Skeleton className="mb-2 h-4 w-[80%]" />
         </div>
       ) : (
-        <MarkdownContent content={props.content} />
+        <MarkdownContent
+          content={props.content
+            .replace(/<think>/g, "")
+            .replace(/<\/think>/g, "")
+            .trim()}
+        />
       )}
     </div>
   );

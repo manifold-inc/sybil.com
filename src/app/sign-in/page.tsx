@@ -107,7 +107,7 @@ export default function Page() {
             </div>
             <div className="flex justify-center gap-2">
               <Link
-                className="whitespace-nowrap rounded-full px-4 py-1 font-semibold text-mf-green-700 hover:bg-mf-green-700/10"
+                className="whitespace-nowrap rounded-full px-4 py-1 font-semibold text-mf-green-500 hover:bg-mf-green-500/10"
                 href="/sign-up"
               >
                 Sign up
@@ -115,7 +115,7 @@ export default function Page() {
               <button
                 type="submit"
                 disabled={signIn.isLoading}
-                className="hover:bg-mf-green-800 flex items-center gap-2 whitespace-nowrap rounded-full bg-mf-green-700 px-4 py-1 font-semibold text-mf-ash-700 hover:bg-mf-green-700/80"
+                className="hover:bg-mf-green-800 flex items-center gap-2 whitespace-nowrap rounded-full bg-mf-green-500 px-4 py-1 font-semibold text-mf-ash-700 hover:bg-mf-green-500/80"
               >
                 Log In
                 {signIn.isLoading && (

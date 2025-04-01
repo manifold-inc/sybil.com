@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Combobox, Transition } from "@headlessui/react";
 import { clsx } from "clsx";
-import { Search, X } from "lucide-react";
+import { Info, Search, X } from "lucide-react";
 
 import { emitCustomEvent, useCustomEvent } from "@/hooks/event";
 import { useKeyDown } from "@/hooks/keydown";
@@ -78,7 +78,7 @@ export default function AskBox(params: {
             >
               <Link
                 href="/"
-                className="mr-2 flex min-h-8 min-w-8 items-center justify-center rounded-full bg-mf-green-700"
+                className="mr-2 flex min-h-8 min-w-8 items-center justify-center rounded-full bg-mf-green-500"
               >
                 <img
                   src="/sybil-dark.svg"
@@ -113,7 +113,14 @@ export default function AskBox(params: {
                   ac.mutate({ query: event.target.value });
                 }}
               />
-              <div className="relative flex h-full items-center">
+              <div className="relative flex h-full items-center gap-2">
+                <div className="group relative">
+                  <Info className="h-4 w-4 text-mf-milk-300/60" />
+                  <div className="absolute right-0 top-full mt-2 w-64 rounded-lg bg-mf-ash-500 p-2 text-sm text-mf-milk-300 opacity-0 shadow-center transition-opacity group-hover:opacity-100">
+                    Using Targon&apos;s fallback servers until V6 is launched to
+                    answer your question.
+                  </div>
+                </div>
                 {query.length > 0 && (
                   <button
                     onClick={() => {

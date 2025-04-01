@@ -198,6 +198,7 @@ export namespace MainSchema {
 
 export namespace SearchSchema {
   export const SearchPayload = z.object({
+    model: z.string(),
     query: z.string(),
     files: z.string().array(),
   });

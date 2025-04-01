@@ -154,7 +154,7 @@ export default function Page() {
               <button
                 type="submit"
                 disabled={createAccouint.isLoading}
-                className="hover:bg-mf-green-800 flex items-center gap-2 whitespace-nowrap rounded-full bg-mf-green-700 px-4 py-1 font-semibold text-mf-ash-700 hover:bg-mf-green-700/80"
+                className="hover:bg-mf-green-800 flex items-center gap-2 whitespace-nowrap rounded-full bg-mf-green-500 px-4 py-1 font-semibold text-mf-ash-700 hover:bg-mf-green-500/80"
               >
                 Create Account
                 {createAccouint.isLoading && (

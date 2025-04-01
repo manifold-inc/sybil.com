@@ -5,6 +5,7 @@ export enum StoreKey {
   Block = "block",
   Answer = "answer",
   File = "file",
+  Model = "model",
 }
 
 export const MAX_VERSION = 99999999;

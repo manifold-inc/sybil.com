@@ -14,7 +14,7 @@ export default function Header() {
   }
   return (
     <div className="fixed left-0 right-0 top-0 z-20 flex w-full justify-between gap-2 bg-mf-ash-700 p-4 sm:p-8">
-      {pathname === "/" && <ModelSelector />}
+      {pathname === "/" && <ModelSelector search={false} />}
       {pathname !== "/" && (
         <Link className="flex items-center gap-2" href="/">
           <Image src="/sybil-bg.svg" alt="Sybil" width={16} height={16} />

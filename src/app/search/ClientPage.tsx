@@ -10,21 +10,20 @@ import {
 } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import {
-  Bookmark,
   ChevronDown,
   ChevronUp,
   Copy,
   List,
   Loader2,
-  Plus,
   RotateCw,
 } from "lucide-react";
 import { tryCatch } from "rambda";
 import { toast } from "sonner";
+import ModelSelector from "src/app/_components/ModelSelector";
 import { match } from "ts-pattern";
 
 import { Card } from "@/components/cards";
@@ -35,6 +34,7 @@ import { type ThreadFile } from "@/hooks/file";
 import { Locale } from "@/locales";
 import { type SourceSchema } from "@/server/api/main/schema";
 import { useControllerStore } from "@/store/controller";
+import { useModelStore } from "@/store/model";
 import { copyToClipboard } from "@/utils/os";
 import { search } from "@/utils/search";
 import { type Data } from "./reducer";
@@ -54,11 +54,12 @@ export default function ClientPage({
     relatedCards: [],
     finished: false,
   } as Data);
+  const { selectedModel } = useModelStore();
 
   return (
     <div className="relative box-border flex">
       <div className="relative w-full px-4 pb-32 pt-8 sm:px-8 lg:px-36">
-        <Thread data={data} setData={setData} />
+        <Thread data={data} setData={setData} selectedModel={selectedModel} />
       </div>
     </div>
   );
@@ -67,8 +68,8 @@ export default function ClientPage({
 function Thread(props: {
   data: Data;
   setData: Dispatch<SetStateAction<Data>>;
+  selectedModel: string;
 }) {
-  const router = useRouter();
   const controllerStore = useControllerStore();
   const [isLoading, setIsLoading] = useState(true);
   const isFirstRun = useRef(true);
@@ -86,6 +87,7 @@ function Thread(props: {
       let answerText = "";
       const controller = search(
         {
+          model: props.selectedModel,
           query: payload.query,
           files: validFiles,
         },
@@ -217,7 +219,7 @@ function Thread(props: {
       <div className="flex flex-row gap-4">
         <Link
           href={`/search?q=${encodeURIComponent(query.get("q") ?? "")}`}
-          className="after:dark:bg-white relative px-0.5 text-mf-green-700 after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-full after:bg-mf-green-700"
+          className="after:dark:bg-white relative px-0.5 text-mf-green-500 after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-full after:bg-mf-green-500"
         >
           General
         </Link>
@@ -232,14 +234,14 @@ function Thread(props: {
         {herocard}
         <div className="pt-4 sm:pt-6" />
         <AnswerBox
-          isLoading={props.data.answer.length === 0 && isLoading}
           answer={props.data.answer ?? ""}
+          isLoading={props.data.answer.length === 0 && isLoading}
           retry={retry}
         />
         <div className="flex justify-between pt-6">
           <ThreadSectionTitle icon={<List />} title={Locale.Thread.Sources} />
         </div>
-        <div className="divide-gray-200 dark:divide-zinc-600 divide-y">
+        <div className="divide-gray-200 divide-y dark:divide-mf-ash-300">
           {props.data.sources.length === 0 &&
             new Array(4).fill(0).map((_, i) => (
               <div key={i} className="py-4">
@@ -251,47 +253,47 @@ function Thread(props: {
             ))}
           {props.data.sources.length !== 0 &&
             new Array(props.data.sources.length + 1).fill(null).map((_, i) => {
-              if (i === 4) {
-                return (
-                  <div
-                    key="threads"
-                    className="text-gray-700 dark:border-zinc-700 dark:text-zinc-300 py-5"
-                  >
-                    <ThreadSectionTitle
-                      icon={<Bookmark />}
-                      title={Locale.Thread.Related}
-                    />
+              // if (i === 4) {
+              //   return (
+              //     <div
+              //       key="threads"
+              //       className="text-gray-700 dark:border-zinc-700 dark:text-zinc-300 py-5"
+              //     >
+              //       <ThreadSectionTitle
+              //         icon={<Bookmark />}
+              //         title={Locale.Thread.Related}
+              //       />
 
-                    <div className="space-y-2 pt-3">
-                      {props.data.followups?.length
-                        ? props.data.followups.map((r, i) => (
-                            <button
-                              onClick={() => {
-                                void router.push(`/search?q=${r}`);
-                              }}
-                              className="text-black hover:text-gray-600 dark:text-zinc-400 dark:hover:text-zinc-300 flex w-full justify-between py-1 text-left"
-                              key={i}
-                            >
-                              <span className="line-clamp-1 text-ellipsis  font-semibold">
-                                {r}
-                              </span>
-                              {/* Bold and uniform text */}
-                              <Plus className="h-5 w-5" />
-                              {/* Appropriately sized plus sign */}
-                            </button>
-                          ))
-                        : new Array(2).fill(0).map((_, i) => (
-                            <div key={i} className="py-2">
-                              <Skeleton className={`h-4 w-3/4 `} />
-                              <Skeleton className={`my-2 h-4 w-1/2 `} />
-                              {/* Add spacing for the description */}
-                              <Skeleton className={`my-4 h-4 w-5/6`} />
-                            </div>
-                          ))}
-                    </div>
-                  </div>
-                );
-              }
+              //       <div className="space-y-2 pt-3">
+              //         {props.data.followups?.length
+              //           ? props.data.followups.map((r, i) => (
+              //               <button
+              //                 onClick={() => {
+              //                   void router.push(`/search?q=${r}`);
+              //                 }}
+              //                 className="text-black hover:text-gray-600 dark:text-zinc-400 dark:hover:text-zinc-300 flex w-full justify-between py-1 text-left"
+              //                 key={i}
+              //               >
+              //                 <span className="line-clamp-1 text-ellipsis  font-semibold">
+              //                   {r}
+              //                 </span>
+              //                 {/* Bold and uniform text */}
+              //                 <Plus className="h-5 w-5" />
+              //                 {/* Appropriately sized plus sign */}
+              //               </button>
+              //             ))
+              //           : new Array(2).fill(0).map((_, i) => (
+              //               <div key={i} className="py-2">
+              //                 <Skeleton className={`h-4 w-3/4 `} />
+              //                 <Skeleton className={`my-2 h-4 w-1/2 `} />
+              //                 {/* Add spacing for the description */}
+              //                 <Skeleton className={`my-4 h-4 w-5/6`} />
+              //               </div>
+              //             ))}
+              //       </div>
+              //     </div>
+              //   );
+              // }
               const s =
                 i < 4 ? props.data.sources.at(i) : props.data.sources.at(i - 1);
               if (!s) return;
@@ -360,7 +362,7 @@ function Thread(props: {
   );
 }
 
-const AnswerBox = ({
+function AnswerBox({
   answer,
   isLoading,
   retry,
@@ -368,65 +370,157 @@ const AnswerBox = ({
   answer: string;
   isLoading: boolean;
   retry: () => void;
-}) => {
+}): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
-  return (
-    <div className="text-gray-700 dark:border-zinc-700 dark:text-zinc-300 flex flex-col rounded-md  bg-mf-ash-300 p-6">
-      <div className="flex items-center gap-2">
-        <button
-          onClick={() => setIsOpen((s) => !s)}
-          className="flex flex-grow items-center justify-between "
-        >
-          <ThreadSectionTitle
-            icon={<Image src="/sybil.svg" alt="SYBIL" width={16} height={16} />}
-            title={Locale.Thread.Answer}
-          />
-          <div className="flex items-center justify-between gap-2 rounded-md">
-            {!isOpen ? <ChevronDown /> : <ChevronUp />}
-          </div>
-        </button>
-        <button
-          className="mr-2 cursor-pointer rounded-md"
-          title={Locale.Thread.Actions.Rewrite}
-          onClick={retry}
-        >
-          <RotateCw />
-        </button>
+  const [isCopying, setIsCopying] = useState(false);
+  const [showThinking, setShowThinking] = useState(false);
+  const [thinkTagShown, setThinkTagShown] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [charLimit, setCharLimit] = useState(650);
 
-        <button
-          title={Locale.Thread.Actions.Copy}
-          className="mr-2 cursor-pointer rounded-md"
-          onClick={() => {
-            void copyToClipboard(answer);
-            toast.success("Copied answer to clipboard");
-          }}
-        >
-          <Copy />
-        </button>
+  // Calculate character limit based on container width
+  useEffect(() => {
+    const calculateCharLimit = () => {
+      if (containerRef.current) {
+        // Approximate characters per line based on container width
+        // Assuming average char width is ~8px at fontSize 22
+        const charsPerLine = Math.floor(containerRef.current.offsetWidth / 8);
+        // Set limit to roughly 3 lines of text
+        setCharLimit(charsPerLine * 3);
+      }
+    };
+
+    calculateCharLimit();
+    window.addEventListener("resize", calculateCharLimit);
+    return () => window.removeEventListener("resize", calculateCharLimit);
+  }, []);
+
+  // Parse out thinking section if present
+  const thinkMatch = answer.match(/<think>(.*?)<\/think>/s);
+  const thinking = thinkMatch?.[1]?.trim();
+  const cleanAnswer = answer.replace(/<think>.*?<\/think>/s, "").trim();
+
+  // Update thinkTagShown based on whether we're currently inside a think tag
+  useEffect(() => {
+    const thinkTagOpen = answer.includes("<think>");
+    const thinkTagClose = answer.includes("</think>");
+    setThinkTagShown(thinkTagOpen && !thinkTagClose);
+  }, [answer]);
+
+  const handleCopy = () => {
+    void copyToClipboard(cleanAnswer); // Copy only the clean answer without thinking
+    setIsCopying(true);
+    toast("Copied answer to clipboard", {
+      className: "bg-mf-ash-300 text-mf-milk-700 border-none",
+    });
+    setTimeout(() => setIsCopying(false), 3000);
+  };
+
+  return (
+    <div
+      ref={containerRef}
+      className={clsx(
+        "text-gray-700 dark:border-zinc-700 dark:text-zinc-300 flex flex-col rounded-md bg-mf-ash-500 p-4 pt-2 sm:p-6",
+        isCopying ? "inset-0 ring-2 ring-mf-green-500" : "border-0",
+      )}
+    >
+      <div className="flex items-center gap-2">
+        <ThreadSectionTitle
+          icon={<Image src="/sybil.svg" alt="SYBIL" width={16} height={16} />}
+          title={Locale.Thread.Answer}
+        />
+        <div className="z-20 block -translate-x-4 sm:hidden sm:translate-x-0">
+          <ModelSelector search={true} onModelChange={retry} />
+        </div>
+        <div className="z-20 hidden -translate-x-4 sm:block sm:translate-x-0">
+          <ModelSelector search={false} onModelChange={retry} />
+        </div>
+        <div className="ml-auto flex items-center gap-2">
+          <div>
+            <button
+              className="mr-2 cursor-pointer rounded-md"
+              title={Locale.Thread.Actions.Rewrite}
+              onClick={retry}
+            >
+              <RotateCw className="h-4 w-4 sm:h-5 sm:w-5" />
+            </button>
+
+            <button
+              title={Locale.Thread.Actions.Copy}
+              className={clsx("mr-2 cursor-pointer rounded-md")}
+              onClick={handleCopy}
+            >
+              <Copy
+                className={clsx(
+                  "h-4 w-4 sm:h-5 sm:w-5",
+                  isCopying && "text-mf-green-500",
+                )}
+              />
+            </button>
+          </div>
+        </div>
       </div>
+
       <div
         className={clsx(
           `flex flex-col gap-2 overflow-hidden transition-[margin]`,
           isOpen ? "mb-0 max-h-full" : "-mb-2 h-28 pb-2",
+          thinkTagShown && "text-mf-green-500",
         )}
         style={{
-          maskImage: isOpen
-            ? ""
-            : "linear-gradient(to bottom, black 50%, transparent 100%)",
-          WebkitMaskImage: isOpen
-            ? ""
-            : "linear-gradient(to bottom, black 50%, transparent 100%)",
+          maskImage:
+            !isOpen && cleanAnswer.length > charLimit
+              ? "linear-gradient(to bottom, black 50%, transparent 100%)"
+              : "",
+          WebkitMaskImage:
+            !isOpen && cleanAnswer.length > charLimit
+              ? "linear-gradient(to bottom, black 50%, transparent 100%)"
+              : "",
         }}
       >
         <Markdown
           isLoading={isLoading}
-          content={(answer ?? "") || "No Content."}
+          content={cleanAnswer || "No Content."}
           fontSize={22}
         />
+        {thinking && (
+          <div className="my-4">
+            <button
+              onClick={() => setShowThinking(!showThinking)}
+              className="flex items-center gap-1 text-sm text-mf-green-500"
+            >
+              Thinking process
+              {showThinking ? (
+                <ChevronUp className="h-3 w-3" />
+              ) : (
+                <ChevronDown className="h-3 w-3" />
+              )}
+            </button>
+            {showThinking && (
+              <div className="bg-mf-ash-600 mt-2 rounded p-3 text-sm text-mf-green-100">
+                {thinking}
+              </div>
+            )}
+          </div>
+        )}
       </div>
+      {cleanAnswer.length > charLimit && (
+        <button
+          onClick={() => setIsOpen((s) => !s)}
+          className="flex items-center justify-between"
+        >
+          <div className="flex items-center justify-between gap-2 rounded-md">
+            {!isOpen ? (
+              <ChevronDown className="h-4 w-4 sm:h-5 sm:w-5" />
+            ) : (
+              <ChevronUp className="h-4 w-4 sm:h-5 sm:w-5" />
+            )}
+          </div>
+        </button>
+      )}
     </div>
   );
-};
+}
 
 function ThreadSectionTitle(props: {
   icon: React.ReactNode;
