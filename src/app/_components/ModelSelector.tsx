@@ -20,7 +20,7 @@ export default function ModelSelector({
 
   const models = useMemo(() => [
     { model: "deepseek-ai/DeepSeek-R1" },
-    { model: "deepseek-ai/DeepSeek-V3-0324" },
+    { model: "deepseek-ai/DeepSeek-V3" },
   ], []);
 
   const handleModelChange = (model: string) => {
