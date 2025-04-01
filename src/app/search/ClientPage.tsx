@@ -395,16 +395,19 @@ function AnswerBox({
     return () => window.removeEventListener("resize", calculateCharLimit);
   }, []);
 
+  console.log(answer);
+
   // Parse out thinking section if present
-  const thinkMatch = answer.match(/<think>(.*?)<\/think>/s);
+  const thinkMatch = answer.match(/(?:^<think>)?([\s\S]*?)<\/think>/);
   const thinking = thinkMatch?.[1]?.trim();
-  const cleanAnswer = answer.replace(/<think>.*?<\/think>/s, "").trim();
+  const cleanAnswer = answer
+    .replace(/(?:^<think>)?[\s\S]*?<\/think>/, "")
+    .trim();
 
   // Update thinkTagShown based on whether we're currently inside a think tag
   useEffect(() => {
-    const thinkTagOpen = answer.includes("<think>");
     const thinkTagClose = answer.includes("</think>");
-    setThinkTagShown(thinkTagOpen && !thinkTagClose);
+    setThinkTagShown(!thinkTagClose);
   }, [answer]);
 
   const handleCopy = () => {

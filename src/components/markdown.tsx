@@ -118,7 +118,6 @@ export function PreCode(props: {
 }
 
 function _MarkDownContent(props: { content: string }) {
-  // Process content to move <think> tags content and add newline
   return (
     <div className="relative max-w-full text-justify">
       <ReactMarkdown
@@ -179,12 +178,7 @@ export function Markdown(
           <Skeleton className="mb-2 h-4 w-[80%]" />
         </div>
       ) : (
-        <MarkdownContent
-          content={props.content
-            .replace(/<think>/g, "")
-            .replace(/<\/think>/g, "")
-            .trim()}
-        />
+        <MarkdownContent content={props.content} />
       )}
     </div>
   );
