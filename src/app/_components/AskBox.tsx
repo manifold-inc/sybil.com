@@ -117,7 +117,7 @@ export default function AskBox(params: {
                 <div className="group relative">
                   <Info className="h-4 w-4 text-mf-milk-300/60" />
                   <div className="absolute right-0 top-full mt-2 w-64 rounded-lg bg-mf-ash-500 p-2 text-sm text-mf-milk-300 opacity-0 shadow-center transition-opacity group-hover:opacity-100">
-                    Using Targon&apos;s fallback servers until v6 is launched to
+                    Using Targon&apos;s fallback servers until V6 is launched to
                     answer your question.
                   </div>
                 </div>
