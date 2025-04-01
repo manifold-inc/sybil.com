@@ -64,10 +64,10 @@ export default function ModelSelector({
 
           <Listbox.Options
             className={clsx(
-              "bg-white dark:border-mf-ash-600 absolute right-12 mt-2 rounded-3xl py-2 shadow-lg focus:outline-none dark:bg-mf-ash-700 sm:right-4",
+              "bg-white dark:border-mf-ash-600 absolute mt-2 rounded-3xl py-2 shadow-lg focus:outline-none dark:bg-mf-ash-700 sm:right-4",
               search
-                ? "no-scrollbar h-40 translate-x-32 overflow-y-auto dark:overflow-y-auto"
-                : "w-full",
+                ? "no-scrollbar right-20 h-40 translate-x-32 overflow-y-auto dark:overflow-y-auto"
+                : "right-2 w-full",
             )}
           >
             {models?.map((model) => (
