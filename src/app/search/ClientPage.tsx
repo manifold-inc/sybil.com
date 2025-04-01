@@ -442,7 +442,7 @@ function AnswerBox({
               title={Locale.Thread.Actions.Rewrite}
               onClick={retry}
             >
-              <RotateCw className="h-4 w-4 sm:h-6 sm:w-6" />
+              <RotateCw className="h-4 w-4 sm:h-5 sm:w-5" />
             </button>
 
             <button
@@ -452,7 +452,7 @@ function AnswerBox({
             >
               <Copy
                 className={clsx(
-                  "h-4 w-4 sm:h-6 sm:w-6",
+                  "h-4 w-4 sm:h-5 sm:w-5",
                   isCopying && "text-mf-green-500",
                 )}
               />
@@ -505,9 +505,9 @@ function AnswerBox({
         >
           <div className="flex items-center justify-between gap-2 rounded-md">
             {!isOpen ? (
-              <ChevronDown className="h-4 w-4 sm:h-6 sm:w-6" />
+              <ChevronDown className="h-4 w-4 sm:h-5 sm:w-5" />
             ) : (
-              <ChevronUp className="h-4 w-4 sm:h-6 sm:w-6" />
+              <ChevronUp className="h-4 w-4 sm:h-5 sm:w-5" />
             )}
           </div>
         </button>
