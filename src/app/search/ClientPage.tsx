@@ -55,11 +55,12 @@ export default function ClientPage({
     relatedCards: [],
     finished: false,
   } as Data);
+  const [selectedModel, setSelectedModel] = useState<string>("deepseek-ai/DeepSeek-R1");
 
   return (
     <div className="relative box-border flex">
       <div className="relative w-full px-4 pb-32 pt-8 sm:px-8 lg:px-36">
-        <Thread data={data} setData={setData} />
+        <Thread data={data} setData={setData} selectedModel={selectedModel} onModelChange={setSelectedModel} />
       </div>
     </div>
   );
@@ -68,6 +69,8 @@ export default function ClientPage({
 function Thread(props: {
   data: Data;
   setData: Dispatch<SetStateAction<Data>>;
+  selectedModel: string;
+  onModelChange: (model: string) => void;
 }) {
   const router = useRouter();
   const controllerStore = useControllerStore();
@@ -87,6 +90,7 @@ function Thread(props: {
       let answerText = "";
       const controller = search(
         {
+          model: props.selectedModel,
           query: payload.query,
           files: validFiles,
         },
@@ -157,7 +161,7 @@ function Thread(props: {
   const retry = useCallback(() => {
     controllerStore.stop("query");
     props.setData((d) => ({ ...d, answer: "" }));
-    void doSearch({ query: props.data.query, files: [] });
+    void doSearch({ query: props.data.query, files: []});
   }, [doSearch, controllerStore, props]);
 
   useEffect(() => {
@@ -233,9 +237,11 @@ function Thread(props: {
         {herocard}
         <div className="pt-4 sm:pt-6" />
         <AnswerBox
-          isLoading={props.data.answer.length === 0 && isLoading}
           answer={props.data.answer ?? ""}
+          isLoading={props.data.answer.length === 0 && isLoading}
           retry={retry}
+          selectedModel={props.selectedModel}
+          onModelChange={props.onModelChange}
         />
         <div className="flex justify-between pt-6">
           <ThreadSectionTitle icon={<List />} title={Locale.Thread.Sources} />
@@ -252,47 +258,47 @@ function Thread(props: {
             ))}
           {props.data.sources.length !== 0 &&
             new Array(props.data.sources.length + 1).fill(null).map((_, i) => {
-              if (i === 4) {
-                return (
-                  <div
-                    key="threads"
-                    className="text-gray-700 dark:border-zinc-700 dark:text-zinc-300 py-5"
-                  >
-                    <ThreadSectionTitle
-                      icon={<Bookmark />}
-                      title={Locale.Thread.Related}
-                    />
+              // if (i === 4) {
+              //   return (
+              //     <div
+              //       key="threads"
+              //       className="text-gray-700 dark:border-zinc-700 dark:text-zinc-300 py-5"
+              //     >
+              //       <ThreadSectionTitle
+              //         icon={<Bookmark />}
+              //         title={Locale.Thread.Related}
+              //       />
 
-                    <div className="space-y-2 pt-3">
-                      {props.data.followups?.length
-                        ? props.data.followups.map((r, i) => (
-                            <button
-                              onClick={() => {
-                                void router.push(`/search?q=${r}`);
-                              }}
-                              className="text-black hover:text-gray-600 dark:text-zinc-400 dark:hover:text-zinc-300 flex w-full justify-between py-1 text-left"
-                              key={i}
-                            >
-                              <span className="line-clamp-1 text-ellipsis  font-semibold">
-                                {r}
-                              </span>
-                              {/* Bold and uniform text */}
-                              <Plus className="h-5 w-5" />
-                              {/* Appropriately sized plus sign */}
-                            </button>
-                          ))
-                        : new Array(2).fill(0).map((_, i) => (
-                            <div key={i} className="py-2">
-                              <Skeleton className={`h-4 w-3/4 `} />
-                              <Skeleton className={`my-2 h-4 w-1/2 `} />
-                              {/* Add spacing for the description */}
-                              <Skeleton className={`my-4 h-4 w-5/6`} />
-                            </div>
-                          ))}
-                    </div>
-                  </div>
-                );
-              }
+              //       <div className="space-y-2 pt-3">
+              //         {props.data.followups?.length
+              //           ? props.data.followups.map((r, i) => (
+              //               <button
+              //                 onClick={() => {
+              //                   void router.push(`/search?q=${r}`);
+              //                 }}
+              //                 className="text-black hover:text-gray-600 dark:text-zinc-400 dark:hover:text-zinc-300 flex w-full justify-between py-1 text-left"
+              //                 key={i}
+              //               >
+              //                 <span className="line-clamp-1 text-ellipsis  font-semibold">
+              //                   {r}
+              //                 </span>
+              //                 {/* Bold and uniform text */}
+              //                 <Plus className="h-5 w-5" />
+              //                 {/* Appropriately sized plus sign */}
+              //               </button>
+              //             ))
+              //           : new Array(2).fill(0).map((_, i) => (
+              //               <div key={i} className="py-2">
+              //                 <Skeleton className={`h-4 w-3/4 `} />
+              //                 <Skeleton className={`my-2 h-4 w-1/2 `} />
+              //                 {/* Add spacing for the description */}
+              //                 <Skeleton className={`my-4 h-4 w-5/6`} />
+              //               </div>
+              //             ))}
+              //       </div>
+              //     </div>
+              //   );
+              // }
               const s =
                 i < 4 ? props.data.sources.at(i) : props.data.sources.at(i - 1);
               if (!s) return;
@@ -365,11 +371,15 @@ function AnswerBox({
   answer,
   isLoading,
   retry,
+  selectedModel,
+  onModelChange,
 }: {
   answer: string;
   isLoading: boolean;
   retry: () => void;
-}) {
+  selectedModel: string;
+  onModelChange: (model: string) => void;
+}): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
   const [isCopying, setIsCopying] = useState(false);
 
@@ -395,13 +405,13 @@ function AnswerBox({
           title={Locale.Thread.Answer}
         />
         <div className="z-20 block -translate-x-4 sm:hidden sm:translate-x-0">
-          <ModelSelector search={true} />
+          <ModelSelector search={true} onModelChange={onModelChange} selectedModel={selectedModel} />
         </div>
         <div className="z-20 hidden -translate-x-4 sm:block sm:translate-x-0">
-          <ModelSelector search={false} />
+          <ModelSelector search={false} onModelChange={onModelChange} selectedModel={selectedModel} />
         </div>
         <div className="ml-auto flex items-center gap-2">
-          <div className="flex items-center justify-end gap-2 rounded-md">
+          <div>
             <button
               onClick={() => setIsOpen((s) => !s)}
               className="flex items-center justify-between"

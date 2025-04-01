@@ -43,7 +43,8 @@ export default function AskBox(params: {
       }, 1);
       return;
     }
-    router.push(`${params.path ?? "/search"}?q=${encodeURIComponent(query)}`);
+    const model = new URLSearchParams(window.location.search).get('m');
+    router.push(`${params.path ?? "/search"}?q=${encodeURIComponent(query)}&m=${encodeURIComponent(model ?? "")}`);
   }
   const focusRec = useCallback(() => comboRef.current?.focus(), []);
   useKeyDown(focusRec, ["/"]);

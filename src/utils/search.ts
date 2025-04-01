@@ -17,6 +17,7 @@ export function search(
     onError?: (e: Error) => void;
   },
 ) {
+  console.log(params);
   const chatPayload = {
     method: "POST",
     body: JSON.stringify(params),

@@ -1,26 +1,71 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Listbox } from "@headlessui/react";
 import clsx from "clsx";
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 
-import { reactClient as api } from "@/trpc/react";
-
-export default function ModelSelector({ search }: { search: boolean }) {
-  const { data: models, isLoading } = api.model.getAll.useQuery();
+export default function ModelSelector({ 
+  search,
+  onModelChange,
+  selectedModel: initialModel
+}: { 
+  search: boolean;
+  onModelChange?: (model: string) => void;
+  selectedModel?: string;
+}) {
+  // TODO: uncomment this when Targon is ready
+  // const { data: models, isLoading } = api.model.getAll.useQuery();
+  
   const [selectedModel, setSelectedModel] =
-    useState<string>("Loading models...");
+    useState<string>(initialModel ?? "Loading models...");
+
+  const models = useMemo(() => [
+    { model: "deepseek-ai/DeepSeek-R1" },
+    { model: "deepseek-ai/DeepSeek-V3-0324" },
+  ], []);
 
   useMemo(() => {
-    if (models && models.length > 0) {
-      setSelectedModel(models[0]?.model ?? "Loading models...");
+    if (initialModel) {
+      setSelectedModel(initialModel);
+    } else if (models && models.length > 0) {
+      const model = models[0]?.model ?? "Loading models...";
+      setSelectedModel(model);
+      onModelChange?.(model);
     }
-  }, [models]);
+  }, [models, onModelChange, initialModel]);
+
+  // Add URL parameter handling
+  useEffect(() => {
+    // Read initial model from URL if present
+    const params = new URLSearchParams(window.location.search);
+    const modelParam = params.get('m');
+    
+    if (modelParam) {
+      setSelectedModel(modelParam);
+      onModelChange?.(modelParam);
+    }
+  }, [onModelChange]);
+
+  const handleModelChange = (model: string) => {
+    setSelectedModel(model);
+    onModelChange?.(model);
+
+    // Update URL with new model parameter
+    const params = new URLSearchParams(window.location.search);
+    params.set('m', model);
+    
+    // Update URL without causing page reload
+    window.history.replaceState(
+      {},
+      '',
+      `${window.location.pathname}?${params.toString()}`
+    );
+  };
 
   return (
     <div className="w-42 sm:w-fit">
-      <Listbox value={selectedModel} onChange={setSelectedModel}>
+      <Listbox value={selectedModel} onChange={handleModelChange}>
         <div className="relative z-[100]">
           <Listbox.Button className="w-42 z-50 flex items-center justify-between overflow-hidden rounded-full px-4 py-2 font-semibold text-mf-milk-700 hover:text-mf-milk-500 sm:w-full">
             {({ open }) => (
@@ -33,9 +78,7 @@ export default function ModelSelector({ search }: { search: boolean }) {
                 >
                   <div className="h-2 w-2 shrink-0 rounded-full bg-mf-green-500" />
                   <span className="truncate">
-                    {isLoading
-                      ? "Loading..."
-                      : search
+                    {search
                         ? "Model"
                         : selectedModel?.split("/").pop() ?? selectedModel}
                   </span>
