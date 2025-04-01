@@ -4,24 +4,29 @@ import { useMemo } from "react";
 import { Listbox } from "@headlessui/react";
 import clsx from "clsx";
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
+
 import { useModelStore } from "@/store/model";
 
-export default function ModelSelector({ 
+export default function ModelSelector({
   search,
   onModelChange,
-}: { 
+}: {
   search: boolean;
   onModelChange?: (model: string) => void;
 }) {
   // TODO: uncomment this when Targon is ready
   // const { data: models, isLoading } = api.model.getAll.useQuery();
-  
-  const { selectedModel: storeModel, setSelectedModel: setStoreModel } = useModelStore();
 
-  const models = useMemo(() => [
-    { model: "deepseek-ai/DeepSeek-R1" },
-    { model: "deepseek-ai/DeepSeek-V3" },
-  ], []);
+  const { selectedModel: storeModel, setSelectedModel: setStoreModel } =
+    useModelStore();
+
+  const models = useMemo(
+    () => [
+      { model: "deepseek-ai/DeepSeek-R1" },
+      { model: "deepseek-ai/DeepSeek-V3" },
+    ],
+    [],
+  );
 
   const handleModelChange = (model: string) => {
     setStoreModel(model);
@@ -32,7 +37,7 @@ export default function ModelSelector({
     <div className="w-42 sm:w-fit">
       <Listbox value={storeModel} onChange={handleModelChange}>
         <div className="relative z-[100]">
-          <Listbox.Button className="w-42 flex items-center justify-between overflow-hidden rounded-full px-4 py-2 font-semibold hover:text-mf-milk-700 text-mf-milk-500 sm:w-full">
+          <Listbox.Button className="w-42 flex items-center justify-between overflow-hidden rounded-full px-4 py-2 font-semibold text-mf-milk-500 hover:text-mf-milk-700 sm:w-full">
             {({ open }) => (
               <>
                 <div
@@ -44,8 +49,8 @@ export default function ModelSelector({
                   <div className="h-2 w-2 shrink-0 rounded-full bg-mf-green-500" />
                   <span className="truncate">
                     {search
-                        ? "Model"
-                        : storeModel?.split("/").pop() ?? storeModel}
+                      ? "Model"
+                      : storeModel?.split("/").pop() ?? storeModel}
                   </span>
                 </div>
                 {open ? (
@@ -59,7 +64,7 @@ export default function ModelSelector({
 
           <Listbox.Options
             className={clsx(
-              "bg-white dark:border-mf-ash-600 absolute right-12 sm:right-4 mt-2 rounded-3xl py-2 shadow-lg focus:outline-none dark:bg-mf-ash-700",
+              "bg-white dark:border-mf-ash-600 absolute right-12 mt-2 rounded-3xl py-2 shadow-lg focus:outline-none dark:bg-mf-ash-700 sm:right-4",
               search
                 ? "no-scrollbar h-40 translate-x-32 overflow-y-auto dark:overflow-y-auto"
                 : "w-full",

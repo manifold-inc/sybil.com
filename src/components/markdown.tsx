@@ -5,6 +5,7 @@ import ReactMarkdown from "react-markdown";
 import "katex/dist/katex.min.css";
 
 import React, { useEffect, useRef, useState, type RefObject } from "react";
+import clsx from "clsx";
 import { Copy } from "lucide-react";
 import mermaid from "mermaid";
 import RehypeHighlight from "rehype-highlight";
@@ -14,7 +15,6 @@ import { useDebouncedCallback } from "use-debounce";
 
 import { copyToClipboard } from "@/utils/os";
 import { Skeleton } from "./ui/skeleton";
-import clsx from "clsx";
 
 export function Mermaid(props: { code: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -164,7 +164,9 @@ export function Markdown(
 
   return (
     <div
-      className={clsx("prose-sm sm:prose-lg text-justify [&_p]:!leading-tight [&_p]:!my-2")}
+      className={clsx(
+        "prose-sm text-justify sm:prose-lg [&_p]:!my-2 [&_p]:!leading-tight",
+      )}
       ref={mdRef}
       onContextMenu={props.onContextMenu}
       onDoubleClickCapture={props.onDoubleClickCapture}
@@ -177,9 +179,12 @@ export function Markdown(
           <Skeleton className="mb-2 h-4 w-[80%]" />
         </div>
       ) : (
-        <MarkdownContent content={props.content.replace(/<think>/g, '')
-            .replace(/<\/think>/g, '')
-            .trim()} />
+        <MarkdownContent
+          content={props.content
+            .replace(/<think>/g, "")
+            .replace(/<\/think>/g, "")
+            .trim()}
+        />
       )}
     </div>
   );

@@ -17,6 +17,6 @@ export const useModelStore = create<ModelState>()(
     })),
     {
       name: StoreKey.Model,
-    }
-  )
-); 
+    },
+  ),
+);

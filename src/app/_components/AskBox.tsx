@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Combobox, Transition } from "@headlessui/react";
 import { clsx } from "clsx";
-import { Search, X, Info } from "lucide-react";
+import { Info, Search, X } from "lucide-react";
 
 import { emitCustomEvent, useCustomEvent } from "@/hooks/event";
 import { useKeyDown } from "@/hooks/keydown";
@@ -117,7 +117,8 @@ export default function AskBox(params: {
                 <div className="group relative">
                   <Info className="h-4 w-4 text-mf-milk-300/60" />
                   <div className="absolute right-0 top-full mt-2 w-64 rounded-lg bg-mf-ash-500 p-2 text-sm text-mf-milk-300 opacity-0 shadow-center transition-opacity group-hover:opacity-100">
-                    Using Targon&apos;s fallback servers until v6 is launched to answer your question.
+                    Using Targon&apos;s fallback servers until v6 is launched to
+                    answer your question.
                   </div>
                 </div>
                 {query.length > 0 && (

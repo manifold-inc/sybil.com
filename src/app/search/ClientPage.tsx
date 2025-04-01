@@ -10,6 +10,7 @@ import {
 } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import {
@@ -33,11 +34,10 @@ import { type ThreadFile } from "@/hooks/file";
 import { Locale } from "@/locales";
 import { type SourceSchema } from "@/server/api/main/schema";
 import { useControllerStore } from "@/store/controller";
+import { useModelStore } from "@/store/model";
 import { copyToClipboard } from "@/utils/os";
 import { search } from "@/utils/search";
 import { type Data } from "./reducer";
-import { useSearchParams } from "next/navigation";
-import { useModelStore } from "@/store/model";
 
 export default function ClientPage({
   query,
@@ -87,7 +87,7 @@ function Thread(props: {
       let answerText = "";
       const controller = search(
         {
-          model: props.selectedModel, 
+          model: props.selectedModel,
           query: payload.query,
           files: validFiles,
         },
@@ -158,7 +158,7 @@ function Thread(props: {
   const retry = useCallback(() => {
     controllerStore.stop("query");
     props.setData((d) => ({ ...d, answer: "" }));
-    void doSearch({ query: props.data.query, files: []});
+    void doSearch({ query: props.data.query, files: [] });
   }, [doSearch, controllerStore, props]);
 
   useEffect(() => {
@@ -391,19 +391,19 @@ function AnswerBox({
     };
 
     calculateCharLimit();
-    window.addEventListener('resize', calculateCharLimit);
-    return () => window.removeEventListener('resize', calculateCharLimit);
+    window.addEventListener("resize", calculateCharLimit);
+    return () => window.removeEventListener("resize", calculateCharLimit);
   }, []);
 
   // Parse out thinking section if present
   const thinkMatch = answer.match(/<think>(.*?)<\/think>/s);
   const thinking = thinkMatch?.[1]?.trim();
-  const cleanAnswer = answer.replace(/<think>.*?<\/think>/s, '').trim(); 
+  const cleanAnswer = answer.replace(/<think>.*?<\/think>/s, "").trim();
 
   // Update thinkTagShown based on whether we're currently inside a think tag
   useEffect(() => {
-    const thinkTagOpen = answer.includes('<think>');
-    const thinkTagClose = answer.includes('</think>');
+    const thinkTagOpen = answer.includes("<think>");
+    const thinkTagClose = answer.includes("</think>");
     setThinkTagShown(thinkTagOpen && !thinkTagClose);
   }, [answer]);
 
@@ -460,20 +460,22 @@ function AnswerBox({
           </div>
         </div>
       </div>
-      
+
       <div
         className={clsx(
           `flex flex-col gap-2 overflow-hidden transition-[margin]`,
           isOpen ? "mb-0 max-h-full" : "-mb-2 h-28 pb-2",
-          thinkTagShown && "text-mf-green-500"
+          thinkTagShown && "text-mf-green-500",
         )}
         style={{
-          maskImage: !isOpen && cleanAnswer.length > charLimit
-            ? "linear-gradient(to bottom, black 50%, transparent 100%)"
-            : "",
-          WebkitMaskImage: !isOpen && cleanAnswer.length > charLimit
-            ? "linear-gradient(to bottom, black 50%, transparent 100%)"
-            : "",
+          maskImage:
+            !isOpen && cleanAnswer.length > charLimit
+              ? "linear-gradient(to bottom, black 50%, transparent 100%)"
+              : "",
+          WebkitMaskImage:
+            !isOpen && cleanAnswer.length > charLimit
+              ? "linear-gradient(to bottom, black 50%, transparent 100%)"
+              : "",
         }}
       >
         <Markdown
@@ -482,21 +484,25 @@ function AnswerBox({
           fontSize={22}
         />
         {thinking && (
-        <div className="my-4">
-          <button
-            onClick={() => setShowThinking(!showThinking)}
-            className="text-sm text-mf-green-500 flex items-center gap-1"
-          >
-            Thinking process
-            {showThinking ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
-          </button>
-          {showThinking && (
-            <div className="mt-2 text-sm text-mf-green-100 bg-mf-ash-600 p-3 rounded">
-              {thinking}
-            </div>
-          )}
-        </div>
-      )}
+          <div className="my-4">
+            <button
+              onClick={() => setShowThinking(!showThinking)}
+              className="flex items-center gap-1 text-sm text-mf-green-500"
+            >
+              Thinking process
+              {showThinking ? (
+                <ChevronUp className="h-3 w-3" />
+              ) : (
+                <ChevronDown className="h-3 w-3" />
+              )}
+            </button>
+            {showThinking && (
+              <div className="bg-mf-ash-600 mt-2 rounded p-3 text-sm text-mf-green-100">
+                {thinking}
+              </div>
+            )}
+          </div>
+        )}
       </div>
       {cleanAnswer.length > charLimit && (
         <button
