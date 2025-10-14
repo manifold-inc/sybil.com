@@ -16,7 +16,9 @@ export default function Home() {
     <div>
       <div className="relative flex h-screen w-full flex-col items-center justify-center">
         <div className="h-2/6 w-[80%] max-w-2xl">
-          <h1 className="text-center text-2xl font-bold">SYBIL</h1>
+          <div className="flex justify-center">
+            <Image src="/sybil-text.svg" alt="Sybil" width={80} height={50} />
+          </div>
           <div className="py-8 sm:p-8">
             <AskBox autofocus />
           </div>

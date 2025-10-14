@@ -25,6 +25,7 @@ export default {
       fontFamily: {
         body: ["var(--font-inter)"],
         header: ["var(--font-eczar)"],
+        poppins: ["var(--font-poppins)"],
       },
       animation: {
         "fade-in": "fadeIn 1s ease-in",
@@ -38,6 +39,11 @@ export default {
     },
     colors: {
       mf: {
+        new: {
+          500: "#1E1F26",
+          800: "#14151A",
+          900: "#121318",
+        },
         safety: {
           300: "#FF9B7A",
           500: "#FF8159",
