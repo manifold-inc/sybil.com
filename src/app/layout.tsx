@@ -9,10 +9,6 @@ import { Analytics } from "@vercel/analytics/react";
 import { AxiomWebVitals } from "next-axiom";
 import { Toaster } from "sonner";
 
-import { env } from "@/env.mjs";
-import Countdown from "./_components/Countdown";
-import FakeFooter from "./_components/FakeFooter";
-import FakeHeader from "./_components/FakeHeader";
 import Footer from "./_components/footer";
 import Header from "./_components/header";
 import { WithGlobalProvider } from "./_components/providers";
@@ -74,25 +70,9 @@ export default function RootLayout({
       >
         <WithGlobalProvider>
           <PostHogPageView />
-          {env.RELEASE_FLAG === "true" ? (
-            <>
-              <FakeHeader />
-              <div className="sm:my-auto-0 my-auto flex flex-col items-center justify-center sm:h-screen">
-                <h1 className="pb-16 text-xl font-bold text-mf-green-500">
-                  THINK BIGGER
-                </h1>
-                <Countdown />
-                <div className="pb-16" />
-              </div>
-              <FakeFooter />
-            </>
-          ) : (
-            <>
-              <Header />
-              {children}
-              <Footer />
-            </>
-          )}
+          <Header />
+          {children}
+          <Footer />
         </WithGlobalProvider>
       </body>
       <Toaster />
