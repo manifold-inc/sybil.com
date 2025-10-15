@@ -23,7 +23,6 @@ import {
 } from "lucide-react";
 import { tryCatch } from "rambda";
 import { toast } from "sonner";
-import ModelSelector from "src/app/_components/ModelSelector";
 import { match } from "ts-pattern";
 
 import { Card } from "@/components/cards";
@@ -423,12 +422,6 @@ function AnswerBox({
           icon={<Image src="/sybil.svg" alt="SYBIL" width={16} height={16} />}
           title={Locale.Thread.Answer}
         />
-        <div className="z-20 block -translate-x-4 sm:hidden sm:translate-x-0">
-          <ModelSelector search={true} onModelChange={retry} />
-        </div>
-        <div className="z-20 hidden -translate-x-4 sm:block sm:translate-x-0">
-          <ModelSelector search={false} onModelChange={retry} />
-        </div>
         <div className="ml-auto flex items-center gap-2">
           <div>
             <button

@@ -12,13 +12,12 @@ export const env = createEnv({
     S3_API_KEY: z.string().min(1),
     S3_API_KEY_ID: z.string().min(1),
     S3_BUCKET_NAME: z.string().min(1),
-
-    RELEASE_FLAG: z.string(),
   },
   client: {
     NEXT_PUBLIC_POSTHOG_KEY: z.string(),
     NEXT_PUBLIC_POSTHOG_HOST: z.string(),
     NEXT_PUBLIC_SEARCH_API: z.string().url(),
+    NEXT_PUBLIC_CHAT_API: z.string().url().optional(),
     NEXT_PUBLIC_RELEASE_FLAG: z.string(),
   },
 
@@ -29,6 +28,8 @@ export const env = createEnv({
     GOOGLE_REDIRECT_URI: process.env.GOOGLE_REDIRECT_URI,
 
     NEXT_PUBLIC_SEARCH_API: process.env.NEXT_PUBLIC_SEARCH_API,
+    NEXT_PUBLIC_RELEASE_FLAG: process.env.NEXT_PUBLIC_RELEASE_FLAG,
+    NEXT_PUBLIC_CHAT_API: process.env.NEXT_PUBLIC_CHAT_API,
     S3_API_KEY: process.env.S3_API_KEY,
     S3_API_URL: process.env.S3_API_URL,
     S3_API_KEY_ID: process.env.S3_API_KEY_ID,
@@ -36,9 +37,6 @@ export const env = createEnv({
 
     NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
     NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
-
-    RELEASE_FLAG: process.env.RELEASE_FLAG,
-    NEXT_PUBLIC_RELEASE_FLAG: process.env.NEXT_PUBLIC_RELEASE_FLAG,
   },
 
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,

@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 
+import { ActionButton } from "@/app/_components/ActionButton";
 import { useAuth } from "./providers";
 
 export default function UserBox() {
@@ -12,18 +12,19 @@ export default function UserBox() {
   if (!isLoggedIn) {
     return (
       <div className="flex items-center gap-2">
-        <Link
+        <ActionButton
           href="/sign-in"
-          className="whitespace-nowrap rounded-full px-4 py-1 font-semibold text-mf-green-500 hover:bg-mf-green-500/10"
-        >
-          Log in
-        </Link>
-        <Link
+          buttonText="Log In"
+          variant="noir"
+          width="sm"
+          height="md"
+        />
+        <ActionButton
           href="/sign-up"
-          className="hover:bg-mf-green-800 hidden whitespace-nowrap rounded-full bg-mf-green-500 px-4 py-1 font-semibold text-mf-ash-700 hover:bg-mf-green-500/80 md:block"
-        >
-          Sign up
-        </Link>
+          buttonText="Sign Up"
+          width="sm"
+          height="md"
+        />
       </div>
     );
   }

@@ -1,7 +1,7 @@
 const en = {
   Home: {
     Slogan: "Sybil",
-    SearchInput: "Ask Sybil anything...",
+    SearchInput: "Ask Sybil Anything...",
     FileButton: "Add Context",
     Trendings: "Trendings",
     About: "About",
@@ -40,8 +40,8 @@ const en = {
     },
   },
 
-  SignIn: "Log in",
-  SignUp: "Sign up",
+  SignIn: "Log In",
+  SignUp: "Sign Up",
 
   UI: {
     Close: "Close",

@@ -14,6 +14,8 @@ export const Path = {
     withBase(`/thread/${id}?q=${encodeURIComponent(query)}`),
   API: {
     Search: `${env.NEXT_PUBLIC_SEARCH_API}/search`,
+    ChatCompletions: env.NEXT_PUBLIC_CHAT_API,
+    ApiKey: "TODO", // TODO: add chat api key based on user
   },
   Twitter: "https://twitter.com/manifoldlabs",
   Discord: "https://discord.gg/manifold",

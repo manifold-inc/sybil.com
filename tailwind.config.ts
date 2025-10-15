@@ -23,8 +23,10 @@ export default {
         },
       },
       fontFamily: {
-        body: ["var(--font-inter)"],
-        header: ["var(--font-eczar)"],
+        body: ["var(--font-poppins)"],
+        tomorrow: ["var(--font-tomorrow)"],
+        saira: ["var(--font-saira)"],
+        poppins: ["var(--font-poppins)"],
       },
       animation: {
         "fade-in": "fadeIn 1s ease-in",
@@ -38,6 +40,13 @@ export default {
     },
     colors: {
       mf: {
+        new: {
+          500: "#1E1F26",
+          600: "#1A1B20",
+          700: "#15161B",
+          800: "#14151A",
+          900: "#121318",
+        },
         safety: {
           300: "#FF9B7A",
           500: "#FF8159",
@@ -54,6 +63,7 @@ export default {
           700: "#101114",
         },
         silver: {
+          300: "#E1E5EB",
           500: "#C5DBFF",
           700: "#A3B5D6",
         },
