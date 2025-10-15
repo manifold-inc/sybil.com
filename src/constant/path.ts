@@ -15,7 +15,7 @@ export const Path = {
   API: {
     Search: `${env.NEXT_PUBLIC_SEARCH_API}/search`,
     ChatCompletions: env.NEXT_PUBLIC_CHAT_API,
-    ApiKey: env.NEXT_PUBLIC_CHAT_API_KEY,
+    ApiKey: "TODO", // TODO: add chat api key based on user
   },
   Twitter: "https://twitter.com/manifoldlabs",
   Discord: "https://discord.gg/manifold",
