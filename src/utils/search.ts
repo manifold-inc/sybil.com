@@ -4,10 +4,30 @@ import {
 } from "@fortaine/fetch-event-source";
 
 import { Path } from "@/constant";
-import { SearchSchema } from "@/server/api/main/schema";
+import type { SearchSchema } from "@/server/api/main/schema";
 import { prettyObject } from "@/utils/format";
 
 type FinishReason = "abort" | "unexpected" | "normal" | "unauthorized";
+
+interface OpenAIStreamChunk {
+  id: string;
+  object: string;
+  created: number;
+  model: string;
+  choices: Array<{
+    index: number;
+    delta: {
+      role?: string;
+      content?: string;
+      reasoning_content?: string | null;
+      tool_calls?: null;
+    };
+    logprobs: null;
+    finish_reason: string | null;
+    matched_stop: null;
+  }>;
+  usage: null;
+}
 
 export function search(
   params: SearchSchema.SearchPayload,
@@ -18,8 +38,20 @@ export function search(
   },
 ) {
   const chatPayload = {
-    method: "POST",
-    body: JSON.stringify(params),
+    model: params.model,
+    messages: [
+      {
+        role: "system",
+        content:
+          "You are a helpful AI search assistant. Provide comprehensive, accurate answers based on the user's query.",
+      },
+      {
+        role: "user",
+        content: params.query,
+      },
+    ],
+    temperature: 0.7,
+    stream: true,
   };
 
   const context = {
@@ -33,7 +65,6 @@ export function search(
   const finish = () => {
     if (context.finished) return;
     context.finished = true;
-    context.finishReason = "unexpected";
     options.onFinished(context.finishReason);
   };
 
@@ -42,8 +73,13 @@ export function search(
     finish();
   };
 
-  void fetchEventSource(Path.API.Search, {
-    ...chatPayload,
+  void fetchEventSource(Path.API.ChatCompletions, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${Path.API.ApiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(chatPayload),
     signal: controller.signal,
     async onopen(res) {
       if (
@@ -75,18 +111,29 @@ export function search(
     },
     onmessage(msg) {
       if (msg.data === "[DONE]" || context.finished) {
+        context.finishReason = "normal";
         return finish();
       }
       const text = msg.data;
       try {
-        const json = JSON.parse(text) as unknown;
-        const chunk = SearchSchema.SearchResponse.safeParse(json);
-        if (!chunk.success) {
-          console.log(chunk.error);
-          return;
+        const json = JSON.parse(text) as OpenAIStreamChunk;
+
+        const content = json.choices[0]?.delta?.content;
+
+        if (content) {
+          options.onChunk({
+            type: "answer",
+            text: content,
+            finished: false,
+          });
         }
-        options.onChunk(chunk.data);
+
+        if (json.choices[0]?.finish_reason) {
+          context.finishReason = "normal";
+          finish();
+        }
       } catch (e) {
+        console.error("Error parsing SSE chunk:", e);
         context.finishReason = "unexpected";
       }
     },

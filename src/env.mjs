@@ -17,6 +17,9 @@ export const env = createEnv({
     NEXT_PUBLIC_POSTHOG_KEY: z.string(),
     NEXT_PUBLIC_POSTHOG_HOST: z.string(),
     NEXT_PUBLIC_SEARCH_API: z.string().url(),
+    NEXT_PUBLIC_CHAT_API: z.string().url().optional(),
+    NEXT_PUBLIC_CHAT_API_KEY: z.string().optional(),
+    NEXT_PUBLIC_RELEASE_FLAG: z.string(),
   },
 
   runtimeEnv: {
@@ -26,6 +29,9 @@ export const env = createEnv({
     GOOGLE_REDIRECT_URI: process.env.GOOGLE_REDIRECT_URI,
 
     NEXT_PUBLIC_SEARCH_API: process.env.NEXT_PUBLIC_SEARCH_API,
+    NEXT_PUBLIC_CHAT_API: process.env.NEXT_PUBLIC_CHAT_API,
+    NEXT_PUBLIC_CHAT_API_KEY: process.env.NEXT_PUBLIC_CHAT_API_KEY,
+    NEXT_PUBLIC_RELEASE_FLAG: process.env.NEXT_PUBLIC_RELEASE_FLAG,
     S3_API_KEY: process.env.S3_API_KEY,
     S3_API_URL: process.env.S3_API_URL,
     S3_API_KEY_ID: process.env.S3_API_KEY_ID,

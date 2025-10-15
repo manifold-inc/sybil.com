@@ -12,7 +12,7 @@ interface ModelState {
 export const useModelStore = create<ModelState>()(
   persist(
     immer((set) => ({
-      selectedModel: "deepseek-ai/DeepSeek-R1",
+      selectedModel: "zai-org/GLM-4.6-FP8",
       setSelectedModel: (model) => set({ selectedModel: model }),
     })),
     {

@@ -11,8 +11,8 @@ import UserBox from "@/app/_components/UserBox";
 export function NavBar({ query }: { query: string }) {
   const pathname = usePathname();
   return (
-    <div className="sticky top-0 z-40 select-none bg-mf-ash-700">
-      <div className="relative flex items-center justify-center border-b border-mf-ash-500 p-8">
+    <div className="sticky top-0 z-40 select-none">
+      <div className="relative flex items-center justify-center pb-2 pt-4">
         <div className="absolute left-0 hidden sm:block">
           <Link className="flex items-center gap-2 pl-12" href="/">
             <Image src="/sybil-bg.svg" alt="Sybil" width={16} height={16} />

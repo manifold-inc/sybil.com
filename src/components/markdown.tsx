@@ -119,7 +119,7 @@ export function PreCode(props: {
 
 function _MarkDownContent(props: { content: string }) {
   return (
-    <div className="relative max-w-full text-justify">
+    <div className="relative max-w-full text-justify text-sm">
       <ReactMarkdown
         remarkPlugins={[RemarkGfm, RemarkBreaks]}
         rehypePlugins={[
