@@ -2,14 +2,13 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Combobox, Transition } from "@headlessui/react";
+import { Combobox } from "@headlessui/react";
 import { clsx } from "clsx";
-import { Search, X } from "lucide-react";
+import { Search } from "lucide-react";
 
 import { emitCustomEvent, useCustomEvent } from "@/hooks/event";
 import { useKeyDown } from "@/hooks/keydown";
 import { Locale } from "@/locales";
-import { reactClient } from "@/trpc/react";
 import ModelSelector from "./ModelSelector";
 
 export default function AskBox(params: {
@@ -25,21 +24,14 @@ export default function AskBox(params: {
     }, 400);
   });
   const [query, setQuery] = useState(params.query ?? "");
-  const [open, setOpen] = useState(false);
   const comboRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
-  const [autocomplete, setAutocomplete] = useState<string[]>([]);
-  const ac = reactClient.main.autocomplete.useMutation({
-    onSuccess: (q) => setAutocomplete(q.slice(0, 6)),
-  });
 
   function onSubmit(query: string) {
     if (!query.trim()) {
       emitCustomEvent({ type: "page-already-loaded" });
       setTimeout(() => {
         setQuery(query);
-        setOpen(false);
-        setAutocomplete([]);
       }, 1);
       return;
     }
@@ -60,7 +52,6 @@ export default function AskBox(params: {
       <div className="relative w-full">
         <Combobox
           onChange={(q) => {
-            setOpen(false);
             void onSubmit(q.query);
           }}
           value={
@@ -84,21 +75,15 @@ export default function AskBox(params: {
                 autoFocus={params.autofocus}
                 className="min-h-7 w-full bg-mf-new-700 text-mf-milk-300 outline-none placeholder:text-mf-milk-700/80"
                 placeholder={Locale.Home.SearchInput}
-                onFocus={() => {
-                  setOpen(true);
-                }}
                 onBlur={(e) => {
-                  setOpen(false);
                   e.preventDefault();
                   e.stopPropagation();
                 }}
                 onChange={(event) => {
                   setQuery(event.target.value);
-                  setOpen(true);
                   if (query.includes(event.target.value)) {
                     return;
                   }
-                  ac.mutate({ query: event.target.value });
                 }}
                 onSubmit={() => {
                   void onSubmit(query);

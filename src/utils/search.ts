@@ -73,7 +73,14 @@ export function search(
     finish();
   };
 
-  void fetchEventSource(Path.API.ChatCompletions, {
+  const chatApiUrl = Path.API.ChatCompletions;
+  if (!chatApiUrl) {
+    throw new Error(
+      "NEXT_PUBLIC_CHAT_API environment variable is not configured",
+    );
+  }
+
+  void fetchEventSource(chatApiUrl, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${Path.API.ApiKey}`,
