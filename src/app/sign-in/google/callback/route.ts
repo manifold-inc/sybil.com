@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { type NextRequest } from "next/server";
 import { OAuth2RequestError } from "arctic";
 import { eq } from "drizzle-orm";
 import { withAxiom, type AxiomRequest } from "next-axiom";
@@ -8,13 +9,15 @@ import { genId, User } from "@/schema/schema";
 import { google, lucia } from "@/server/auth";
 import { getPosthog } from "@/server/posthog";
 
-async function handle(req: AxiomRequest): Promise<Response> {
+async function handle(req: NextRequest): Promise<Response> {
+  const axiomReq = req as unknown as AxiomRequest;
   const url = new URL(req.url);
   const code = url.searchParams.get("code");
   const state = url.searchParams.get("state");
-  const storedState = cookies().get("google_oauth_state")?.value ?? null;
+  const storedState =
+    (await cookies()).get("google_oauth_state")?.value ?? null;
   const storedCodeVerifier =
-    cookies().get("google_code_verifier")?.value ?? null;
+    (await cookies()).get("google_code_verifier")?.value ?? null;
   if (!code || !storedCodeVerifier || !storedState || state !== storedState) {
     return new Response(null, {
       status: 400,
@@ -27,7 +30,9 @@ async function handle(req: AxiomRequest): Promise<Response> {
   } catch (e) {
     if (e instanceof OAuth2RequestError) {
       const { message, description } = e;
-      req.log.error(`[google-callback] Token Error: ${message} ${description}`);
+      axiomReq.log.error(
+        `[google-callback] Token Error: ${message} ${description}`,
+      );
     }
     return new Response(null, { status: 500 });
   }
@@ -41,7 +46,7 @@ async function handle(req: AxiomRequest): Promise<Response> {
     },
   );
   if (!response.ok) {
-    req.log.error(`[google-callback] userinfo Error: ${response.status}`);
+    axiomReq.log.error(`[google-callback] userinfo Error: ${response.status}`);
     return new Response(null, { status: 500 });
   }
 
@@ -50,27 +55,33 @@ async function handle(req: AxiomRequest): Promise<Response> {
     .select()
     .from(User)
     .where(eq(User.googleId, user.sub));
-  const userId = existing?.id ?? genId.user();
 
   const posthog = getPosthog();
+  let userId: number;
+
   if (!existing) {
+    const pubId = genId.user();
+    // New user account
+    const newUser = await db.insert(User).values({
+      pubId,
+      email: user.email,
+      googleId: user.sub,
+      emailVerified: true,
+    });
+    userId = Number(newUser.insertId);
+
     posthog.capture({
-      distinctId: userId,
+      distinctId: pubId,
       event: "user-signed-up",
       properties: {
         from: "google",
         email: user.email,
       },
     });
-    // New user account
-    await db.insert(User).values({
-      id: userId,
-      email: user.email,
-      googleId: user.sub,
-    });
   } else {
+    userId = existing.id;
     posthog.capture({
-      distinctId: userId,
+      distinctId: existing.pubId ?? String(existing.id),
       event: "user-signed-in",
       properties: {
         from: "google",
@@ -78,9 +89,9 @@ async function handle(req: AxiomRequest): Promise<Response> {
       },
     });
   }
-  const session = await lucia.createSession(userId, {});
+  const session = await lucia.createSession(String(userId), {});
   const sessionCookie = lucia.createSessionCookie(session.id);
-  cookies().set(
+  (await cookies()).set(
     sessionCookie.name,
     sessionCookie.value,
     sessionCookie.attributes,
@@ -105,4 +116,6 @@ interface GoogleUser {
   locale: string;
   hd: string;
 }
-export const GET = withAxiom(handle);
+
+export const GET = (req: NextRequest) =>
+  withAxiom(() => handle(req))(req as unknown as AxiomRequest);

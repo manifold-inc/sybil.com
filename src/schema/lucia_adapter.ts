@@ -30,7 +30,7 @@ export class LuciaAdapter implements Adapter {
   public async deleteUserSessions(userId: string): Promise<void> {
     await this.db
       .delete(this.sessionTable)
-      .where(eq(this.sessionTable.userId, userId));
+      .where(eq(this.sessionTable.userId, Number(userId)));
   }
 
   public async getSessionAndUser(
@@ -58,7 +58,7 @@ export class LuciaAdapter implements Adapter {
     const result = await this.db
       .select()
       .from(this.sessionTable)
-      .where(eq(this.sessionTable.userId, userId));
+      .where(eq(this.sessionTable.userId, Number(userId)));
     return result.map((val) => {
       return transformIntoDatabaseSession(val);
     });
@@ -67,7 +67,7 @@ export class LuciaAdapter implements Adapter {
   public async setSession(session: DatabaseSession): Promise<void> {
     await this.db.insert(this.sessionTable).values({
       id: session.id,
-      userId: session.userId,
+      userId: Number(session.userId),
       expiresAt: session.expiresAt,
       ...session.attributes,
     });
@@ -97,7 +97,7 @@ function transformIntoDatabaseSession(
 ): DatabaseSession {
   const { id, userId, expiresAt, ...attributes } = raw;
   return {
-    userId,
+    userId: String(userId),
     id,
     expiresAt,
     attributes,
@@ -107,9 +107,28 @@ function transformIntoDatabaseSession(
 function transformIntoDatabaseUser(
   raw: InferSelectModel<typeof User>,
 ): DatabaseUser {
-  const { id, ...attributes } = raw;
-  return {
+  const {
     id,
-    attributes,
+    pubId,
+    email,
+    role,
+    googleId: _googleId,
+    password: _password,
+    name: _name,
+    stripeCustomerId: _stripeCustomerId,
+    createdAt: _createdAt,
+    credits: _credits,
+    allowOverspend: _allowOverspend,
+    emailVerified: _emailVerified,
+    twoFactorSecret: _twoFactorSecret,
+  } = raw;
+  return {
+    id: String(id),
+    attributes: {
+      id,
+      pubId,
+      email,
+      role,
+    },
   };
 }

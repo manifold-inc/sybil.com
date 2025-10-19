@@ -22,7 +22,7 @@ const baseStyles =
 const errorStyle = "text-xs text-red-500";
 
 export default function Page() {
-  const [visable, setVisable] = useState(false);
+  const [visible, setVisible] = useState(false);
   const { refetch } = useAuth();
   const router = useRouter();
   const {
@@ -31,7 +31,7 @@ export default function Page() {
     getValues,
     formState: { errors },
   } = useForm<Inputs>();
-  const createAccouint = reactClient.account.createAccount.useMutation({
+  const createAccount = reactClient.account.createAccount.useMutation({
     onError: (e) => {
       toast.error(e.message);
     },
@@ -41,8 +41,8 @@ export default function Page() {
     },
   });
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    if (createAccouint.isLoading) return;
-    createAccouint.mutate(data);
+    if (createAccount.isLoading) return;
+    createAccount.mutate(data);
   };
   return (
     <div className="relative flex p-8">
@@ -58,7 +58,7 @@ export default function Page() {
             <div className="text-center text-3xl font-semibold">Sign Up</div>
             <div>
               <input
-                disabled={createAccouint.isLoading}
+                disabled={createAccount.isLoading}
                 {...register("email", {
                   required: "Email address is required",
                   validate: (v) => v.includes("@") && v.includes("."),
@@ -79,12 +79,12 @@ export default function Page() {
                     required: "Password is Required",
                     minLength: {
                       value: 8,
-                      message: "Password must be atleast 8 Characters",
+                      message: "Password must be at least 8 Characters",
                     },
                   })}
-                  disabled={createAccouint.isLoading}
+                  disabled={createAccount.isLoading}
                   placeholder="Password"
-                  type={visable ? "text" : "password"}
+                  type={visible ? "text" : "password"}
                   className={clsx(baseStyles, {
                     "border-red-500": errors.password,
                     "border-gray-400": !errors.password,
@@ -96,11 +96,11 @@ export default function Page() {
                   onClick={(e) => {
                     e.stopPropagation();
                     e.preventDefault();
-                    setVisable((s) => !s);
+                    setVisible((s) => !s);
                   }}
                   className="absolute top-0 right-3 bottom-0 text-gray-500 dark:text-gray-400"
                 >
-                  {visable ? (
+                  {visible ? (
                     <Eye className="h-5 w-5" />
                   ) : (
                     <EyeOff className="h-5 w-5" />
@@ -123,8 +123,8 @@ export default function Page() {
                         ? true
                         : "Passwords must match",
                   })}
-                  type={visable ? "text" : "password"}
-                  disabled={createAccouint.isLoading}
+                  type={visible ? "text" : "password"}
+                  disabled={createAccount.isLoading}
                   placeholder="Retype Password"
                   className={clsx(baseStyles, {
                     "border-red-500": errors.password2,
@@ -137,11 +137,11 @@ export default function Page() {
                   onClick={(e) => {
                     e.stopPropagation();
                     e.preventDefault();
-                    setVisable((s) => !s);
+                    setVisible((s) => !s);
                   }}
                   className="absolute top-0 right-3 bottom-0 text-gray-500 dark:text-gray-400"
                 >
-                  {visable ? (
+                  {visible ? (
                     <Eye className="h-5 w-5" />
                   ) : (
                     <EyeOff className="h-5 w-5" />
@@ -153,11 +153,11 @@ export default function Page() {
             <div className="flex justify-center">
               <button
                 type="submit"
-                disabled={createAccouint.isLoading}
+                disabled={createAccount.isLoading}
                 className="hover:bg-mf-green-800 bg-mf-green-500 text-mf-ash-700 hover:bg-mf-green-500/80 flex items-center gap-2 rounded-full px-4 py-1 font-semibold whitespace-nowrap"
               >
                 Create Account
-                {createAccouint.isLoading && (
+                {createAccount.isLoading && (
                   <Loader2 className="h-4 w-4 animate-spin" />
                 )}
               </button>

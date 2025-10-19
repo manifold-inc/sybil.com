@@ -49,7 +49,7 @@ export const fileRouter = createTRPCRouter({
           { expiresIn: 500 }, // this link will be invalid after 500s
         ),
         ctx.db.insert(File).values({
-          userIid: ctx.user.iid,
+          userId: Number(ctx.user.id),
           size: input.size,
           key: key,
           name: input.name,
@@ -64,7 +64,7 @@ export const fileRouter = createTRPCRouter({
     return await ctx.db
       .select({ key: File.key })
       .from(File)
-      .where(eq(File.userIid, ctx.user.iid));
+      .where(eq(File.userId, Number(ctx.user.id)));
   }),
   deleteFiles: protectedProcedure
     .input(

@@ -369,7 +369,7 @@ function AnswerBox({
   answer: string;
   isLoading: boolean;
   retry: () => void;
-}): JSX.Element {
+}): React.JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
   const [isCopying, setIsCopying] = useState(false);
   const [showThinking, setShowThinking] = useState(false);

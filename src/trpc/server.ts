@@ -9,9 +9,9 @@ export const serverClient = createTRPCProxyClient<AppRouter>({
   links: [
     httpBatchLink({
       url: getUrl(),
-      headers() {
+      async headers() {
         return {
-          cookie: cookies().toString(),
+          cookie: (await cookies()).toString(),
           "x-trpc-source": "rsc",
         };
       },

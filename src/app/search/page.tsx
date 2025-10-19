@@ -4,21 +4,19 @@ import { redirect } from "next/navigation";
 import { NavBar } from "@/_components/navbar";
 import Thread from "./ClientPage";
 
-export function generateMetadata({
-  searchParams,
-}: {
-  searchParams: { q?: string };
-}): Metadata {
+export async function generateMetadata(props: {
+  searchParams: Promise<{ q?: string }>;
+}): Promise<Metadata> {
+  const searchParams = await props.searchParams;
   return {
     title: searchParams.q,
   };
 }
 
-export default function Page({
-  searchParams,
-}: {
-  searchParams: { q?: string; followup?: string };
+export default async function Page(props: {
+  searchParams: Promise<{ q?: string; followup?: string }>;
 }) {
+  const searchParams = await props.searchParams;
   if (!searchParams.q) redirect("/");
   return (
     <>

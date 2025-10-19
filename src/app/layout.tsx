@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 
 import "@/styles/globals.css";
 
-import dynamic from "next/dynamic";
+import { Suspense } from "react";
 import { Poppins, Saira, Tomorrow } from "next/font/google";
 import Image from "next/image";
 import { Analytics } from "@vercel/analytics/react";
@@ -13,6 +13,7 @@ import { Toaster } from "sonner";
 import Countdown from "@/_components/Countdown";
 import Footer from "@/_components/footer";
 import Header from "@/_components/header";
+import PostHogPageView from "@/_components/PosthogPageView";
 import { WithGlobalProvider } from "@/_components/providers";
 import { env } from "@/env.mjs";
 
@@ -63,10 +64,6 @@ export const metadata: Metadata = {
   },
 };
 
-const PostHogPageView = dynamic(() => import("@/_components/PosthogPageView"), {
-  ssr: false,
-});
-
 export default function RootLayout({
   children,
 }: {
@@ -84,7 +81,9 @@ export default function RootLayout({
 
       <body className="font-body">
         <WithGlobalProvider>
-          <PostHogPageView />
+          <Suspense fallback={null}>
+            <PostHogPageView />
+          </Suspense>
           {env.NEXT_PUBLIC_RELEASE_FLAG === "true" ? (
             <>
               <div className="my-auto-0 my-auto flex h-screen flex-col items-center justify-center">
