@@ -57,7 +57,7 @@ export default function ClientPage({
 
   return (
     <div className="relative box-border flex">
-      <div className="relative w-full px-4 pb-32 pt-8 sm:px-8 lg:px-36">
+      <div className="relative w-full px-4 pt-8 pb-32 sm:px-8 lg:px-36">
         <Thread data={data} setData={setData} selectedModel={selectedModel} />
       </div>
     </div>
@@ -218,7 +218,7 @@ function Thread(props: {
       <div className="flex flex-row gap-4">
         <Link
           href={`/search?q=${encodeURIComponent(query.get("q") ?? "")}`}
-          className="after:dark:bg-white relative px-0.5 text-mf-green-500 after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-full after:bg-mf-green-500"
+          className="text-mf-green-500 after:bg-mf-green-500 relative px-0.5 after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-full after:dark:bg-white"
         >
           General
         </Link>
@@ -240,12 +240,12 @@ function Thread(props: {
         <div className="flex justify-between pt-6">
           <ThreadSectionTitle icon={<List />} title={Locale.Thread.Sources} />
         </div>
-        <div className="divide-gray-200 divide-y dark:divide-mf-ash-300">
+        <div className="dark:divide-mf-ash-300 divide-y divide-gray-200">
           {props.data.sources.length === 0 &&
             new Array(4).fill(0).map((_, i) => (
               <div key={i} className="py-4">
-                <Skeleton className={`h-4 w-3/4 `} />
-                <Skeleton className={`my-2 h-4 w-1/2 `} />
+                <Skeleton className={`h-4 w-3/4`} />
+                <Skeleton className={`my-2 h-4 w-1/2`} />
                 {/* Add spacing for the description */}
                 <Skeleton className={`my-4 h-4 w-5/6`} />
               </div>
@@ -318,15 +318,15 @@ function Thread(props: {
                       height={20}
                     />
                     <div className="w-full">
-                      <div className="text-gray-800 dark:text-zinc-300 line-clamp-1 overflow-hidden text-ellipsis font-semibold group-hover:underline">
+                      <div className="line-clamp-1 overflow-hidden font-semibold text-ellipsis text-gray-800 group-hover:underline dark:text-zinc-300">
                         {s.title}
                       </div>
-                      <div className="text-gray-500 dark:text-zinc-400 text-xs">
+                      <div className="text-xs text-gray-500 dark:text-zinc-400">
                         {hostname}
                       </div>
                     </div>
                   </a>
-                  <div className="text-gray-500 dark:text-zinc-400  mt-2 line-clamp-2">
+                  <div className="mt-2 line-clamp-2 text-gray-500 dark:text-zinc-400">
                     {s.content ?? "No description available."}
                   </div>
                 </div>
@@ -336,7 +336,7 @@ function Thread(props: {
             <button
               onClick={() => loadMoreSources.mutate(page + 1)}
               disabled={loadMoreSources.isLoading}
-              className="inline-flex items-center gap-2 px-2.5 py-1 font-semibold text-mf-milk-300"
+              className="text-mf-milk-300 inline-flex items-center gap-2 px-2.5 py-1 font-semibold"
             >
               {loadMoreSources.isLoading && (
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -413,8 +413,8 @@ function AnswerBox({
     <div
       ref={containerRef}
       className={clsx(
-        "text-gray-700 dark:border-zinc-700 dark:text-zinc-300 flex flex-col rounded-md bg-mf-ash-500 p-4 pt-2 sm:p-6",
-        isCopying ? "inset-0 ring-2 ring-mf-green-500" : "border-0",
+        "bg-mf-ash-500 flex flex-col rounded-md p-4 pt-2 text-gray-700 sm:p-6 dark:border-zinc-700 dark:text-zinc-300",
+        isCopying ? "ring-mf-green-500 inset-0 ring-2" : "border-0",
       )}
     >
       <div className="flex items-center gap-2">
@@ -473,7 +473,7 @@ function AnswerBox({
           <div className="my-4">
             <button
               onClick={() => setShowThinking(!showThinking)}
-              className="flex items-center gap-1 text-sm text-mf-green-500"
+              className="text-mf-green-500 flex items-center gap-1 text-sm"
             >
               Thinking process
               {showThinking ? (
@@ -483,7 +483,7 @@ function AnswerBox({
               )}
             </button>
             {showThinking && (
-              <div className="bg-mf-ash-600 mt-2 rounded p-3 text-sm text-mf-green-100">
+              <div className="bg-mf-ash-600 text-mf-green-100 mt-2 rounded p-3 text-sm">
                 {thinking}
               </div>
             )}
@@ -515,7 +515,7 @@ function ThreadSectionTitle(props: {
 }) {
   return (
     <div
-      className={`text-md dark:text-zinc-200 flex items-center font-bold ${props.className}`}
+      className={`text-md flex items-center font-bold dark:text-zinc-200 ${props.className}`}
     >
       {props.icon}
       <div className="ml-2">{props.title}</div>

@@ -10,11 +10,11 @@ export default function Popover({
       {({ open }) => (
         <>
           <HPopover.Button
-            className={`${open ? "text-white" : "text-white/90"} outline-none ring-0`}
+            className={`${open ? "text-white" : "text-white/90"} ring-0 outline-none`}
           >
             {button}
           </HPopover.Button>
-          <HPopover.Overlay className="fixed bottom-0 left-0 right-0 top-0 h-screen w-screen" />
+          <HPopover.Overlay className="fixed top-0 right-0 bottom-0 left-0 h-screen w-screen" />
           <Transition
             as={Fragment}
             enter="transition ease-out duration-200"
@@ -24,7 +24,7 @@ export default function Popover({
             leaveFrom="opacity-100 translate-y-0"
             leaveTo="opacity-0 translate-y-1"
           >
-            <HPopover.Panel className="bg-white dark:border-gray-700 absolute right-0 z-10 -ml-4 mt-1 rounded-md  border shadow-md dark:bg-sgray-800">
+            <HPopover.Panel className="dark:bg-sgray-800 absolute right-0 z-10 mt-1 -ml-4 rounded-md border bg-white shadow-md dark:border-gray-700">
               {children}
             </HPopover.Panel>
           </Transition>

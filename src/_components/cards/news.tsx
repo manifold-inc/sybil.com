@@ -7,7 +7,7 @@ export function NewsCard(props: {
 }) {
   return (
     <a
-      className={`text-white block animate-fade overflow-hidden rounded-md opacity-100 duration-200 ${props.className}`}
+      className={`animate-fade block overflow-hidden rounded-md text-white opacity-100 duration-200 ${props.className}`}
       style={{
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
@@ -16,7 +16,7 @@ export function NewsCard(props: {
       href={props.news.url}
       target="_blank"
     >
-      <div className="bg-black flex h-full w-full items-end bg-mf-green-500/15 bg-opacity-50 p-6 transition-all">
+      <div className="bg-mf-green-500/15 bg-opacity-50 flex h-full w-full items-end bg-black p-6 transition-all">
         <div className="flex flex-col gap-1">
           <div className="font-sans text-xs">Top Result</div>
           <span className="line-clamp-1 text-xl">{props.news.title}</span>

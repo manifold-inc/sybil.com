@@ -40,7 +40,7 @@ export default function TrendingCarousel({
             }`}
             href={Path.HomeWithQuery(trendings[currentIndex] ?? "")}
           >
-            <span className="flex items-center gap-2 rounded-xl border border-mf-new-500 bg-mf-new-700 px-3 py-1 text-sm text-mf-silver-700 transition-colors duration-300 hover:text-mf-silver-500">
+            <span className="border-mf-new-500 bg-mf-new-700 text-mf-silver-700 hover:text-mf-silver-500 flex items-center gap-2 rounded-xl border px-3 py-1 text-sm transition-colors duration-300">
               <Image src="/sybil.svg" alt="sybil" width={12} height={12} />
               {trendings[currentIndex]}
             </span>

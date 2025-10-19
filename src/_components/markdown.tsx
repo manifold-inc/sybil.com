@@ -84,7 +84,7 @@ export function PreCode(props: {
       )}
       <pre ref={ref} className={`hljs relative ${lang ? "pt-6" : ""}`}>
         {lang ? (
-          <div className="bg-gray-700 text-gray-50 absolute left-0 top-0 flex w-full justify-between rounded-t-sm px-2 py-1 text-xs capitalize">
+          <div className="absolute top-0 left-0 flex w-full justify-between rounded-t-sm bg-gray-700 px-2 py-1 text-xs text-gray-50 capitalize">
             {lang}
             <button
               className="cursor-pointer"
@@ -95,12 +95,12 @@ export function PreCode(props: {
                 }
               }}
             >
-              <Copy className="text-gray-300 z-10 h-4 w-4" />
+              <Copy className="z-10 h-4 w-4 text-gray-300" />
             </button>
           </div>
         ) : (
           <button
-            className="absolute right-2 top-2 cursor-pointer"
+            className="absolute top-2 right-2 cursor-pointer"
             onClick={() => {
               if (ref.current) {
                 const code = ref.current.innerText;
@@ -108,7 +108,7 @@ export function PreCode(props: {
               }
             }}
           >
-            <Copy className="text-gray-300 z-10 h-4 w-4" />
+            <Copy className="z-10 h-4 w-4 text-gray-300" />
           </button>
         )}
         {props.children}
@@ -164,7 +164,7 @@ export function Markdown(
   return (
     <div
       className={clsx(
-        "prose-sm text-justify sm:prose-lg [&_p]:!my-2 [&_p]:!leading-tight",
+        "prose-sm sm:prose-lg text-justify [&_p]:!my-2 [&_p]:!leading-tight",
       )}
       ref={mdRef}
       onContextMenu={props.onContextMenu}

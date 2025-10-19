@@ -95,7 +95,7 @@ export default function ModelSelector() {
       {/* Center logo */}
       <div
         className={clsx(
-          "relative flex min-h-8 min-w-8 cursor-pointer items-center justify-center rounded-full border border-mf-new-500 transition-colors",
+          "border-mf-new-500 relative flex min-h-8 min-w-8 cursor-pointer items-center justify-center rounded-full border transition-colors",
           isHovering ? "bg-mf-green-500" : "bg-mf-new-600",
         )}
         style={{ zIndex: 20 }}
@@ -131,8 +131,8 @@ export default function ModelSelector() {
                 className={clsx(
                   "animate-in fade-in zoom-in pointer-events-auto absolute flex items-center justify-center rounded-full border transition-all duration-200",
                   model.disabled
-                    ? "cursor-not-allowed border-mf-new-500/50 bg-mf-new-600/40 opacity-50"
-                    : "border-mf-new-500 bg-mf-new-600/80 hover:scale-110 hover:bg-mf-new-600",
+                    ? "border-mf-new-500/50 bg-mf-new-600/40 cursor-not-allowed opacity-50"
+                    : "border-mf-new-500 bg-mf-new-600/80 hover:bg-mf-new-600 hover:scale-110",
                 )}
                 style={{
                   width: "32px",

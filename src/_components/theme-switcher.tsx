@@ -19,7 +19,7 @@ export default function ThemeSwitcher() {
       <div className="flex items-center justify-end gap-2">
         {theme === "dark" ? "Light" : "Dark"}
         {theme === "dark" ? (
-          <Sun className="text-gray-50 h-4 w-4" />
+          <Sun className="h-4 w-4 text-gray-50" />
         ) : (
           <Moon className="h-4 w-4" />
         )}

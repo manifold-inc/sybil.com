@@ -74,7 +74,7 @@ export const Images = ({ query }: { query: string }) => {
         </Link>
         <Link
           href={`/images?q=${encodeURIComponent(query)}`}
-          className="after:dark:bg-white relative px-0.5 text-mf-green-500 after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-full after:bg-mf-green-500"
+          className="text-mf-green-500 after:bg-mf-green-500 relative px-0.5 after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-full after:dark:bg-white"
         >
           Images
         </Link>
@@ -100,10 +100,10 @@ export const Images = ({ query }: { query: string }) => {
                 }}
                 src={idx < loaded + CONCURRENT ? img.img_src : undefined}
                 loading="lazy"
-                className="lozad h-56 min-w-full max-w-md rounded-xl object-cover align-bottom"
+                className="lozad h-56 max-w-md min-w-full rounded-xl object-cover align-bottom"
               />
             </Link>
-            <div className="text-gray-600 dark:text-gray-400 flex items-center gap-2 pt-1 text-xs">
+            <div className="flex items-center gap-2 pt-1 text-xs text-gray-600 dark:text-gray-400">
               <img
                 className="h-3 w-3"
                 onError={(a) => a.currentTarget.classList.add("hidden")}
@@ -113,7 +113,7 @@ export const Images = ({ query }: { query: string }) => {
               />
               {idx < loaded + CONCURRENT ? img.parsed_url.at(1) : undefined}
             </div>
-            <div className="lozad text-gray-800 dark:text-gray-200 w-full max-w-sm overflow-hidden text-ellipsis  whitespace-nowrap pt-0.5">
+            <div className="lozad w-full max-w-sm overflow-hidden pt-0.5 text-ellipsis whitespace-nowrap text-gray-800 dark:text-gray-200">
               {getDesc(img)}
             </div>
           </div>
@@ -124,7 +124,7 @@ export const Images = ({ query }: { query: string }) => {
           <button
             disabled={imageQuery.isLoading}
             onClick={() => setPage((p) => p + 1)}
-            className="bg-black/10 text-black hover:bg-black/20 dark:bg-white/10  dark:text-white dark:hover:bg-white/20 rounded-md px-2.5 py-1.5 font-semibold shadow-sm disabled:cursor-default disabled:opacity-80"
+            className="rounded-md bg-black/10 px-2.5 py-1.5 font-semibold text-black shadow-sm hover:bg-black/20 disabled:cursor-default disabled:opacity-80 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
           >
             Load More
           </button>

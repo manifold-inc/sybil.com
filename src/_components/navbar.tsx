@@ -12,11 +12,11 @@ export function NavBar({ query }: { query: string }) {
   const pathname = usePathname();
   return (
     <div className="sticky top-0 z-40 select-none">
-      <div className="relative flex items-center justify-center pb-2 pt-4">
+      <div className="relative flex items-center justify-center pt-4 pb-2">
         <div className="absolute left-0 hidden sm:block">
           <Link className="flex items-center gap-2 pl-12" href="/">
             <Image src="/sybil-bg.svg" alt="Sybil" width={16} height={16} />
-            <span className="text-xl font-semibold text-mf-milk-300">
+            <span className="text-mf-milk-300 text-xl font-semibold">
               SYBIL
             </span>
           </Link>

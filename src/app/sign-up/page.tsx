@@ -49,7 +49,7 @@ export default function Page() {
       <div className="absolute left-0 hidden sm:block">
         <Link className="flex items-center gap-2 pl-12" href="/">
           <Image src="/sybil-bg.svg" alt="Sybil" width={16} height={16} />
-          <span className="text-xl font-semibold text-mf-milk-300">SYBIL</span>
+          <span className="text-mf-milk-300 text-xl font-semibold">SYBIL</span>
         </Link>
       </div>
       <div className="flex h-[80vh] w-full items-center justify-center">
@@ -98,7 +98,7 @@ export default function Page() {
                     e.preventDefault();
                     setVisable((s) => !s);
                   }}
-                  className="text-gray-500 dark:text-gray-400 absolute bottom-0 right-3 top-0"
+                  className="absolute top-0 right-3 bottom-0 text-gray-500 dark:text-gray-400"
                 >
                   {visable ? (
                     <Eye className="h-5 w-5" />
@@ -139,7 +139,7 @@ export default function Page() {
                     e.preventDefault();
                     setVisable((s) => !s);
                   }}
-                  className="text-gray-500 dark:text-gray-400 absolute bottom-0 right-3 top-0"
+                  className="absolute top-0 right-3 bottom-0 text-gray-500 dark:text-gray-400"
                 >
                   {visable ? (
                     <Eye className="h-5 w-5" />
@@ -154,7 +154,7 @@ export default function Page() {
               <button
                 type="submit"
                 disabled={createAccouint.isLoading}
-                className="hover:bg-mf-green-800 flex items-center gap-2 whitespace-nowrap rounded-full bg-mf-green-500 px-4 py-1 font-semibold text-mf-ash-700 hover:bg-mf-green-500/80"
+                className="hover:bg-mf-green-800 bg-mf-green-500 text-mf-ash-700 hover:bg-mf-green-500/80 flex items-center gap-2 rounded-full px-4 py-1 font-semibold whitespace-nowrap"
               >
                 Create Account
                 {createAccouint.isLoading && (

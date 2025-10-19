@@ -5,7 +5,7 @@ export function Skeleton({
   return (
     <div
       className={
-        "dark:bg-zinc-600 z-10 animate-pulse bg-mf-ash-300 " + className
+        "bg-mf-ash-300 z-10 animate-pulse dark:bg-zinc-600 " + className
       }
       {...props}
     />

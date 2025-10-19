@@ -61,7 +61,7 @@ export default function AskBox(params: {
           <div className="relative z-10">
             <div
               className={clsx(
-                "z-10 flex h-fit w-full items-center rounded-full border border-mf-new-500 bg-mf-new-700 py-1.5 pl-2 pr-3.5 transition-colors",
+                "border-mf-new-500 bg-mf-new-700 z-10 flex h-fit w-full items-center rounded-full border py-1.5 pr-3.5 pl-2 transition-colors",
               )}
             >
               <ModelSelector />
@@ -73,7 +73,7 @@ export default function AskBox(params: {
                 }
                 ref={comboRef}
                 autoFocus={params.autofocus}
-                className="min-h-7 w-full bg-mf-new-700 text-mf-milk-300 outline-none placeholder:text-mf-milk-700/80"
+                className="bg-mf-new-700 text-mf-milk-300 placeholder:text-mf-milk-700/80 min-h-7 w-full outline-none"
                 placeholder={Locale.Home.SearchInput}
                 onBlur={(e) => {
                   e.preventDefault();
