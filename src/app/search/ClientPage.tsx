@@ -25,9 +25,9 @@ import { tryCatch } from "rambda";
 import { toast } from "sonner";
 import { match } from "ts-pattern";
 
-import { Card } from "@/components/cards";
-import { Markdown } from "@/components/markdown";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Card } from "@/_components/cards";
+import { Markdown } from "@/_components/markdown";
+import { Skeleton } from "@/_components/ui/skeleton";
 import { Path } from "@/constant";
 import { type ThreadFile } from "@/hooks/file";
 import { Locale } from "@/locales";

@@ -6,10 +6,10 @@ import { Combobox } from "@headlessui/react";
 import { clsx } from "clsx";
 import { Search } from "lucide-react";
 
+import ModelSelector from "@/_components/ModelSelector";
 import { emitCustomEvent, useCustomEvent } from "@/hooks/event";
 import { useKeyDown } from "@/hooks/keydown";
 import { Locale } from "@/locales";
-import ModelSelector from "./ModelSelector";
 
 export default function AskBox(params: {
   query?: string;

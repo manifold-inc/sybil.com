@@ -9,8 +9,8 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 
+import { useAuth } from "@/_components/providers";
 import { reactClient } from "@/trpc/react";
-import { useAuth } from "../_components/providers";
 
 type Inputs = {
   email: string;
@@ -21,7 +21,7 @@ const baseStyles =
   "border-1 flex disabled:text-gray-600 dark:disabled:text-gray-300 bg-mf-ash-500 w-full items-center justify-center gap-3 whitespace-nowrap rounded-full px-4 py-2 outline-none placeholder: invalid:border-red-500 focus:border-black dark:focus:border-white";
 export default function Page() {
   const router = useRouter();
-  const [visable, setVisable] = useState(false);
+  const [visible, setVisible] = useState(false);
   const { refetch } = useAuth();
 
   const {
@@ -80,7 +80,7 @@ export default function Page() {
                   })}
                   disabled={signIn.isLoading}
                   placeholder="Password"
-                  type={visable ? "text" : "password"}
+                  type={visible ? "text" : "password"}
                   className={clsx(baseStyles, {
                     "border-red-500": errors.password,
                     "border-gray-400": !errors.password,
@@ -92,11 +92,11 @@ export default function Page() {
                   onClick={(e) => {
                     e.stopPropagation();
                     e.preventDefault();
-                    setVisable((s) => !s);
+                    setVisible((s) => !s);
                   }}
                   className="text-gray-500 dark:text-gray-400 absolute bottom-0 right-3 top-0"
                 >
-                  {visable ? (
+                  {visible ? (
                     <Eye className="h-5 w-5" />
                   ) : (
                     <EyeOff className="h-5 w-5" />

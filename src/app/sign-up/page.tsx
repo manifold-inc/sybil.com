@@ -9,8 +9,8 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 
+import { useAuth } from "@/_components/providers";
 import { reactClient } from "@/trpc/react";
-import { useAuth } from "../_components/providers";
 
 type Inputs = {
   email: string;

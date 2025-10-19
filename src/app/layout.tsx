@@ -10,11 +10,11 @@ import { Analytics } from "@vercel/analytics/react";
 import { AxiomWebVitals } from "next-axiom";
 import { Toaster } from "sonner";
 
+import Countdown from "@/_components/Countdown";
+import Footer from "@/_components/footer";
+import Header from "@/_components/header";
+import { WithGlobalProvider } from "@/_components/providers";
 import { env } from "@/env.mjs";
-import Countdown from "./_components/Countdown";
-import Footer from "./_components/footer";
-import Header from "./_components/header";
-import { WithGlobalProvider } from "./_components/providers";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
   },
 };
 
-const PostHogPageView = dynamic(() => import("./_components/PosthogPageView"), {
+const PostHogPageView = dynamic(() => import("@/_components/PosthogPageView"), {
   ssr: false,
 });
 

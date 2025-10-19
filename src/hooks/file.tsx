@@ -6,8 +6,8 @@ import { nanoid } from "nanoid";
 import { toast } from "sonner";
 import { match } from "ts-pattern";
 
-import { useAuth } from "@/app/_components/providers";
-import Modal from "@/components/shared/modal";
+import { useAuth } from "@/_components/providers";
+import Modal from "@/_components/shared/modal";
 import { ACCEPT_FILES } from "@/constant";
 import { Locale } from "@/locales";
 import { reactClient } from "@/trpc/react";

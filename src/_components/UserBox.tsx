@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import { ActionButton } from "@/app/_components/ActionButton";
+import { ActionButton } from "@/_components/ActionButton";
 import { useAuth } from "./providers";
 
 export default function UserBox() {

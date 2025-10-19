@@ -1,7 +1,7 @@
 import { type Metadata } from "next";
 import { redirect } from "next/navigation";
 
-import { NavBar } from "@/components/navbar";
+import { NavBar } from "@/_components/navbar";
 import { Images } from "./ClientPage";
 
 export function generateMetadata({

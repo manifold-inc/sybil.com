@@ -5,8 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import AskBox from "@/app/_components/AskBox";
-import UserBox from "@/app/_components/UserBox";
+import AskBox from "@/_components/AskBox";
+import UserBox from "@/_components/UserBox";
 
 export function NavBar({ query }: { query: string }) {
   const pathname = usePathname();
