@@ -1,7 +1,7 @@
 export async function copyToClipboard(text: string) {
   try {
     await navigator.clipboard.writeText(text);
-  } catch (error) {
+  } catch {
     const textArea = document.createElement("textarea");
     textArea.value = text;
     document.body.appendChild(textArea);
@@ -19,7 +19,7 @@ export function isClientSide() {
 export function compressImage(
   base64Image: string,
   width: number,
-  height: number,
+  height: number
 ): Promise<string> {
   return new Promise((resolve, reject) => {
     // Create an Image object

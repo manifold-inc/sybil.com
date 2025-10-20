@@ -1,4 +1,4 @@
-import { type MainSchema } from "@/server/api/main/schema";
+import type { MainSchema } from "@/server/api/schema";
 
 export type Action = {
   type: "UPDATE_DATA";

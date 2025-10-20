@@ -1,25 +1,23 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-import { useState } from "react";
-import to from "await-to-js";
-import { Box, FolderPlus, RotateCw, Trash, Upload } from "lucide-react";
-import { nanoid } from "nanoid";
-import { toast } from "sonner";
-import { match } from "ts-pattern";
-
-import { useAuth } from "@/app/_components/providers";
-import Modal from "@/components/shared/modal";
+import { useAuth } from "@/_components/providers";
+import Modal from "@/_components/shared/modal";
 import { ACCEPT_FILES } from "@/constant";
 import { Locale } from "@/locales";
 import { reactClient } from "@/trpc/react";
 import { formatBytes } from "@/utils/format";
 import { createLogger } from "@/utils/logger";
+import to from "await-to-js";
+import { Box, FolderPlus, RotateCw, Trash, Upload } from "lucide-react";
+import { nanoid } from "nanoid";
+import { useState } from "react";
+import { toast } from "sonner";
+import { match } from "ts-pattern";
 
 const logger = createLogger({ prefix: "[File]" });
 
 function uploadFileToS3(
   presignedUrl: string,
   file: File,
-  onProgress?: (percent: number) => void,
+  onProgress?: (percent: number) => void
 ): Promise<{ type: string; content: string }> {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
@@ -53,7 +51,7 @@ function uploadFileToS3(
     xhr.open("PUT", presignedUrl);
     xhr.setRequestHeader(
       "Content-Type",
-      file.type || "application/octet-stream",
+      file.type || "application/octet-stream"
     );
     xhr.send(file);
   });
@@ -93,7 +91,7 @@ export function FileListModel(props: {
         name: f.file.name,
         mime: f.file.type,
         size: f.file.size,
-      }),
+      })
     );
 
     if (error) {
@@ -110,7 +108,7 @@ export function FileListModel(props: {
     const [uploadError] = await to(
       uploadFileToS3(presigned?.presignedUrl, f.file, (percent) => {
         updateFile(f.id, (file) => (file.progress = percent));
-      }),
+      })
     );
 
     if (uploadError) {
@@ -147,7 +145,9 @@ export function FileListModel(props: {
           return files.concat(newFiles);
         });
 
-        newFiles.forEach(uploadFile);
+        newFiles.forEach((file) => {
+          void uploadFile(file);
+        });
       }
     });
 
@@ -167,7 +167,7 @@ export function FileListModel(props: {
           setIsOpen(true);
         }}
         disabled={status === "LOADING"}
-        className="text-gray-600 inline-flex cursor-pointer items-center gap-2 whitespace-nowrap rounded-md px-2  py-1 font-medium"
+        className="inline-flex cursor-pointer items-center gap-2 rounded-md px-2 py-1 font-medium whitespace-nowrap text-gray-600"
       >
         <FolderPlus className="h-5 w-5" />
         {props.files.length ? (
@@ -186,7 +186,7 @@ export function FileListModel(props: {
         {props.files.length === 0 && (
           <div className="flex w-full flex-col items-center justify-center py-8 opacity-50">
             <Box width={25} height={24} />
-            <div className="dark:text-gray-800 mt-2 text-xs">
+            <div className="mt-2 text-xs dark:text-gray-800">
               {Locale.FileList.Empty}
             </div>
           </div>
@@ -197,14 +197,14 @@ export function FileListModel(props: {
             return (
               <div
                 key={i}
-                className="bg-gray-50 dark:border-zinc-600 dark:bg-zinc-800 relative z-20 mb-2 flex items-center justify-between rounded-md border px-4 py-2"
+                className="relative z-20 mb-2 flex items-center justify-between rounded-md border bg-gray-50 px-4 py-2 dark:border-zinc-600 dark:bg-zinc-800"
               >
                 <div
                   style={{ width: f.progress * 100 + "%" }}
-                  className="bg-neutral-900 absolute bottom-0 left-0 top-0 -z-10 h-full transition-all"
+                  className="absolute top-0 bottom-0 left-0 -z-10 h-full bg-neutral-900 transition-all"
                 />
                 <div className="flex-1">
-                  <div className="truncate  font-semibold">{f.file.name}</div>
+                  <div className="truncate font-semibold">{f.file.name}</div>
                   <div className="mt-1 text-xs">{formatBytes(f.file.size)}</div>
                 </div>
                 {match(f.status)
@@ -279,7 +279,7 @@ export function FileListModel(props: {
           })}
         </div>
 
-        <div className="text-gray-800 mt-4 flex justify-end">
+        <div className="mt-4 flex justify-end text-gray-800">
           <button className="inline-flex items-center gap-2" onClick={addFiles}>
             <Upload className="h-4 w-4" />
             {Locale.FileList.Add}

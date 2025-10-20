@@ -1,24 +1,22 @@
-import { type Metadata } from "next";
+import { NavBar } from "@/_components/navbar";
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
-import { NavBar } from "@/components/navbar";
 import { Images } from "./ClientPage";
 
-export function generateMetadata({
-  searchParams,
-}: {
-  searchParams: { q?: string };
-}): Metadata {
+export async function generateMetadata(props: {
+  searchParams: Promise<{ q?: string }>;
+}): Promise<Metadata> {
+  const searchParams = await props.searchParams;
   return {
     title: searchParams.q,
   };
 }
 
-export default function Page({
-  searchParams,
-}: {
-  searchParams: { q?: string };
+export default async function Page(props: {
+  searchParams: Promise<{ q?: string }>;
 }) {
+  const searchParams = await props.searchParams;
   if (!searchParams.q) redirect("/");
   return (
     <>

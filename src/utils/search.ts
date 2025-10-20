@@ -1,11 +1,10 @@
+import { Path } from "@/constant";
+import type { SearchSchema } from "@/server/api/schema";
+import { prettyObject } from "@/utils/format";
 import {
   EventStreamContentType,
   fetchEventSource,
 } from "@fortaine/fetch-event-source";
-
-import { Path } from "@/constant";
-import type { SearchSchema } from "@/server/api/main/schema";
-import { prettyObject } from "@/utils/format";
 
 type FinishReason = "abort" | "unexpected" | "normal" | "unauthorized";
 
@@ -14,7 +13,7 @@ interface OpenAIStreamChunk {
   object: string;
   created: number;
   model: string;
-  choices: Array<{
+  choices: {
     index: number;
     delta: {
       role?: string;
@@ -25,7 +24,7 @@ interface OpenAIStreamChunk {
     logprobs: null;
     finish_reason: string | null;
     matched_stop: null;
-  }>;
+  }[];
   usage: null;
 }
 
@@ -35,7 +34,7 @@ export function search(
     onChunk: (chunk: SearchSchema.SearchResponse) => void;
     onFinished: (reason: FinishReason) => void;
     onError?: (e: Error) => void;
-  },
+  }
 ) {
   const chatPayload = {
     model: params.model,
@@ -76,7 +75,7 @@ export function search(
   const chatApiUrl = Path.API.ChatCompletions;
   if (!chatApiUrl) {
     throw new Error(
-      "NEXT_PUBLIC_CHAT_API environment variable is not configured",
+      "NEXT_PUBLIC_CHAT_API environment variable is not configured"
     );
   }
 
@@ -99,7 +98,9 @@ export function search(
         try {
           const resJson = (await res.clone().json()) as object;
           extraInfo = prettyObject(resJson);
-        } catch {}
+        } catch {
+          // Ignore JSON parsing errors
+        }
 
         if (extraInfo) {
           responseTexts.push(extraInfo);
@@ -140,6 +141,7 @@ export function search(
           finish();
         }
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.error("Error parsing SSE chunk:", e);
         context.finishReason = "unexpected";
       }

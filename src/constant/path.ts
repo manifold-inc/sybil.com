@@ -9,6 +9,7 @@ export const Path = {
   SignIn: (redirect = withBase("/")) =>
     withBase("/sign-in?redirect=" + encodeURIComponent(redirect)),
   SignUp: withBase("/sign-up"),
+  Settings: withBase("/settings"),
   Thread: (id: string) => withBase(`/thread/${id}`),
   ThreadWithQuery: (id: string, query: string) =>
     withBase(`/thread/${id}?q=${encodeURIComponent(query)}`),

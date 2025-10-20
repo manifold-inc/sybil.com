@@ -1,7 +1,7 @@
-import { cookies } from "next/headers";
+import type { AppRouter } from "@/server/api/root";
 import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
+import { cookies } from "next/headers";
 
-import { type AppRouter } from "@/server/api/root";
 import { getUrl, transformer } from "./shared";
 
 export const serverClient = createTRPCProxyClient<AppRouter>({
@@ -9,9 +9,9 @@ export const serverClient = createTRPCProxyClient<AppRouter>({
   links: [
     httpBatchLink({
       url: getUrl(),
-      headers() {
+      async headers() {
         return {
-          cookie: cookies().toString(),
+          cookie: (await cookies()).toString(),
           "x-trpc-source": "rsc",
         };
       },

@@ -1,16 +1,16 @@
 "use client";
 
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  type Dispatch,
-  type SetStateAction,
-} from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { Card } from "@/_components/cards";
+import { Markdown } from "@/_components/markdown";
+import { Skeleton } from "@/_components/ui/skeleton";
+import { Path } from "@/constant";
+import type { ThreadFile } from "@/hooks/file";
+import { Locale } from "@/locales";
+import type { SourceSchema } from "@/server/api/schema";
+import { useControllerStore } from "@/store/controller";
+import { useModelStore } from "@/store/model";
+import { copyToClipboard } from "@/utils/os";
+import { search } from "@/utils/search";
 import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import {
@@ -21,22 +21,16 @@ import {
   Loader2,
   RotateCw,
 } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { tryCatch } from "rambda";
+import type { Dispatch, SetStateAction } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { match } from "ts-pattern";
 
-import { Card } from "@/components/cards";
-import { Markdown } from "@/components/markdown";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Path } from "@/constant";
-import { type ThreadFile } from "@/hooks/file";
-import { Locale } from "@/locales";
-import { type SourceSchema } from "@/server/api/main/schema";
-import { useControllerStore } from "@/store/controller";
-import { useModelStore } from "@/store/model";
-import { copyToClipboard } from "@/utils/os";
-import { search } from "@/utils/search";
-import { type Data } from "./reducer";
+import type { Data } from "./reducer";
 
 export default function ClientPage({
   query,
@@ -57,7 +51,7 @@ export default function ClientPage({
 
   return (
     <div className="relative box-border flex">
-      <div className="relative w-full px-4 pb-32 pt-8 sm:px-8 lg:px-36">
+      <div className="relative w-full px-4 pt-8 pb-32 sm:px-8 lg:px-36">
         <Thread data={data} setData={setData} selectedModel={selectedModel} />
       </div>
     </div>
@@ -112,7 +106,7 @@ function Thread(props: {
                   if (text.endsWith(UNEXPECTED_TOKEN)) {
                     text = text.slice(
                       0,
-                      Math.max(0, text.length - UNEXPECTED_TOKEN.length),
+                      Math.max(0, text.length - UNEXPECTED_TOKEN.length)
                     );
                   }
                 });
@@ -143,7 +137,7 @@ function Thread(props: {
           onError() {
             setIsLoading(false);
           },
-        },
+        }
       );
 
       controllerStore.insert("query", controller);
@@ -151,7 +145,7 @@ function Thread(props: {
         controllerStore.stop("query");
       });
     },
-    [controllerStore, props],
+    [controllerStore, props]
   );
 
   const retry = useCallback(() => {
@@ -193,21 +187,23 @@ function Thread(props: {
 
   let herocard = <Skeleton className="h-16 w-full rounded-md" />;
   if (props.data.heroCard == null && props.data.sources.length > 0) {
-    const fs = props.data.sources.at(0)!;
-    herocard = (
-      <Card
-        card={{
-          type: "news",
-          url: fs.url,
-          size: "auto",
-          image:
-            "https://img.freepik.com/premium-vector/beautiful-colorful-gradient-background_492281-1165.jpg",
-          intro: fs.parsed_url.at(1),
-          title: fs.title ?? "No descriptions provided.",
-          version: 1,
-        }}
-      />
-    );
+    const fs = props.data.sources[0];
+    if (fs) {
+      herocard = (
+        <Card
+          card={{
+            type: "news",
+            url: fs.url,
+            size: "auto",
+            image:
+              "https://img.freepik.com/premium-vector/beautiful-colorful-gradient-background_492281-1165.jpg",
+            intro: fs.parsed_url.at(1),
+            title: fs.title ?? "No descriptions provided.",
+            version: 1,
+          }}
+        />
+      );
+    }
   }
   if (props.data.heroCard) {
     herocard = <Card card={props.data.heroCard} />;
@@ -218,7 +214,7 @@ function Thread(props: {
       <div className="flex flex-row gap-4">
         <Link
           href={`/search?q=${encodeURIComponent(query.get("q") ?? "")}`}
-          className="after:dark:bg-white relative px-0.5 text-mf-green-500 after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-full after:bg-mf-green-500"
+          className="text-mf-green-500 after:bg-mf-green-500 relative px-0.5 after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-full after:dark:bg-white"
         >
           General
         </Link>
@@ -240,12 +236,12 @@ function Thread(props: {
         <div className="flex justify-between pt-6">
           <ThreadSectionTitle icon={<List />} title={Locale.Thread.Sources} />
         </div>
-        <div className="divide-gray-200 divide-y dark:divide-mf-ash-300">
+        <div className="dark:divide-mf-ash-300 divide-y divide-gray-200">
           {props.data.sources.length === 0 &&
             new Array(4).fill(0).map((_, i) => (
               <div key={i} className="py-4">
-                <Skeleton className={`h-4 w-3/4 `} />
-                <Skeleton className={`my-2 h-4 w-1/2 `} />
+                <Skeleton className={`h-4 w-3/4`} />
+                <Skeleton className={`my-2 h-4 w-1/2`} />
                 {/* Add spacing for the description */}
                 <Skeleton className={`my-4 h-4 w-5/6`} />
               </div>
@@ -298,7 +294,7 @@ function Thread(props: {
               if (!s) return;
               const hostname = tryCatch(
                 () => new URL(s.url).hostname.replace("www.", ""),
-                "",
+                ""
               )(null);
               return (
                 <div className="block py-4" key={s.url}>
@@ -308,7 +304,7 @@ function Thread(props: {
                     rel="noopener noreferrer"
                     className="group relative flex items-center space-x-2 overflow-hidden"
                   >
-                    <img
+                    <Image
                       onError={(a) =>
                         a.currentTarget.classList.add("opacity-0")
                       }
@@ -318,15 +314,15 @@ function Thread(props: {
                       height={20}
                     />
                     <div className="w-full">
-                      <div className="text-gray-800 dark:text-zinc-300 line-clamp-1 overflow-hidden text-ellipsis font-semibold group-hover:underline">
+                      <div className="line-clamp-1 overflow-hidden font-semibold text-ellipsis text-gray-800 group-hover:underline dark:text-zinc-300">
                         {s.title}
                       </div>
-                      <div className="text-gray-500 dark:text-zinc-400 text-xs">
+                      <div className="text-xs text-gray-500 dark:text-zinc-400">
                         {hostname}
                       </div>
                     </div>
                   </a>
-                  <div className="text-gray-500 dark:text-zinc-400  mt-2 line-clamp-2">
+                  <div className="mt-2 line-clamp-2 text-gray-500 dark:text-zinc-400">
                     {s.content ?? "No description available."}
                   </div>
                 </div>
@@ -336,7 +332,7 @@ function Thread(props: {
             <button
               onClick={() => loadMoreSources.mutate(page + 1)}
               disabled={loadMoreSources.isLoading}
-              className="inline-flex items-center gap-2 px-2.5 py-1 font-semibold text-mf-milk-300"
+              className="text-mf-milk-300 inline-flex items-center gap-2 px-2.5 py-1 font-semibold"
             >
               {loadMoreSources.isLoading && (
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -369,7 +365,7 @@ function AnswerBox({
   answer: string;
   isLoading: boolean;
   retry: () => void;
-}): JSX.Element {
+}): React.JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
   const [isCopying, setIsCopying] = useState(false);
   const [showThinking, setShowThinking] = useState(false);
@@ -413,8 +409,8 @@ function AnswerBox({
     <div
       ref={containerRef}
       className={clsx(
-        "text-gray-700 dark:border-zinc-700 dark:text-zinc-300 flex flex-col rounded-md bg-mf-ash-500 p-4 pt-2 sm:p-6",
-        isCopying ? "inset-0 ring-2 ring-mf-green-500" : "border-0",
+        "bg-mf-ash-500 flex flex-col rounded-md p-4 pt-2 text-gray-700 sm:p-6 dark:border-zinc-700 dark:text-zinc-300",
+        isCopying ? "ring-mf-green-500 inset-0 ring-2" : "border-0"
       )}
     >
       <div className="flex items-center gap-2">
@@ -440,7 +436,7 @@ function AnswerBox({
               <Copy
                 className={clsx(
                   "h-4 w-4 sm:h-5 sm:w-5",
-                  isCopying && "text-mf-green-500",
+                  isCopying && "text-mf-green-500"
                 )}
               />
             </button>
@@ -451,7 +447,7 @@ function AnswerBox({
       <div
         className={clsx(
           `flex flex-col gap-2 overflow-hidden transition-[margin]`,
-          isOpen ? "mb-0 max-h-full" : "-mb-2 h-28 pb-2",
+          isOpen ? "mb-0 max-h-full" : "-mb-2 h-28 pb-2"
         )}
         style={{
           maskImage:
@@ -473,7 +469,7 @@ function AnswerBox({
           <div className="my-4">
             <button
               onClick={() => setShowThinking(!showThinking)}
-              className="flex items-center gap-1 text-sm text-mf-green-500"
+              className="text-mf-green-500 flex items-center gap-1 text-sm"
             >
               Thinking process
               {showThinking ? (
@@ -483,7 +479,7 @@ function AnswerBox({
               )}
             </button>
             {showThinking && (
-              <div className="bg-mf-ash-600 mt-2 rounded p-3 text-sm text-mf-green-100">
+              <div className="bg-mf-ash-600 text-mf-green-100 mt-2 rounded p-3 text-sm">
                 {thinking}
               </div>
             )}
@@ -515,7 +511,7 @@ function ThreadSectionTitle(props: {
 }) {
   return (
     <div
-      className={`text-md dark:text-zinc-200 flex items-center font-bold ${props.className}`}
+      className={`text-md flex items-center font-bold dark:text-zinc-200 ${props.className}`}
     >
       {props.icon}
       <div className="ml-2">{props.title}</div>

@@ -1,8 +1,7 @@
+import { StoreKey } from "@/constant";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-
-import { StoreKey } from "@/constant";
 
 interface ModelState {
   selectedModel: string;
@@ -17,6 +16,6 @@ export const useModelStore = create<ModelState>()(
     })),
     {
       name: StoreKey.Model,
-    },
-  ),
+    }
+  )
 );

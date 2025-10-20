@@ -17,6 +17,7 @@ export const useControllerStore = create(
         stop(threadId: string) {
           const controllers = new Map(get().controllers);
           controllers.get(threadId)?.abort();
+          // eslint-disable-next-line drizzle/enforce-delete-with-where
           controllers.delete(threadId);
           set({ controllers });
         },
@@ -30,6 +31,6 @@ export const useControllerStore = create(
         },
       };
       return methods;
-    },
-  ),
+    }
+  )
 );

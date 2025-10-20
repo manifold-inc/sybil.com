@@ -1,41 +1,17 @@
-/* eslint-disable @next/next/no-sync-scripts */
-import type { Metadata } from "next";
-
+import Countdown from "@/_components/Countdown";
+import Footer from "@/_components/footer";
+import Header from "@/_components/header";
+import PostHogPageView from "@/_components/PosthogPageView";
+import { WithGlobalProvider } from "@/_components/providers";
+import { env } from "@/env.mjs";
 import "@/styles/globals.css";
-
-import dynamic from "next/dynamic";
+import { Analytics } from "@vercel/analytics/react";
+import type { Metadata } from "next";
+import { AxiomWebVitals } from "next-axiom";
 import { Poppins, Saira, Tomorrow } from "next/font/google";
 import Image from "next/image";
-import { Analytics } from "@vercel/analytics/react";
-import { AxiomWebVitals } from "next-axiom";
+import { Suspense } from "react";
 import { Toaster } from "sonner";
-
-import { env } from "@/env.mjs";
-import Countdown from "./_components/Countdown";
-import Footer from "./_components/footer";
-import Header from "./_components/header";
-import { WithGlobalProvider } from "./_components/providers";
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  variable: "--font-poppins",
-  display: "swap",
-  weight: ["100", "200", "300", "400", "600", "700", "800", "900"],
-});
-
-const tomorrow = Tomorrow({
-  subsets: ["latin"],
-  weight: ["200", "300", "400", "500", "600", "700"],
-  variable: "--font-tomorrow",
-  display: "swap",
-});
-
-const saira = Saira({
-  subsets: ["latin"],
-  weight: ["200", "300", "400", "500", "600", "700"],
-  variable: "--font-saira",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://sybil.com"),
@@ -63,8 +39,25 @@ export const metadata: Metadata = {
   },
 };
 
-const PostHogPageView = dynamic(() => import("./_components/PosthogPageView"), {
-  ssr: false,
+const tomorrow = Tomorrow({
+  subsets: ["latin"],
+  variable: "--font-tomorrow",
+  display: "swap",
+  weight: ["200", "300", "400", "500", "600", "700"],
+});
+
+const saira = Saira({
+  subsets: ["latin"],
+  variable: "--font-saira",
+  display: "swap",
+  weight: ["100", "200", "300", "400", "600", "700", "800", "900"],
+});
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  variable: "--font-poppins",
+  display: "swap",
+  weight: ["100", "200", "300", "400", "600", "700", "800", "900"],
 });
 
 export default function RootLayout({
@@ -76,15 +69,17 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${poppins.variable} ${tomorrow.variable} ${saira.variable} bg-mf-new-900 text-mf-silver-500`}
+      className={`${poppins.variable} ${saira.variable} ${tomorrow.variable} bg-mf-new-900 text-mf-silver-500 no-scrollbar`}
     >
       <head>
         <link rel="manifest" href="/site.webmanifest" />
       </head>
 
-      <body className="font-body">
+      <body>
         <WithGlobalProvider>
-          <PostHogPageView />
+          <Suspense fallback={null}>
+            <PostHogPageView />
+          </Suspense>
           {env.NEXT_PUBLIC_RELEASE_FLAG === "true" ? (
             <>
               <div className="my-auto-0 my-auto flex h-screen flex-col items-center justify-center">
