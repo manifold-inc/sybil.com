@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import { useState } from "react";
 import to from "await-to-js";
 import { Box, FolderPlus, RotateCw, Trash, Upload } from "lucide-react";
@@ -147,7 +146,9 @@ export function FileListModel(props: {
           return files.concat(newFiles);
         });
 
-        newFiles.forEach(uploadFile);
+        newFiles.forEach((file) => {
+          void uploadFile(file);
+        });
       }
     });
 

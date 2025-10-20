@@ -2,13 +2,19 @@
   "name": "sybil.com",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "next build",
     "format": "prettier -w .",
     "check-format": "prettier . --check",
-    "dev": "next dev",
-    "lint": "next lint && tsc --noEmit",
-    "start": "next start"
+    "dev": "next dev --turbo",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mdx}\" --cache",
+    "format:write": "prettier --write \"**/*.{ts,tsx,js,jsx,mdx}\" --cache",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "preview": "next build && next start",
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.515.0",
@@ -41,7 +47,6 @@
     "nanoid": "^5.0.6",
     "next": "^15.5.6",
     "next-axiom": "^1.1.1",
-    "next-themes": "^0.2.1",
     "obscenity": "^0.2.1",
     "posthog-js": "^1.108.3",
     "posthog-node": "^3.6.3",
@@ -65,7 +70,9 @@
     "zustand": "^4.5.1"
   },
   "devDependencies": {
+    "@eslint/js": "^9.27.0",
     "@ianvs/prettier-plugin-sort-imports": "^4.1.1",
+    "@manifold-labs/eslint-config-next": "^0.0.4",
     "@tailwindcss/postcss": "^4.1.5",
     "@tailwindcss/typography": "^0.5.16",
     "@types/eslint": "^8.56.3",
@@ -77,14 +84,16 @@
     "@typescript-eslint/parser": "^7.0.2",
     "autoprefixer": "^10.4.14",
     "drizzle-kit": "^0.20.14",
-    "eslint": "^8.47.0",
+    "eslint": "^9.23.0",
     "eslint-config-next": "^15.5.6",
+    "eslint-plugin-drizzle": "^0.2.3",
     "postcss": "^8.4.27",
     "prettier": "^3.0.0",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^4.1.5",
     "tailwindcss-animated": "^1.0.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "typescript-eslint": "^8.32.1"
   },
   "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }

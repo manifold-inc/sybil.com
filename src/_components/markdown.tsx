@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import ReactMarkdown from "react-markdown";
 
 import "katex/dist/katex.min.css";
 
-import React, { useEffect, useRef, useState, type RefObject } from "react";
+import type { RefObject } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { Copy } from "lucide-react";
 import mermaid from "mermaid";
@@ -33,7 +33,6 @@ export function Mermaid(props: { code: string }) {
           setHasError(true);
         });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.code]);
 
   if (hasError) {
@@ -169,7 +168,9 @@ export function Markdown(
         "prose-sm sm:prose-lg text-justify [&_p]:!my-2 [&_p]:!leading-tight",
       )}
       ref={mdRef}
+      // eslint-disable-next-line react/prop-types
       onContextMenu={props.onContextMenu}
+      // eslint-disable-next-line react/prop-types
       onDoubleClickCapture={props.onDoubleClickCapture}
       dir="auto"
     >

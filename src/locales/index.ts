@@ -2,7 +2,7 @@ import { mergeDeepRight } from "rambda";
 
 import cn from "./langs/cn";
 import en from "./langs/en";
-import { type LocaleType } from "./types";
+import type { LocaleType } from "./types";
 
 const ALL_LANGS = {
   cn,
@@ -25,7 +25,6 @@ const fallbackLang = en;
 const targetLang = ALL_LANGS[getLang()] as LocaleType;
 
 // if target lang missing some fields, it will use fallback lang string
-// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 const mergedLang = mergeDeepRight(fallbackLang, targetLang);
 
 export const Locale = mergedLang as LocaleType;
@@ -41,7 +40,9 @@ function getItem(key: string) {
 function setItem(key: string, value: string) {
   try {
     localStorage.setItem(key, value);
-  } catch {}
+  } catch {
+    // Ignore localStorage errors
+  }
 }
 
 function getLanguage() {

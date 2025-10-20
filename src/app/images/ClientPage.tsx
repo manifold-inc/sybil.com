@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import NextImage from "next/image";
 import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
@@ -89,8 +90,10 @@ export const Images = ({ query }: { query: string }) => {
             )}
           >
             <Link href={img.url} target="_blank" className="h-56">
-              <img
+              <NextImage
                 alt=""
+                width={384}
+                height={224}
                 onLoad={() => setLoaded((l) => l + 1)}
                 onError={(a) => {
                   const parnetNode = a.currentTarget.parentNode?.parentNode;
@@ -98,17 +101,17 @@ export const Images = ({ query }: { query: string }) => {
                   parnetNode.classList.add("hidden"); // eslint-disable-line
                   setLoaded((l) => l + 1);
                 }}
-                src={idx < loaded + CONCURRENT ? img.img_src : undefined}
-                loading="lazy"
+                src={idx < loaded + CONCURRENT ? img.img_src : ""}
                 className="lozad h-56 max-w-md min-w-full rounded-xl object-cover align-bottom"
               />
             </Link>
             <div className="flex items-center gap-2 pt-1 text-xs text-gray-600 dark:text-gray-400">
-              <img
+              <NextImage
                 className="h-3 w-3"
+                width={12}
+                height={12}
                 onError={(a) => a.currentTarget.classList.add("hidden")}
                 src={`https://s2.googleusercontent.com/s2/favicons?domain=${img.parsed_url[1]}`}
-                loading="lazy"
                 alt={""}
               />
               {idx < loaded + CONCURRENT ? img.parsed_url.at(1) : undefined}

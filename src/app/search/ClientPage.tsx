@@ -1,13 +1,7 @@
 "use client";
 
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  type Dispatch,
-  type SetStateAction,
-} from "react";
+import type { Dispatch, SetStateAction } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -29,14 +23,14 @@ import { Card } from "@/_components/cards";
 import { Markdown } from "@/_components/markdown";
 import { Skeleton } from "@/_components/ui/skeleton";
 import { Path } from "@/constant";
-import { type ThreadFile } from "@/hooks/file";
+import type { ThreadFile } from "@/hooks/file";
 import { Locale } from "@/locales";
-import { type SourceSchema } from "@/server/api/main/schema";
+import type { SourceSchema } from "@/server/api/main/schema";
 import { useControllerStore } from "@/store/controller";
 import { useModelStore } from "@/store/model";
 import { copyToClipboard } from "@/utils/os";
 import { search } from "@/utils/search";
-import { type Data } from "./reducer";
+import type { Data } from "./reducer";
 
 export default function ClientPage({
   query,
@@ -193,21 +187,23 @@ function Thread(props: {
 
   let herocard = <Skeleton className="h-16 w-full rounded-md" />;
   if (props.data.heroCard == null && props.data.sources.length > 0) {
-    const fs = props.data.sources.at(0)!;
-    herocard = (
-      <Card
-        card={{
-          type: "news",
-          url: fs.url,
-          size: "auto",
-          image:
-            "https://img.freepik.com/premium-vector/beautiful-colorful-gradient-background_492281-1165.jpg",
-          intro: fs.parsed_url.at(1),
-          title: fs.title ?? "No descriptions provided.",
-          version: 1,
-        }}
-      />
-    );
+    const fs = props.data.sources[0];
+    if (fs) {
+      herocard = (
+        <Card
+          card={{
+            type: "news",
+            url: fs.url,
+            size: "auto",
+            image:
+              "https://img.freepik.com/premium-vector/beautiful-colorful-gradient-background_492281-1165.jpg",
+            intro: fs.parsed_url.at(1),
+            title: fs.title ?? "No descriptions provided.",
+            version: 1,
+          }}
+        />
+      );
+    }
   }
   if (props.data.heroCard) {
     herocard = <Card card={props.data.heroCard} />;
@@ -308,7 +304,7 @@ function Thread(props: {
                     rel="noopener noreferrer"
                     className="group relative flex items-center space-x-2 overflow-hidden"
                   >
-                    <img
+                    <Image
                       onError={(a) =>
                         a.currentTarget.classList.add("opacity-0")
                       }

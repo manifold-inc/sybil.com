@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { clsx } from "clsx";
 
 import { useModelStore } from "@/store/model";
@@ -52,8 +53,6 @@ const MODEL_OPTIONS: {
 function getModelLogo(modelName: string): string {
   const modelLower = modelName.toLowerCase().split("/")[0];
 
-  console.log(modelLower);
-
   if (modelLower === "deepseek-ai") return "/deepseek.svg";
   if (modelLower === "hone") return "/hone.svg";
   if (modelLower === "moonshot") return "/moonshot.svg";
@@ -101,9 +100,11 @@ export default function ModelSelector() {
         style={{ zIndex: 20 }}
         onMouseEnter={() => !blockHover && setIsHovering(true)}
       >
-        <img
+        <Image
           src={isHovering ? "/selector.svg" : getModelLogo(selectedModel)}
           alt="Model Logo"
+          width={16}
+          height={16}
           className="h-4 w-4 flex-shrink-0"
         />
       </div>
@@ -143,9 +144,11 @@ export default function ModelSelector() {
                   zIndex: 30,
                 }}
               >
-                <img
+                <Image
                   src={model.logo}
                   alt={model.name}
+                  width={14}
+                  height={14}
                   className={clsx(
                     "h-3.5 w-3.5 flex-shrink-0",
                     model.disabled && "opacity-60 grayscale",

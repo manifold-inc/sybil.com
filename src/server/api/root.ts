@@ -1,5 +1,5 @@
-import { type inferReactQueryProcedureOptions } from "@trpc/react-query";
-import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
+import type { inferReactQueryProcedureOptions } from "@trpc/react-query";
+import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 
 import { createTRPCRouter } from "@/server/api/trpc";
 import { accountRouter } from "./account";

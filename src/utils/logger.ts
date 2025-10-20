@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 export function createLogger(options: { prefix?: string }) {
   return {
     log(...args: unknown[]) {

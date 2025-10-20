@@ -14,7 +14,7 @@ interface OpenAIStreamChunk {
   object: string;
   created: number;
   model: string;
-  choices: Array<{
+  choices: {
     index: number;
     delta: {
       role?: string;
@@ -25,7 +25,7 @@ interface OpenAIStreamChunk {
     logprobs: null;
     finish_reason: string | null;
     matched_stop: null;
-  }>;
+  }[];
   usage: null;
 }
 
@@ -99,7 +99,9 @@ export function search(
         try {
           const resJson = (await res.clone().json()) as object;
           extraInfo = prettyObject(resJson);
-        } catch {}
+        } catch {
+          // Ignore JSON parsing errors
+        }
 
         if (extraInfo) {
           responseTexts.push(extraInfo);
@@ -140,6 +142,7 @@ export function search(
           finish();
         }
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.error("Error parsing SSE chunk:", e);
         context.finishReason = "unexpected";
       }

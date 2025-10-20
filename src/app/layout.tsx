@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-sync-scripts */
 import type { Metadata } from "next";
 
 import "@/styles/globals.css";

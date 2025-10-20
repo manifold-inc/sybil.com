@@ -1,4 +1,4 @@
-import { type PartialLocaleType } from "../types";
+import type { PartialLocaleType } from "../types";
 
 const cn: PartialLocaleType = {
   Home: {
@@ -34,12 +34,6 @@ const cn: PartialLocaleType = {
   Settings: {
     Title: "设置",
     Language: "语言选项",
-    Theme: "主题",
-    Themes: {
-      light: "浅色",
-      dark: "深色",
-      system: "跟随系统",
-    },
   },
 
   SignIn: "登录",

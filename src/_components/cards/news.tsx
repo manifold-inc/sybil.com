@@ -1,4 +1,4 @@
-import { type CardSchema } from "@/server/api/main/schema";
+import type { CardSchema } from "@/server/api/main/schema";
 import { getCardSizeStyle } from "./utils";
 
 export function NewsCard(props: {
@@ -16,7 +16,7 @@ export function NewsCard(props: {
       href={props.news.url}
       target="_blank"
     >
-      <div className="bg-mf-green-500/15 bg-opacity-50 flex h-full w-full items-end bg-black p-6 transition-all">
+      <div className="bg-mf-green-500/15 bg-opacity-50 flex h-full w-full items-end p-6 transition-all">
         <div className="flex flex-col gap-1">
           <div className="font-sans text-xs">Top Result</div>
           <span className="line-clamp-1 text-xl">{props.news.title}</span>

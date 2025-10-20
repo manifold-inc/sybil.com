@@ -4,7 +4,7 @@ import { combine, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
 import { StoreKey } from "@/constant";
-import { type ThreadFile } from "@/hooks/file";
+import type { ThreadFile } from "@/hooks/file";
 
 export const useClientStore = create(
   persist(

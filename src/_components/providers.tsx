@@ -1,18 +1,13 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  type PropsWithChildren,
-} from "react";
-import { ThemeProvider } from "next-themes";
+import type { PropsWithChildren } from "react";
+import { createContext, useContext, useEffect } from "react";
 import posthog from "posthog-js";
 import { PostHogProvider, usePostHog } from "posthog-js/react";
 
 import { env } from "@/env.mjs";
 import { reactClient, TRPCReactProvider } from "@/trpc/react";
-import { type RouterOutputs } from "@/trpc/shared";
+import type { RouterOutputs } from "@/trpc/shared";
 
 if (typeof window !== "undefined") {
   posthog.init(env.NEXT_PUBLIC_POSTHOG_KEY, {
@@ -45,7 +40,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (user.data) {
-      posthog.identify(user.data);
+      posthog.identify(String(user.data));
       return;
     }
     posthog.reset();
@@ -72,11 +67,9 @@ export function WithGlobalProvider(props: { children: React.ReactNode }) {
   return (
     <div suppressHydrationWarning>
       <PHProvider>
-        <ThemeProvider attribute="class">
-          <TRPCReactProvider>
-            <AuthProvider>{props.children}</AuthProvider>
-          </TRPCReactProvider>
-        </ThemeProvider>
+        <TRPCReactProvider>
+          <AuthProvider>{props.children}</AuthProvider>
+        </TRPCReactProvider>
       </PHProvider>
     </div>
   );

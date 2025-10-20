@@ -10,6 +10,7 @@ import { adapter } from "@/schema/db";
 declare module "lucia" {
   interface Register {
     Lucia: typeof lucia;
+    UserId: number;
     DatabaseUserAttributes: DatabaseUserAttributes;
   }
   interface DatabaseUserAttributes {
@@ -72,6 +73,7 @@ export const uncachedValidateRequest = async (): Promise<
     }
   } catch {
     // Probably trying to set during page rendering, can safely swallow
+    // eslint-disable-next-line no-console
     console.error("Failed to set session cookie");
   }
   return result;

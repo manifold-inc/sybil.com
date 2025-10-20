@@ -1,6 +1,6 @@
 import { match } from "ts-pattern";
 
-import { type CardSchema } from "@/server/api/main/schema";
+import type { CardSchema } from "@/server/api/main/schema";
 import { ImageCard } from "./image";
 import { MapCard } from "./map";
 import { NewsCard } from "./news";

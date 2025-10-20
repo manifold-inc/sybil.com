@@ -1,5 +1,5 @@
-/** @type {import('prettier').Config & import('prettier-plugin-tailwindcss').options} */
-const config = {
+/** @type {import('prettier').Config & import('prettier-plugin-tailwindcss').PluginOptions} */
+export default {
   arrowParens: "always",
   printWidth: 80,
   singleQuote: false,
@@ -22,5 +22,3 @@ const config = {
   ],
   proseWrap: "always", // printWidth line breaks in md/mdx
 };
-
-export default config;

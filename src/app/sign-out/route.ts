@@ -10,7 +10,10 @@ export async function GET(): Promise<Response> {
     return new Response(null, { status: 400 });
   }
   const posthog = getPosthog();
-  posthog.capture({ distinctId: session.userId, event: "user-signed-out" });
+  posthog.capture({
+    distinctId: String(session.userId),
+    event: "user-signed-out",
+  });
   await lucia.invalidateSession(session.id);
 
   const sessionCookie = lucia.createBlankSessionCookie();

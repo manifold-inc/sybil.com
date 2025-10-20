@@ -32,12 +32,6 @@ const en = {
   Settings: {
     Title: "Settings",
     Language: "Language",
-    Theme: "Theme",
-    Themes: {
-      light: "Light",
-      dark: "Dark",
-      system: "System",
-    },
   },
 
   SignIn: "Log In",

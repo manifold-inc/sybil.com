@@ -1,8 +1,9 @@
 import { cookies } from "next/headers";
-import { type NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
 import { OAuth2RequestError } from "arctic";
 import { eq } from "drizzle-orm";
-import { withAxiom, type AxiomRequest } from "next-axiom";
+import type { AxiomRequest } from "next-axiom";
+import { withAxiom } from "next-axiom";
 
 import { db } from "@/schema/db";
 import { genId, User } from "@/schema/schema";
@@ -89,7 +90,7 @@ async function handle(req: NextRequest): Promise<Response> {
       },
     });
   }
-  const session = await lucia.createSession(String(userId), {});
+  const session = await lucia.createSession(userId, {});
   const sessionCookie = lucia.createSessionCookie(session.id);
   (await cookies()).set(
     sessionCookie.name,

@@ -1,6 +1,6 @@
 import { eq, lte } from "drizzle-orm";
 import type { InferSelectModel } from "drizzle-orm";
-import { type PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless";
+import type { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless";
 import type { Adapter, DatabaseSession, DatabaseUser } from "lucia";
 
 import type { Session, User } from "./schema";
@@ -27,10 +27,10 @@ export class LuciaAdapter implements Adapter {
       .where(eq(this.sessionTable.id, sessionId));
   }
 
-  public async deleteUserSessions(userId: string): Promise<void> {
+  public async deleteUserSessions(userId: number): Promise<void> {
     await this.db
       .delete(this.sessionTable)
-      .where(eq(this.sessionTable.userId, Number(userId)));
+      .where(eq(this.sessionTable.userId, userId));
   }
 
   public async getSessionAndUser(
@@ -48,17 +48,19 @@ export class LuciaAdapter implements Adapter {
       )
       .where(eq(this.sessionTable.id, sessionId));
     if (result.length !== 1) return [null, null];
+    if (!result[0]) return [null, null];
+
     return [
-      transformIntoDatabaseSession(result[0]!.session),
-      transformIntoDatabaseUser(result[0]!.user),
+      transformIntoDatabaseSession(result[0].session),
+      transformIntoDatabaseUser(result[0].user),
     ];
   }
 
-  public async getUserSessions(userId: string): Promise<DatabaseSession[]> {
+  public async getUserSessions(userId: number): Promise<DatabaseSession[]> {
     const result = await this.db
       .select()
       .from(this.sessionTable)
-      .where(eq(this.sessionTable.userId, Number(userId)));
+      .where(eq(this.sessionTable.userId, userId));
     return result.map((val) => {
       return transformIntoDatabaseSession(val);
     });
@@ -67,7 +69,7 @@ export class LuciaAdapter implements Adapter {
   public async setSession(session: DatabaseSession): Promise<void> {
     await this.db.insert(this.sessionTable).values({
       id: session.id,
-      userId: Number(session.userId),
+      userId: session.userId,
       expiresAt: session.expiresAt,
       ...session.attributes,
     });
@@ -97,7 +99,7 @@ function transformIntoDatabaseSession(
 ): DatabaseSession {
   const { id, userId, expiresAt, ...attributes } = raw;
   return {
-    userId: String(userId),
+    userId,
     id,
     expiresAt,
     attributes,
@@ -107,28 +109,12 @@ function transformIntoDatabaseSession(
 function transformIntoDatabaseUser(
   raw: InferSelectModel<typeof User>,
 ): DatabaseUser {
-  const {
-    id,
-    pubId,
-    email,
-    role,
-    googleId: _googleId,
-    password: _password,
-    name: _name,
-    stripeCustomerId: _stripeCustomerId,
-    createdAt: _createdAt,
-    credits: _credits,
-    allowOverspend: _allowOverspend,
-    emailVerified: _emailVerified,
-    twoFactorSecret: _twoFactorSecret,
-  } = raw;
+  const { id, ...attributes } = raw;
   return {
-    id: String(id),
+    id,
     attributes: {
+      ...attributes,
       id,
-      pubId,
-      email,
-      role,
     },
   };
 }

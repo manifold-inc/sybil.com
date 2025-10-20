@@ -36,14 +36,14 @@ export const fileRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       const publicUserId = ctx.user.id;
       const fileKey = genId.file();
-      const key = getS3Key(publicUserId, fileKey);
+      const key = getS3Key(String(publicUserId), fileKey);
       const [presignedUrl] = await Promise.all([
         getSignedUrl(
           S3,
           new PutObjectCommand({
             Bucket: env.S3_BUCKET_NAME,
             Key: key,
-            Tagging: publicUserId,
+            Tagging: String(publicUserId),
             ContentType: input.mime,
           }),
           { expiresIn: 500 }, // this link will be invalid after 500s

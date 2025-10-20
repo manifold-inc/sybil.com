@@ -1,6 +1,7 @@
-import { type NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
-import { withAxiom, type AxiomRequest } from "next-axiom";
+import type { AxiomRequest } from "next-axiom";
+import { withAxiom } from "next-axiom";
 
 import { env } from "@/env.mjs";
 import { appRouter } from "@/server/api/root";
@@ -22,6 +23,7 @@ const handler = (req: NextRequest) => {
               );
             }
           : ({ path, error }) => {
+              // eslint-disable-next-line no-console
               console.error(
                 `❌ tRPC failed on ${path ?? "<no-path>"}: ${error.message}`,
               );

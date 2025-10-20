@@ -30,7 +30,7 @@ export const accountRouter = createTRPCRouter({
           code: "FORBIDDEN",
           message: "Invalid Credentials",
         });
-      const session = await lucia.createSession(String(user.id), {});
+      const session = await lucia.createSession(user.id, {});
       const sessionCookie = lucia.createSessionCookie(session.id);
       (await cookies()).set(
         sessionCookie.name,
@@ -74,9 +74,9 @@ export const accountRouter = createTRPCRouter({
         password: hashedPassword,
         emailVerified: false,
       });
-      const userId = String(result.insertId);
+      const userId = result.insertId;
 
-      const session = await lucia.createSession(userId, {});
+      const session = await lucia.createSession(Number(userId), {});
       const sessionCookie = lucia.createSessionCookie(session.id);
       (await cookies()).set(
         sessionCookie.name,
