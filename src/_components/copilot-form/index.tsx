@@ -1,6 +1,6 @@
+import type { PromptInputSchema } from "@/server/api/schema";
 import { match } from "ts-pattern";
 
-import type { PromptInputSchema } from "@/server/api/schema";
 import { CopilotSelectField } from "./select-field";
 import { CopilotTextField } from "./text-field";
 

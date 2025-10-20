@@ -1,8 +1,7 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-
 import { lucia, validateRequest } from "@/server/auth";
 import { getPosthog } from "@/server/posthog";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export async function GET(): Promise<Response> {
   const { session } = await validateRequest();
@@ -20,7 +19,7 @@ export async function GET(): Promise<Response> {
   (await cookies()).set(
     sessionCookie.name,
     sessionCookie.value,
-    sessionCookie.attributes,
+    sessionCookie.attributes
   );
   posthog.flush();
   return redirect("/");

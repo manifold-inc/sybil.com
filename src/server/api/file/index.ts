@@ -1,14 +1,14 @@
+import { env } from "@/env.mjs";
+import { File, genId } from "@/schema/schema";
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import { S3 } from "@/server/s3";
+import { createLogger } from "@/utils/logger";
 import { DeleteObjectsCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import to from "await-to-js";
 import { eq, inArray } from "drizzle-orm";
 import { z } from "zod";
 
-import { env } from "@/env.mjs";
-import { File, genId } from "@/schema/schema";
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { S3 } from "@/server/s3";
-import { createLogger } from "@/utils/logger";
 import { MainSchema } from "../schema";
 
 export const CreateFile = z.object({
@@ -46,7 +46,7 @@ export const fileRouter = createTRPCRouter({
             Tagging: String(publicUserId),
             ContentType: input.mime,
           }),
-          { expiresIn: 500 }, // this link will be invalid after 500s
+          { expiresIn: 500 } // this link will be invalid after 500s
         ),
         ctx.db.insert(File).values({
           userId: Number(ctx.user.id),
@@ -70,7 +70,7 @@ export const fileRouter = createTRPCRouter({
     .input(
       z.object({
         keys: z.string().min(1).array().min(1),
-      }),
+      })
     )
     .mutation(async ({ ctx, input }) => {
       const [err] = await to(
@@ -80,8 +80,8 @@ export const fileRouter = createTRPCRouter({
             Delete: {
               Objects: input.keys.map((k) => ({ Key: k })),
             },
-          }),
-        ),
+          })
+        )
       );
       if (err) {
         logger.error("failed to delete files", {

@@ -1,24 +1,5 @@
 "use client";
 
-import type { Dispatch, SetStateAction } from "react";
-import { useCallback, useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { useMutation } from "@tanstack/react-query";
-import clsx from "clsx";
-import {
-  ChevronDown,
-  ChevronUp,
-  Copy,
-  List,
-  Loader2,
-  RotateCw,
-} from "lucide-react";
-import { tryCatch } from "rambda";
-import { toast } from "sonner";
-import { match } from "ts-pattern";
-
 import { Card } from "@/_components/cards";
 import { Markdown } from "@/_components/markdown";
 import { Skeleton } from "@/_components/ui/skeleton";
@@ -30,6 +11,25 @@ import { useControllerStore } from "@/store/controller";
 import { useModelStore } from "@/store/model";
 import { copyToClipboard } from "@/utils/os";
 import { search } from "@/utils/search";
+import { useMutation } from "@tanstack/react-query";
+import clsx from "clsx";
+import {
+  ChevronDown,
+  ChevronUp,
+  Copy,
+  List,
+  Loader2,
+  RotateCw,
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { tryCatch } from "rambda";
+import type { Dispatch, SetStateAction } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
+import { match } from "ts-pattern";
+
 import type { Data } from "./reducer";
 
 export default function ClientPage({
@@ -106,7 +106,7 @@ function Thread(props: {
                   if (text.endsWith(UNEXPECTED_TOKEN)) {
                     text = text.slice(
                       0,
-                      Math.max(0, text.length - UNEXPECTED_TOKEN.length),
+                      Math.max(0, text.length - UNEXPECTED_TOKEN.length)
                     );
                   }
                 });
@@ -137,7 +137,7 @@ function Thread(props: {
           onError() {
             setIsLoading(false);
           },
-        },
+        }
       );
 
       controllerStore.insert("query", controller);
@@ -145,7 +145,7 @@ function Thread(props: {
         controllerStore.stop("query");
       });
     },
-    [controllerStore, props],
+    [controllerStore, props]
   );
 
   const retry = useCallback(() => {
@@ -294,7 +294,7 @@ function Thread(props: {
               if (!s) return;
               const hostname = tryCatch(
                 () => new URL(s.url).hostname.replace("www.", ""),
-                "",
+                ""
               )(null);
               return (
                 <div className="block py-4" key={s.url}>
@@ -410,7 +410,7 @@ function AnswerBox({
       ref={containerRef}
       className={clsx(
         "bg-mf-ash-500 flex flex-col rounded-md p-4 pt-2 text-gray-700 sm:p-6 dark:border-zinc-700 dark:text-zinc-300",
-        isCopying ? "ring-mf-green-500 inset-0 ring-2" : "border-0",
+        isCopying ? "ring-mf-green-500 inset-0 ring-2" : "border-0"
       )}
     >
       <div className="flex items-center gap-2">
@@ -436,7 +436,7 @@ function AnswerBox({
               <Copy
                 className={clsx(
                   "h-4 w-4 sm:h-5 sm:w-5",
-                  isCopying && "text-mf-green-500",
+                  isCopying && "text-mf-green-500"
                 )}
               />
             </button>
@@ -447,7 +447,7 @@ function AnswerBox({
       <div
         className={clsx(
           `flex flex-col gap-2 overflow-hidden transition-[margin]`,
-          isOpen ? "mb-0 max-h-full" : "-mb-2 h-28 pb-2",
+          isOpen ? "mb-0 max-h-full" : "-mb-2 h-28 pb-2"
         )}
         style={{
           maskImage:

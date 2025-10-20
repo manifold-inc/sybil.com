@@ -1,10 +1,9 @@
-import { cache } from "react";
-import { cookies } from "next/headers";
-import { Google } from "arctic";
-import { Lucia, type Session, type User } from "lucia";
-
 import { env } from "@/env.mjs";
 import { adapter } from "@/schema/db";
+import { Google } from "arctic";
+import { Lucia, type Session, type User } from "lucia";
+import { cookies } from "next/headers";
+import { cache } from "react";
 
 // IMPORTANT!
 declare module "lucia" {
@@ -41,7 +40,7 @@ export const lucia = new Lucia(adapter, {
 export const google = new Google(
   env.GOOGLE_CLIENT_ID,
   env.GOOGLE_CLIENT_SECRET,
-  env.GOOGLE_REDIRECT_URI,
+  env.GOOGLE_REDIRECT_URI
 );
 
 export const uncachedValidateRequest = async (): Promise<
@@ -60,7 +59,7 @@ export const uncachedValidateRequest = async (): Promise<
       (await cookies()).set(
         sessionCookie.name,
         sessionCookie.value,
-        sessionCookie.attributes,
+        sessionCookie.attributes
       );
     }
     if (!result.session) {
@@ -68,7 +67,7 @@ export const uncachedValidateRequest = async (): Promise<
       (await cookies()).set(
         sessionCookie.name,
         sessionCookie.value,
-        sessionCookie.attributes,
+        sessionCookie.attributes
       );
     }
   } catch {

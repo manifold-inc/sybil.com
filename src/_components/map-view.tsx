@@ -7,7 +7,7 @@ export function MapView(props: {
     <iframe
       className={props.className}
       src={`https://maps.google.com/maps?hl=en&q=${encodeURI(
-        props.location,
+        props.location
       )}+(Test)&t=&z=${props.zoom ?? 14}&ie=UTF8&iwloc=B&output=embed`}
     ></iframe>
   );

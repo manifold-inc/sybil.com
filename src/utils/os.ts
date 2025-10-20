@@ -19,7 +19,7 @@ export function isClientSide() {
 export function compressImage(
   base64Image: string,
   width: number,
-  height: number,
+  height: number
 ): Promise<string> {
   return new Promise((resolve, reject) => {
     // Create an Image object

@@ -1,12 +1,11 @@
-import { TRPCError } from "@trpc/server";
-import { eq } from "drizzle-orm";
-import { z } from "zod";
-
 import { env } from "@/env.mjs";
 import { db } from "@/schema/db";
 import { User } from "@/schema/schema";
 import { stripe } from "@/server/api/stripe/stripe";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import { TRPCError } from "@trpc/server";
+import { eq } from "drizzle-orm";
+import { z } from "zod";
 
 export const stripeRouter = createTRPCRouter({
   createCheckoutSession: protectedProcedure

@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Path } from "@/constant";
 import Image from "next/image";
 import Link from "next/link";
-
-import { Path } from "@/constant";
+import { useEffect, useState } from "react";
 
 interface TrendingCarouselProps {
   trendings: string[];

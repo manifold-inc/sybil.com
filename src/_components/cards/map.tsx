@@ -1,4 +1,5 @@
 import type { CardSchema } from "@/server/api/schema";
+
 import { MapView } from "../map-view";
 import { getCardSizeStyle } from "./utils";
 

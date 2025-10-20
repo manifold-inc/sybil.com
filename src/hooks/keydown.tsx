@@ -13,7 +13,7 @@ export const useKeyDown = (callback: () => void, keys: string[]) => {
         callback();
       }
     },
-    [callback, keys],
+    [callback, keys]
   );
   useEffect(() => {
     document.addEventListener("keydown", onKeyDown);

@@ -1,6 +1,5 @@
-import { RadioGroup } from "@headlessui/react";
-
 import type { PromptInputSchema } from "@/server/api/schema";
+import { RadioGroup } from "@headlessui/react";
 
 export function CopilotSelectField(props: {
   field: PromptInputSchema.SelectField;

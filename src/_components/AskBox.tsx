@@ -1,15 +1,14 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Combobox } from "@headlessui/react";
-import { clsx } from "clsx";
-import { Search } from "lucide-react";
-
 import ModelSelector from "@/_components/ModelSelector";
 import { emitCustomEvent, useCustomEvent } from "@/hooks/event";
 import { useKeyDown } from "@/hooks/keydown";
 import { Locale } from "@/locales";
+import { Combobox } from "@headlessui/react";
+import { clsx } from "clsx";
+import { Search } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function AskBox(params: {
   query?: string;
@@ -61,7 +60,7 @@ export default function AskBox(params: {
           <div className="relative z-10">
             <div
               className={clsx(
-                "border-mf-new-500 bg-mf-new-700 z-10 flex h-fit w-full items-center rounded-full border py-1.5 pr-3.5 pl-2 transition-colors",
+                "border-mf-new-500 bg-mf-new-700 z-10 flex h-fit w-full items-center rounded-full border py-1.5 pr-3.5 pl-2 transition-colors"
               )}
             >
               <ModelSelector />
@@ -101,7 +100,7 @@ export default function AskBox(params: {
                       "h-5 w-5 transition-colors",
                       query.length === 0
                         ? "text-mf-ash-500"
-                        : "text-mf-milk-300",
+                        : "text-mf-milk-300"
                     )}
                   />
                 </button>

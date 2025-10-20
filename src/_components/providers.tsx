@@ -1,13 +1,12 @@
 "use client";
 
-import type { PropsWithChildren } from "react";
-import { createContext, useContext, useEffect } from "react";
-import posthog from "posthog-js";
-import { PostHogProvider, usePostHog } from "posthog-js/react";
-
 import { env } from "@/env.mjs";
 import { reactClient, TRPCReactProvider } from "@/trpc/react";
 import type { RouterOutputs } from "@/trpc/shared";
+import posthog from "posthog-js";
+import { PostHogProvider, usePostHog } from "posthog-js/react";
+import type { PropsWithChildren } from "react";
+import { createContext, useContext, useEffect } from "react";
 
 if (typeof window !== "undefined") {
   posthog.init(env.NEXT_PUBLIC_POSTHOG_KEY, {

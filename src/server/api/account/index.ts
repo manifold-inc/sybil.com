@@ -1,11 +1,11 @@
-import { cookies } from "next/headers";
+import { ApiKey, genId, User } from "@/schema/schema";
+import { lucia } from "@/server/auth";
 import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
 import { Scrypt } from "lucia";
+import { cookies } from "next/headers";
 import { z } from "zod";
 
-import { ApiKey, genId, User } from "@/schema/schema";
-import { lucia } from "@/server/auth";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const accountRouter = createTRPCRouter({
@@ -23,7 +23,7 @@ export const accountRouter = createTRPCRouter({
         });
       const validPassword = await new Scrypt().verify(
         user.password,
-        input.password,
+        input.password
       );
       if (!validPassword)
         throw new TRPCError({
@@ -35,7 +35,7 @@ export const accountRouter = createTRPCRouter({
       (await cookies()).set(
         sessionCookie.name,
         sessionCookie.value,
-        sessionCookie.attributes,
+        sessionCookie.attributes
       );
     }),
   createAccount: publicProcedure
@@ -43,7 +43,7 @@ export const accountRouter = createTRPCRouter({
       z.object({
         email: z.string(),
         password: z.string(),
-      }),
+      })
     )
     .mutation(async ({ ctx, input }) => {
       const { email, password } = input;
@@ -81,7 +81,7 @@ export const accountRouter = createTRPCRouter({
       (await cookies()).set(
         sessionCookie.name,
         sessionCookie.value,
-        sessionCookie.attributes,
+        sessionCookie.attributes
       );
       return;
     }),

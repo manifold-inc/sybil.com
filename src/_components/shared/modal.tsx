@@ -1,5 +1,5 @@
-import { Fragment, type PropsWithChildren } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { Fragment, type PropsWithChildren } from "react";
 
 export default function Modal({
   isOpen,

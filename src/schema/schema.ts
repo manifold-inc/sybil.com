@@ -108,7 +108,7 @@ export const Request = mysqlTable("request", {
   totalTime: int("total_time").notNull(),
   createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
   modelId: bigint("model_id", { unsigned: true, mode: "number" }).references(
-    () => Model.id,
+    () => Model.id
   ),
 });
 

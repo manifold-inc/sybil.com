@@ -1,7 +1,7 @@
-import { env } from "process";
 import { Client } from "@planetscale/database";
 import { config } from "dotenv";
 import { drizzle } from "drizzle-orm/planetscale-serverless";
+import { env } from "process";
 
 import { LuciaAdapter } from "./lucia_adapter";
 import { Session, User } from "./schema";

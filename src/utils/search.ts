@@ -1,11 +1,10 @@
+import { Path } from "@/constant";
+import type { SearchSchema } from "@/server/api/schema";
+import { prettyObject } from "@/utils/format";
 import {
   EventStreamContentType,
   fetchEventSource,
 } from "@fortaine/fetch-event-source";
-
-import { Path } from "@/constant";
-import type { SearchSchema } from "@/server/api/schema";
-import { prettyObject } from "@/utils/format";
 
 type FinishReason = "abort" | "unexpected" | "normal" | "unauthorized";
 
@@ -35,7 +34,7 @@ export function search(
     onChunk: (chunk: SearchSchema.SearchResponse) => void;
     onFinished: (reason: FinishReason) => void;
     onError?: (e: Error) => void;
-  },
+  }
 ) {
   const chatPayload = {
     model: params.model,
@@ -76,7 +75,7 @@ export function search(
   const chatApiUrl = Path.API.ChatCompletions;
   if (!chatApiUrl) {
     throw new Error(
-      "NEXT_PUBLIC_CHAT_API environment variable is not configured",
+      "NEXT_PUBLIC_CHAT_API environment variable is not configured"
     );
   }
 

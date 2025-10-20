@@ -1,12 +1,11 @@
 "use client";
 
-import React from "react";
+import AskBox from "@/_components/AskBox";
+import UserBox from "@/_components/UserBox";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-import AskBox from "@/_components/AskBox";
-import UserBox from "@/_components/UserBox";
+import React from "react";
 
 export function NavBar({ query }: { query: string }) {
   const pathname = usePathname();

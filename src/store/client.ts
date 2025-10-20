@@ -1,10 +1,9 @@
+import { StoreKey } from "@/constant";
+import type { ThreadFile } from "@/hooks/file";
 import { clone } from "rambda";
 import { create } from "zustand";
 import { combine, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-
-import { StoreKey } from "@/constant";
-import type { ThreadFile } from "@/hooks/file";
 
 export const useClientStore = create(
   persist(
@@ -39,11 +38,11 @@ export const useClientStore = create(
               });
             },
           };
-        },
-      ),
+        }
+      )
     ),
     {
       name: StoreKey.Client,
-    },
-  ),
+    }
+  )
 );

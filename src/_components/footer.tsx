@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { InfoIcon } from "lucide-react";
+import Link from "next/link";
 
 import ChromeExtension from "./ChromeExtension";
 

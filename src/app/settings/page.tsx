@@ -1,15 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { redirect } from "next/navigation";
-import { CreditCardIcon, KeyIcon } from "@heroicons/react/24/outline";
-import { motion } from "framer-motion";
-
 import { ActionButton } from "@/_components/ActionButton";
 import { useAuth } from "@/_components/providers";
 import { APIKeysSettings } from "@/_components/settings/APIKeysSettings";
 import { BillingSettings } from "@/_components/settings/BillingSettings";
 import { showTargonToast } from "@/_components/TargonToast";
+import { CreditCardIcon, KeyIcon } from "@heroicons/react/24/outline";
+import { motion } from "framer-motion";
+import { redirect } from "next/navigation";
+import { useState } from "react";
 
 type SettingsTab = "api-keys" | "billing";
 

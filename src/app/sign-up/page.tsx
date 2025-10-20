@@ -1,16 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useAuth } from "@/_components/providers";
+import { reactClient } from "@/trpc/react";
+import clsx from "clsx";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import clsx from "clsx";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useState } from "react";
+import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
-
-import { useAuth } from "@/_components/providers";
-import { reactClient } from "@/trpc/react";
 
 type Inputs = {
   email: string;

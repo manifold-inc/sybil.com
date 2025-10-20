@@ -1,14 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import NextImage from "next/image";
-import Link from "next/link";
+import { Path } from "@/constant";
 import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import lozad from "lozad";
+import NextImage from "next/image";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
-
-import { Path } from "@/constant";
 
 const Image = z.object({
   url: z.string(),
@@ -34,7 +33,7 @@ export const Images = ({ query }: { query: string }) => {
   const [page, setPage] = useState(1);
   const lastPage = useRef(0);
   const [images, setImages] = useState<z.infer<typeof ImagesResponseSchema>>(
-    [],
+    []
   );
   const imageQuery = useMutation({
     mutationFn: async (p: number) => {
@@ -86,7 +85,7 @@ export const Images = ({ query }: { query: string }) => {
             key={idx}
             className={clsx(
               "m-2 flex-grow",
-              idx >= loaded + CONCURRENT && "hidden",
+              idx >= loaded + CONCURRENT && "hidden"
             )}
           >
             <Link href={img.url} target="_blank" className="h-56">

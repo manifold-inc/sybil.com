@@ -1,9 +1,7 @@
 "use client";
 
 import FlipClockCountdown from "@leenguyen/react-flip-clock-countdown";
-
 import "@leenguyen/react-flip-clock-countdown/dist/index.css";
-
 import { useEffect, useState } from "react";
 
 export default function Countdown() {

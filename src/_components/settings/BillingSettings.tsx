@@ -1,6 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Card } from "@/_components/Card";
+import { CREDIT_PER_DOLLAR } from "@/constants";
+import { reactClient } from "@/trpc/react";
 import {
   ArrowPathIcon,
   CreditCardIcon,
@@ -9,10 +11,7 @@ import {
   WalletIcon,
 } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
-
-import { Card } from "@/_components/Card";
-import { CREDIT_PER_DOLLAR } from "@/constants";
-import { reactClient } from "@/trpc/react";
+import { useMemo, useState } from "react";
 
 export function BillingSettings() {
   const { data: user } = reactClient.account.getUser.useQuery();

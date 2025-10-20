@@ -1,8 +1,7 @@
+import { ActionButton } from "@/_components/ActionButton";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-
-import { ActionButton } from "@/_components/ActionButton";
 
 export function TargonToast({
   text,
@@ -54,7 +53,7 @@ export function showTargonToast(
   text: string,
   buttonText?: string,
   buttonLink?: string,
-  buttonOnClick?: () => void,
+  buttonOnClick?: () => void
 ) {
   return toast(
     <TargonToast
@@ -70,6 +69,6 @@ export function showTargonToast(
         border: "0px",
         borderRadius: "0.25rem",
       },
-    },
+    }
   );
 }

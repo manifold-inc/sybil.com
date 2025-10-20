@@ -1,6 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { ActionButton } from "@/_components/ActionButton";
+import { Card } from "@/_components/Card";
+import { showTargonToast } from "@/_components/TargonToast";
+import { reactClient } from "@/trpc/react";
+import { copyToClipboard } from "@/utils/utils";
 import {
   EyeIcon,
   EyeSlashIcon,
@@ -18,12 +22,7 @@ import {
   Square2StackIcon as Square2StackIconSolid,
 } from "@heroicons/react/24/solid";
 import { motion } from "framer-motion";
-
-import { ActionButton } from "@/_components/ActionButton";
-import { Card } from "@/_components/Card";
-import { showTargonToast } from "@/_components/TargonToast";
-import { reactClient } from "@/trpc/react";
-import { copyToClipboard } from "@/utils/utils";
+import { useState } from "react";
 
 export function APIKeysSettings() {
   const [editingKey, setEditingKey] = useState<string | null>(null);
@@ -49,7 +48,7 @@ export function APIKeysSettings() {
   };
 
   const formatDateDots = (
-    dateInput: Date | string | number | null | undefined,
+    dateInput: Date | string | number | null | undefined
   ) => {
     if (!dateInput) return "";
     const date = new Date(dateInput);

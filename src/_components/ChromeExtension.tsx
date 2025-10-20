@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const EXT_URL =
   "https://chromewebstore.google.com/detail/sybil-search/cepcnmnlgpjhcmdjmgoadcmlbkhihlof";

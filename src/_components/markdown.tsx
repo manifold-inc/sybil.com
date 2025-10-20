@@ -1,21 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import ReactMarkdown from "react-markdown";
-
-import "katex/dist/katex.min.css";
-
-import type { RefObject } from "react";
-import React, { useEffect, useRef, useState } from "react";
+import { copyToClipboard } from "@/utils/os";
 import clsx from "clsx";
+import "katex/dist/katex.min.css";
 import { Copy } from "lucide-react";
 import mermaid from "mermaid";
+import type { RefObject } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import ReactMarkdown from "react-markdown";
 import RehypeHighlight from "rehype-highlight";
 import RemarkBreaks from "remark-breaks";
 import RemarkGfm from "remark-gfm";
 import { useDebouncedCallback } from "use-debounce";
 
-import { copyToClipboard } from "@/utils/os";
 import { Skeleton } from "./ui/skeleton";
 
 export function Mermaid(props: { code: string }) {
@@ -158,14 +156,14 @@ export function Markdown(
     parentRef?: RefObject<HTMLDivElement>;
     defaultShow?: boolean;
     isLoading: boolean;
-  } & React.DOMAttributes<HTMLDivElement>,
+  } & React.DOMAttributes<HTMLDivElement>
 ) {
   const mdRef = useRef<HTMLDivElement>(null);
 
   return (
     <div
       className={clsx(
-        "prose-sm sm:prose-lg text-justify [&_p]:!my-2 [&_p]:!leading-tight",
+        "prose-sm sm:prose-lg text-justify [&_p]:!my-2 [&_p]:!leading-tight"
       )}
       ref={mdRef}
       // eslint-disable-next-line react/prop-types

@@ -1,7 +1,7 @@
+import { NavBar } from "@/_components/navbar";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
-import { NavBar } from "@/_components/navbar";
 import Thread from "./ClientPage";
 
 export async function generateMetadata(props: {

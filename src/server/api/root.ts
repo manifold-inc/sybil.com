@@ -1,7 +1,7 @@
+import { createTRPCRouter } from "@/server/api/trpc";
 import type { inferReactQueryProcedureOptions } from "@trpc/react-query";
 import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 
-import { createTRPCRouter } from "@/server/api/trpc";
 import { accountRouter } from "./account";
 import { fileRouter } from "./file";
 import { apiKeyRouter } from "./keys";

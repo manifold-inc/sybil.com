@@ -1,6 +1,5 @@
-import { PostHog } from "posthog-node";
-
 import { env } from "@/env.mjs";
+import { PostHog } from "posthog-node";
 
 export const getPosthog = () => {
   return new PostHog(env.NEXT_PUBLIC_POSTHOG_KEY, {

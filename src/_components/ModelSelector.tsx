@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
-import { clsx } from "clsx";
-
 import { useModelStore } from "@/store/model";
+import { clsx } from "clsx";
+import Image from "next/image";
+import { useState } from "react";
 
 const MODEL_OPTIONS: {
   name: string;
@@ -95,7 +94,7 @@ export default function ModelSelector() {
       <div
         className={clsx(
           "border-mf-new-500 relative flex min-h-8 min-w-8 cursor-pointer items-center justify-center rounded-full border transition-colors",
-          isHovering ? "bg-mf-green-500" : "bg-mf-new-600",
+          isHovering ? "bg-mf-green-500" : "bg-mf-new-600"
         )}
         style={{ zIndex: 20 }}
         onMouseEnter={() => !blockHover && setIsHovering(true)}
@@ -133,7 +132,7 @@ export default function ModelSelector() {
                   "animate-in fade-in zoom-in pointer-events-auto absolute flex items-center justify-center rounded-full border transition-all duration-200",
                   model.disabled
                     ? "border-mf-new-500/50 bg-mf-new-600/40 cursor-not-allowed opacity-50"
-                    : "border-mf-new-500 bg-mf-new-600/80 hover:bg-mf-new-600 hover:scale-110",
+                    : "border-mf-new-500 bg-mf-new-600/80 hover:bg-mf-new-600 hover:scale-110"
                 )}
                 style={{
                   width: "32px",
@@ -151,7 +150,7 @@ export default function ModelSelector() {
                   height={14}
                   className={clsx(
                     "h-3.5 w-3.5 flex-shrink-0",
-                    model.disabled && "opacity-60 grayscale",
+                    model.disabled && "opacity-60 grayscale"
                   )}
                 />
               </button>

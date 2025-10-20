@@ -14,7 +14,7 @@ export class LuciaAdapter implements Adapter {
   constructor(
     db: PlanetScaleDatabase,
     sessionTable: typeof Session,
-    userTable: typeof User,
+    userTable: typeof User
   ) {
     this.db = db;
     this.sessionTable = sessionTable;
@@ -34,7 +34,7 @@ export class LuciaAdapter implements Adapter {
   }
 
   public async getSessionAndUser(
-    sessionId: string,
+    sessionId: string
   ): Promise<[session: DatabaseSession | null, user: DatabaseUser | null]> {
     const result = await this.db
       .select({
@@ -44,7 +44,7 @@ export class LuciaAdapter implements Adapter {
       .from(this.sessionTable)
       .innerJoin(
         this.userTable,
-        eq(this.sessionTable.userId, this.userTable.id),
+        eq(this.sessionTable.userId, this.userTable.id)
       )
       .where(eq(this.sessionTable.id, sessionId));
     if (result.length !== 1) return [null, null];
@@ -77,7 +77,7 @@ export class LuciaAdapter implements Adapter {
 
   public async updateSessionExpiration(
     sessionId: string,
-    expiresAt: Date,
+    expiresAt: Date
   ): Promise<void> {
     await this.db
       .update(this.sessionTable)
@@ -95,7 +95,7 @@ export class LuciaAdapter implements Adapter {
 }
 
 function transformIntoDatabaseSession(
-  raw: InferSelectModel<typeof Session>,
+  raw: InferSelectModel<typeof Session>
 ): DatabaseSession {
   const { id, userId, expiresAt, ...attributes } = raw;
   return {
@@ -107,7 +107,7 @@ function transformIntoDatabaseSession(
 }
 
 function transformIntoDatabaseUser(
-  raw: InferSelectModel<typeof User>,
+  raw: InferSelectModel<typeof User>
 ): DatabaseUser {
   const { id, ...attributes } = raw;
   return {

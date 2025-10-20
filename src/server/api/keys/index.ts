@@ -1,8 +1,7 @@
-import { and, desc, eq } from "drizzle-orm";
-import { z } from "zod";
-
 import { ApiKey, genId } from "@/schema/schema";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import { and, desc, eq } from "drizzle-orm";
+import { z } from "zod";
 
 export const apiKeyRouter = createTRPCRouter({
   listApiKeys: protectedProcedure.query(async ({ ctx }) => {
@@ -38,7 +37,7 @@ export const apiKeyRouter = createTRPCRouter({
       await ctx.db
         .delete(ApiKey)
         .where(
-          and(eq(ApiKey.userId, ctx.user.id), eq(ApiKey.id, input.apiKey)),
+          and(eq(ApiKey.userId, ctx.user.id), eq(ApiKey.id, input.apiKey))
         );
     }),
   updateApiKeyName: protectedProcedure
@@ -48,7 +47,7 @@ export const apiKeyRouter = createTRPCRouter({
         .update(ApiKey)
         .set({ name: input.name })
         .where(
-          and(eq(ApiKey.userId, ctx.user.id), eq(ApiKey.id, input.apiKey)),
+          and(eq(ApiKey.userId, ctx.user.id), eq(ApiKey.id, input.apiKey))
         );
     }),
 });

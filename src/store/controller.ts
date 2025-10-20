@@ -31,6 +31,6 @@ export const useControllerStore = create(
         },
       };
       return methods;
-    },
-  ),
+    }
+  )
 );

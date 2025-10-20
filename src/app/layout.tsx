@@ -1,20 +1,17 @@
-import type { Metadata } from "next";
-
-import "@/styles/globals.css";
-
-import { Suspense } from "react";
-import { Poppins, Saira, Tomorrow } from "next/font/google";
-import Image from "next/image";
-import { Analytics } from "@vercel/analytics/react";
-import { AxiomWebVitals } from "next-axiom";
-import { Toaster } from "sonner";
-
 import Countdown from "@/_components/Countdown";
 import Footer from "@/_components/footer";
 import Header from "@/_components/header";
 import PostHogPageView from "@/_components/PosthogPageView";
 import { WithGlobalProvider } from "@/_components/providers";
 import { env } from "@/env.mjs";
+import "@/styles/globals.css";
+import { Analytics } from "@vercel/analytics/react";
+import type { Metadata } from "next";
+import { AxiomWebVitals } from "next-axiom";
+import { Poppins, Saira, Tomorrow } from "next/font/google";
+import Image from "next/image";
+import { Suspense } from "react";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://sybil.com"),

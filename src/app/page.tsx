@@ -1,9 +1,8 @@
-import { Suspense } from "react";
-import Image from "next/image";
-
 import AskBox from "@/_components/AskBox";
 import ClientUtils from "@/_components/ClientUtils";
 import TrendingCarousel from "@/_components/TrendingCarousel";
+import Image from "next/image";
+import { Suspense } from "react";
 
 export default function Home() {
   const trendings = [

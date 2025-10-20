@@ -180,7 +180,7 @@ export namespace MainSchema {
       z.object({
         forInputId: UUID,
         content: UserInputSchema.Field,
-      }),
+      })
     ),
   });
   export type UserInputPayload = z.infer<typeof UserInputPayload>;

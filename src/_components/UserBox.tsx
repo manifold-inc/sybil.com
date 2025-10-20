@@ -1,8 +1,8 @@
 "use client";
 
+import { ActionButton } from "@/_components/ActionButton";
 import Image from "next/image";
 
-import { ActionButton } from "@/_components/ActionButton";
 import { useAuth } from "./providers";
 
 export default function UserBox() {

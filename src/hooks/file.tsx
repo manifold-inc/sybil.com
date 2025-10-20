@@ -1,10 +1,3 @@
-import { useState } from "react";
-import to from "await-to-js";
-import { Box, FolderPlus, RotateCw, Trash, Upload } from "lucide-react";
-import { nanoid } from "nanoid";
-import { toast } from "sonner";
-import { match } from "ts-pattern";
-
 import { useAuth } from "@/_components/providers";
 import Modal from "@/_components/shared/modal";
 import { ACCEPT_FILES } from "@/constant";
@@ -12,13 +5,19 @@ import { Locale } from "@/locales";
 import { reactClient } from "@/trpc/react";
 import { formatBytes } from "@/utils/format";
 import { createLogger } from "@/utils/logger";
+import to from "await-to-js";
+import { Box, FolderPlus, RotateCw, Trash, Upload } from "lucide-react";
+import { nanoid } from "nanoid";
+import { useState } from "react";
+import { toast } from "sonner";
+import { match } from "ts-pattern";
 
 const logger = createLogger({ prefix: "[File]" });
 
 function uploadFileToS3(
   presignedUrl: string,
   file: File,
-  onProgress?: (percent: number) => void,
+  onProgress?: (percent: number) => void
 ): Promise<{ type: string; content: string }> {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
@@ -52,7 +51,7 @@ function uploadFileToS3(
     xhr.open("PUT", presignedUrl);
     xhr.setRequestHeader(
       "Content-Type",
-      file.type || "application/octet-stream",
+      file.type || "application/octet-stream"
     );
     xhr.send(file);
   });
@@ -92,7 +91,7 @@ export function FileListModel(props: {
         name: f.file.name,
         mime: f.file.type,
         size: f.file.size,
-      }),
+      })
     );
 
     if (error) {
@@ -109,7 +108,7 @@ export function FileListModel(props: {
     const [uploadError] = await to(
       uploadFileToS3(presigned?.presignedUrl, f.file, (percent) => {
         updateFile(f.id, (file) => (file.progress = percent));
-      }),
+      })
     );
 
     if (uploadError) {

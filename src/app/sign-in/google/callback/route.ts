@@ -1,14 +1,13 @@
-import { cookies } from "next/headers";
-import type { NextRequest } from "next/server";
-import { OAuth2RequestError } from "arctic";
-import { eq } from "drizzle-orm";
-import type { AxiomRequest } from "next-axiom";
-import { withAxiom } from "next-axiom";
-
 import { db } from "@/schema/db";
 import { genId, User } from "@/schema/schema";
 import { google, lucia } from "@/server/auth";
 import { getPosthog } from "@/server/posthog";
+import { OAuth2RequestError } from "arctic";
+import { eq } from "drizzle-orm";
+import type { AxiomRequest } from "next-axiom";
+import { withAxiom } from "next-axiom";
+import { cookies } from "next/headers";
+import type { NextRequest } from "next/server";
 
 async function handle(req: NextRequest): Promise<Response> {
   const axiomReq = req as unknown as AxiomRequest;
@@ -32,7 +31,7 @@ async function handle(req: NextRequest): Promise<Response> {
     if (e instanceof OAuth2RequestError) {
       const { message, description } = e;
       axiomReq.log.error(
-        `[google-callback] Token Error: ${message} ${description}`,
+        `[google-callback] Token Error: ${message} ${description}`
       );
     }
     return new Response(null, { status: 500 });
@@ -44,7 +43,7 @@ async function handle(req: NextRequest): Promise<Response> {
       headers: {
         Authorization: `Bearer ${tokens.accessToken}`,
       },
-    },
+    }
   );
   if (!response.ok) {
     axiomReq.log.error(`[google-callback] userinfo Error: ${response.status}`);
@@ -95,7 +94,7 @@ async function handle(req: NextRequest): Promise<Response> {
   (await cookies()).set(
     sessionCookie.name,
     sessionCookie.value,
-    sessionCookie.attributes,
+    sessionCookie.attributes
   );
   posthog.flush();
   return new Response(null, {
