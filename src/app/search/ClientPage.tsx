@@ -25,7 +25,7 @@ import { Skeleton } from "@/_components/ui/skeleton";
 import { Path } from "@/constant";
 import type { ThreadFile } from "@/hooks/file";
 import { Locale } from "@/locales";
-import type { SourceSchema } from "@/server/api/main/schema";
+import type { SourceSchema } from "@/server/api/schema";
 import { useControllerStore } from "@/store/controller";
 import { useModelStore } from "@/store/model";
 import { copyToClipboard } from "@/utils/os";

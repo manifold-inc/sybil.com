@@ -31,7 +31,7 @@ export default function UserBox() {
 
   return (
     <a
-      href="/sign-out"
+      href="/settings"
       className="bg-mf-green-500 flex h-9 w-9 items-center justify-center rounded-full"
     >
       <Image src="/user.svg" alt="SYBIL" width={16} height={16} />

@@ -1,4 +1,4 @@
-import type { CardSchema } from "@/server/api/main/schema";
+import type { CardSchema } from "@/server/api/schema";
 import { getCardSizeStyle } from "./utils";
 
 export function VideoCard(props: {

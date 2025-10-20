@@ -9,7 +9,7 @@ import { File, genId } from "@/schema/schema";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { S3 } from "@/server/s3";
 import { createLogger } from "@/utils/logger";
-import { MainSchema } from "../main/schema";
+import { MainSchema } from "../schema";
 
 export const CreateFile = z.object({
   name: z.string().min(1),

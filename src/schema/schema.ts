@@ -18,7 +18,7 @@ const nanoid = customAlphabet("0123456789abcdefghijklmnopqrstuvwxyz");
 export const genId = {
   user: () => "u_" + nanoid(30),
   session: () => "s_" + nanoid(30),
-  apiKey: () => "ak_" + nanoid(30),
+  apiKey: () => "ak_" + nanoid(29), // 3 + 29 = 32 chars to fit varchar(32)
   request: () => "req_" + nanoid(30),
   file: () => "f_" + nanoid(30),
 };

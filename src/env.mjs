@@ -13,6 +13,10 @@ export const env = createEnv({
     S3_API_KEY: z.string().min(1),
     S3_API_KEY_ID: z.string().min(1),
     S3_BUCKET_NAME: z.string().min(1),
+
+    STRIPE_SECRET_KEY: z.string(),
+    STRIPE_CREDIT_PRICE_ID: z.string(),
+    STRIPE_ENDPOINT_SECRET: z.string(),
   },
   client: {
     NEXT_PUBLIC_POSTHOG_KEY: z.string(),
@@ -20,6 +24,7 @@ export const env = createEnv({
     NEXT_PUBLIC_SEARCH_API: z.string().url(),
     NEXT_PUBLIC_CHAT_API: z.string().url().optional(),
     NEXT_PUBLIC_RELEASE_FLAG: z.string(),
+    NEXT_PUBLIC_APP_URL: z.string().url().optional(),
   },
 
   runtimeEnv: {
@@ -36,8 +41,13 @@ export const env = createEnv({
     S3_API_KEY_ID: process.env.S3_API_KEY_ID,
     S3_BUCKET_NAME: process.env.S3_BUCKET_NAME,
 
+    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+    STRIPE_CREDIT_PRICE_ID: process.env.STRIPE_CREDIT_PRICE_ID,
+    STRIPE_ENDPOINT_SECRET: process.env.STRIPE_ENDPOINT_SECRET,
+
     NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
     NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
   },
 
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,

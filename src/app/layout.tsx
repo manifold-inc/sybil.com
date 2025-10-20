@@ -16,27 +16,6 @@ import PostHogPageView from "@/_components/PosthogPageView";
 import { WithGlobalProvider } from "@/_components/providers";
 import { env } from "@/env.mjs";
 
-const poppins = Poppins({
-  subsets: ["latin"],
-  variable: "--font-poppins",
-  display: "swap",
-  weight: ["100", "200", "300", "400", "600", "700", "800", "900"],
-});
-
-const tomorrow = Tomorrow({
-  subsets: ["latin"],
-  weight: ["200", "300", "400", "500", "600", "700"],
-  variable: "--font-tomorrow",
-  display: "swap",
-});
-
-const saira = Saira({
-  subsets: ["latin"],
-  weight: ["200", "300", "400", "500", "600", "700"],
-  variable: "--font-saira",
-  display: "swap",
-});
-
 export const metadata: Metadata = {
   metadataBase: new URL("https://sybil.com"),
   title: "Sybil",
@@ -63,6 +42,27 @@ export const metadata: Metadata = {
   },
 };
 
+const tomorrow = Tomorrow({
+  subsets: ["latin"],
+  variable: "--font-tomorrow",
+  display: "swap",
+  weight: ["200", "300", "400", "500", "600", "700"],
+});
+
+const saira = Saira({
+  subsets: ["latin"],
+  variable: "--font-saira",
+  display: "swap",
+  weight: ["100", "200", "300", "400", "600", "700", "800", "900"],
+});
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  variable: "--font-poppins",
+  display: "swap",
+  weight: ["100", "200", "300", "400", "600", "700", "800", "900"],
+});
+
 export default function RootLayout({
   children,
 }: {
@@ -72,13 +72,13 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${poppins.variable} ${tomorrow.variable} ${saira.variable} bg-mf-new-900 text-mf-silver-500`}
+      className={`${poppins.variable} ${saira.variable} ${tomorrow.variable} bg-mf-new-900 text-mf-silver-500 no-scrollbar`}
     >
       <head>
         <link rel="manifest" href="/site.webmanifest" />
       </head>
 
-      <body className="font-body">
+      <body>
         <WithGlobalProvider>
           <Suspense fallback={null}>
             <PostHogPageView />

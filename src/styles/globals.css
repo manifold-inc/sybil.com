@@ -13,11 +13,27 @@
   --color-sgreen-600: #142900;
 
   /* Custom Colors - Manifold (mf) */
+  --color-mf-background: #000000;
+
   --color-mf-new-500: #1e1f26;
   --color-mf-new-600: #1a1b20;
   --color-mf-new-700: #15161b;
   --color-mf-new-800: #14151a;
   --color-mf-new-900: #121318;
+
+  --color-mf-noir-300: #28282d;
+  --color-mf-noir-500: #242427;
+  --color-mf-noir-600: #101010;
+  --color-mf-noir-700: #151518;
+  --color-mf-noir-800: #18181b;
+
+  --color-mf-metal-300: #242427;
+  --color-mf-metal-350: #171719;
+  --color-mf-metal-400: #111111;
+  --color-mf-metal-500: #0c0c0d;
+
+  --color-mf-card-dark: #101114;
+  --color-mf-card-light: #d3ecff;
 
   --color-mf-safety-300: #ff9b7a;
   --color-mf-safety-500: #ff8159;
@@ -40,12 +56,22 @@
   --color-mf-milk-500: #d7e5ff;
   --color-mf-milk-700: #aec0d6;
 
+  --color-mf-edge-300: #d7e5ff;
   --color-mf-edge-500: #c5dbff;
 
   --color-mf-blue-300: #aad6ff;
   --color-mf-blue-500: #7bc1ff;
   --color-mf-blue-700: #52abff;
   --color-mf-blue-900: #225d94;
+
+  --color-mf-sally-300: #aad6ff;
+  --color-mf-sally-400: #94ccff;
+  --color-mf-sally-500: #69c3ff;
+  --color-mf-sally-600: #5fb1ff;
+  --color-mf-sally-700: #52abff;
+
+  --color-mf-sybil-300: #84f5cc;
+  --color-mf-sybil-500: #58e8b4;
 
   --color-mf-green-100: #b1fadf;
   --color-mf-green-500: #57e8b4;
@@ -59,10 +85,9 @@
   --color-mf-gray-600: #475467;
 
   /* Font Families */
-  --font-family-body: var(--font-poppins);
-  --font-family-tomorrow: var(--font-tomorrow);
+  --font-family-sans: var(--font-poppins);
   --font-family-saira: var(--font-saira);
-  --font-family-poppins: var(--font-poppins);
+  --font-family-tomorrow: var(--font-tomorrow);
 
   /* Animations */
   --animate-fade-in: fade-in 1s ease-in;
@@ -148,6 +173,23 @@
 
 @plugin "@tailwindcss/typography";
 @plugin "@headlessui/tailwindcss";
+
+:root {
+  font-family: var(--font-family-sans);
+}
+
+.font-poppins {
+  font-family: var(--font-poppins);
+}
+
+.font-saira {
+  font-family: var(--font-family-saira);
+  font-weight: 400;
+}
+
+.font-tomorrow {
+  font-family: var(--font-family-tomorrow);
+}
 
 ::-webkit-scrollbar {
   --bar-width: 5px;

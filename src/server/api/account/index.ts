@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm";
 import { Scrypt } from "lucia";
 import { z } from "zod";
 
-import { genId, User } from "@/schema/schema";
+import { ApiKey, genId, User } from "@/schema/schema";
 import { lucia } from "@/server/auth";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
@@ -85,4 +85,21 @@ export const accountRouter = createTRPCRouter({
       );
       return;
     }),
+  getUser: publicProcedure.query(async ({ ctx }) => {
+    // Public so it doesn't error if not logged in
+    if (!ctx.user?.id) return null;
+    const [user] = await ctx.db
+      .select({
+        credits: User.credits,
+        id: User.id,
+        name: User.name,
+        email: User.email,
+        apiKey: ApiKey.id,
+      })
+      .from(User)
+      .innerJoin(ApiKey, eq(ApiKey.userId, User.id))
+      .where(eq(User.id, ctx.user.id))
+      .limit(1);
+    return user ?? null;
+  }),
 });

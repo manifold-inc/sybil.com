@@ -4,8 +4,8 @@ import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import { createTRPCRouter } from "@/server/api/trpc";
 import { accountRouter } from "./account";
 import { fileRouter } from "./file";
-import { mainRouter } from "./main";
-import { modelRouter } from "./routers/model";
+import { apiKeyRouter } from "./keys";
+import { stripeRouter } from "./stripe";
 
 /**
  * This is the primary router for your server.
@@ -13,10 +13,10 @@ import { modelRouter } from "./routers/model";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  main: mainRouter,
   file: fileRouter,
   account: accountRouter,
-  model: modelRouter,
+  apiKey: apiKeyRouter,
+  stripe: stripeRouter,
 });
 
 export type ReactQueryOptions = inferReactQueryProcedureOptions<AppRouter>;

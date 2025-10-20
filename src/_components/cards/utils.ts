@@ -1,4 +1,4 @@
-import { CardSchema } from "@/server/api/main/schema";
+import { CardSchema } from "@/server/api/schema";
 
 export function getCardSizeStyle(type: CardSchema.Size) {
   if (type === "auto") {

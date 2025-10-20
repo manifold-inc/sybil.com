@@ -1,4 +1,4 @@
-import type { PromptInputSchema } from "@/server/api/main/schema";
+import type { PromptInputSchema } from "@/server/api/schema";
 
 export function CopilotTextField(props: {
   field: PromptInputSchema.TextField;

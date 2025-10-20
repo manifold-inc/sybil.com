@@ -4,7 +4,7 @@ import {
 } from "@fortaine/fetch-event-source";
 
 import { Path } from "@/constant";
-import type { SearchSchema } from "@/server/api/main/schema";
+import type { SearchSchema } from "@/server/api/schema";
 import { prettyObject } from "@/utils/format";
 
 type FinishReason = "abort" | "unexpected" | "normal" | "unauthorized";
