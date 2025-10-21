@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/_components/providers";
-import { reactClient } from "@/trpc/react";
+import { api } from "@/trpc/react";
 import clsx from "clsx";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import Image from "next/image";
@@ -28,7 +28,7 @@ export default function Page() {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-  const signIn = reactClient.account.signIn.useMutation({
+  const signIn = api.account.signIn.useMutation({
     onError: (e) => {
       toast.error(e.message);
     },

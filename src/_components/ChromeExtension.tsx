@@ -18,7 +18,7 @@ export default function ChromeExtension() {
     <Link
       href={EXT_URL}
       target="_blank"
-      className="hidden pr-2 text-gray-800 sm:block dark:text-gray-200"
+      className="hidden pr-2 text-mf-silver-700 sm:block"
     >
       Make Sybil Default Search
     </Link>

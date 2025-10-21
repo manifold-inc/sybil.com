@@ -1,7 +1,7 @@
 "use client";
 
 import { env } from "@/env.mjs";
-import { reactClient, TRPCReactProvider } from "@/trpc/react";
+import { api, TRPCReactProvider } from "@/trpc/react";
 import type { RouterOutputs } from "@/trpc/shared";
 import posthog from "posthog-js";
 import { PostHogProvider, usePostHog } from "posthog-js/react";
@@ -31,7 +31,7 @@ const AuthContext = createContext<{
 });
 
 const AuthProvider = ({ children }: PropsWithChildren) => {
-  const user = reactClient.account.getUser.useQuery();
+  const user = api.account.getUser.useQuery();
   const posthog = usePostHog();
   let status: AuthStates = "UNAUTHED";
   if (user.data) status = "AUTHED";
