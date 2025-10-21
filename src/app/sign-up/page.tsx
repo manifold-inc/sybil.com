@@ -34,8 +34,8 @@ export default function Page() {
     onError: (e) => {
       toast.error(e.message);
     },
-    onSuccess: () => {
-      refetch();
+    onSuccess: async () => {
+      await refetch();
       router.push("/");
     },
   });

@@ -24,6 +24,12 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
               "x-trpc-source": "react",
             };
           },
+          fetch(url, options) {
+            return fetch(url, {
+              ...options,
+              credentials: "include",
+            });
+          },
         }),
       ],
     })
