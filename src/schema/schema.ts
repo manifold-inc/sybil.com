@@ -3,6 +3,7 @@ import {
   bigint,
   boolean,
   date,
+  decimal,
   int,
   json,
   mysqlEnum,
@@ -10,6 +11,7 @@ import {
   serial,
   text,
   timestamp,
+  tinyint,
   varchar,
 } from "drizzle-orm/mysql-core";
 import { customAlphabet } from "nanoid";
@@ -41,6 +43,8 @@ export const User = mysqlTable("user", {
   role: mysqlEnum("role", ["USER", "ADMIN"]).notNull().default("USER"),
   emailVerified: boolean("email_verified").notNull().default(false),
   twoFactorSecret: varchar("two_factor_secret", { length: 255 }),
+  planId: int("plan_id"),
+  monthlyRequests: int("monthly_requests"),
 });
 
 export const Session = mysqlTable("session", {
@@ -188,6 +192,47 @@ export const File = mysqlTable("file", {
   size: int("size").notNull(),
   name: text("name").notNull(),
   createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const SubscriptionPlan = mysqlTable("subscription_plan", {
+  id: int("id").primaryKey().autoincrement(),
+  displayName: varchar("display_name", { length: 64 }).notNull(),
+  monthlyFee: decimal("monthly_fee", { precision: 10, scale: 2 }).notNull(),
+  advertisedMonthlyRequests: bigint("advertised_monthly_requests", {
+    mode: "number",
+  }).notNull(),
+  active: boolean("active").notNull(),
+  createdAt: timestamp("created_at", { mode: "date" })
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: timestamp("updated_at", { mode: "date" })
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`),
+  enterprise: tinyint("enterprise").notNull().default(0),
+  billingMode: mysqlEnum("billing_mode", ["postpaid", "prepaid"])
+    .notNull()
+    .default("prepaid"),
+  stripePriceId: varchar("stripe_price_id", { length: 64 }).notNull(),
+});
+
+export const Subscription = mysqlTable("subscription", {
+  id: bigint("id", { mode: "number", unsigned: true })
+    .primaryKey()
+    .autoincrement(),
+  userId: bigint("user_id", {
+    unsigned: true,
+    mode: "number",
+  })
+    .notNull()
+    .references(() => User.id, { onDelete: "cascade" }),
+  subscriptionId: varchar("subscription_id", { length: 255 }).notNull(),
+  planId: int("plan_id").notNull(),
+  status: varchar("status", { length: 50 }).notNull(),
+  canceledAt: timestamp("canceled_at", { mode: "date" }).default(sql`NULL`),
+  createdAt: timestamp("created_at", { mode: "date" }).default(
+    sql`CURRENT_TIMESTAMP`
+  ),
+  endedAt: timestamp("ended_at", { mode: "date" }).default(sql`NULL`),
 });
 
 // Type exports

@@ -1,7 +1,7 @@
 "use client";
 
 import { Card } from "@/_components/Card";
-import { CREDIT_PER_DOLLAR } from "@/constants";
+import { CREDIT_PER_DOLLAR } from "@/constant";
 import { reactClient } from "@/trpc/react";
 import {
   ArrowPathIcon,

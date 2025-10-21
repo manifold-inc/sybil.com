@@ -1,4 +1,4 @@
-import { ApiKey, genId, User } from "@/schema/schema";
+import { ApiKey, genId, SubscriptionPlan, User } from "@/schema/schema";
 import { lucia } from "@/server/auth";
 import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
@@ -6,7 +6,7 @@ import { Scrypt } from "lucia";
 import { cookies } from "next/headers";
 import { z } from "zod";
 
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const accountRouter = createTRPCRouter({
   signIn: publicProcedure
@@ -101,5 +101,20 @@ export const accountRouter = createTRPCRouter({
       .where(eq(User.id, ctx.user.id))
       .limit(1);
     return user ?? null;
+  }),
+  getUserSubscription: protectedProcedure.query(async ({ ctx }) => {
+    const [subscription] = await ctx.db
+      .select({
+        planId: User.planId,
+        subscriptionName: SubscriptionPlan.displayName,
+        createdAt: User.createdAt,
+        stripeId: User.stripeCustomerId,
+      })
+      .from(User)
+      .where(eq(User.id, ctx.user.id))
+      .innerJoin(SubscriptionPlan, eq(SubscriptionPlan.id, User.planId));
+
+    if (!subscription) throw new TRPCError({ code: "UNAUTHORIZED" });
+    return subscription;
   }),
 });
