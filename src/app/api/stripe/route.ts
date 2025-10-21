@@ -4,7 +4,6 @@ import createSubscription from "@/utils/stripe/createSubscription";
 import deleteSubscription from "@/utils/stripe/deleteSubscription";
 import handleInvoicePaymentFailed from "@/utils/stripe/handleInvoicePaymentFailed";
 import handleInvoicePaymentSucceeded from "@/utils/stripe/handleInvoicePaymentSucceeded";
-import handleInvoiceUpcoming from "@/utils/stripe/handleInvoiceUpcoming";
 import handleSessionCompleted from "@/utils/stripe/handleSessionCompleted";
 import updateSubscription from "@/utils/stripe/updateSubscription";
 import type { NextRequest } from "next/server";

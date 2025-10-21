@@ -67,4 +67,39 @@ export const subscriptionPlans = createTRPCRouter({
 
       return { url: session.url };
     }),
+  getUserSubscription: protectedProcedure.query(async ({ ctx }) => {
+    const [subscription] = await ctx.db
+      .select({
+        planId: User.planId,
+        subscriptionName: SubscriptionPlan.displayName,
+        createdAt: User.createdAt,
+        stripeId: User.stripeCustomerId,
+      })
+      .from(User)
+      .where(eq(User.id, ctx.user.id))
+      .innerJoin(SubscriptionPlan, eq(SubscriptionPlan.id, User.planId));
+
+    if (!subscription) throw new TRPCError({ code: "UNAUTHORIZED" });
+    return subscription;
+  }),
+  manageSubscription: protectedProcedure.mutation(async ({ ctx }) => {
+    const { user } = ctx;
+
+    const [userData] = await db.select().from(User).where(eq(User.id, user.id));
+    if (!userData) throw new TRPCError({ code: "NOT_FOUND" });
+
+    const customerId = userData.stripeCustomerId;
+    if (!customerId) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "No Stripe customer found.",
+      });
+    }
+
+    const session = await stripe.billingPortal.sessions.create({
+      customer: customerId,
+      return_url: `${env.NEXT_PUBLIC_APP_URL}/settings`,
+    });
+    return { url: session.url };
+  }),
 });

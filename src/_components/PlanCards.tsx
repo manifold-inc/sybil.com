@@ -6,7 +6,6 @@ import { reactClient } from "@/trpc/react";
 import { RouterOutputs } from "@/trpc/shared";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 enum PlanStatus {
   UNAUTHED = "unauthed",
@@ -18,25 +17,15 @@ enum PlanStatus {
 
 type PlanOutput = RouterOutputs["subscriptionPlans"]["getPlans"][number];
 
-export function PlanCard({
-  plan,
-  clickedPlan,
-  onClick,
-}: {
-  plan: PlanOutput;
-  clickedPlan?: boolean;
-  onClick?: () => void;
-}) {
+export function PlanCard({ plan }: { plan: PlanOutput }) {
   const auth = useAuth();
   const router = useRouter();
   const { user } = useAuth();
 
-  // const { data: currentPlan } =
-  //   reactClient.account.getUserSubscription.useQuery(undefined, {
-  //     enabled: auth.status !== "LOADING",
-  //   });
-
-  const currentPlan = undefined;
+  const { data: currentPlan } =
+    reactClient.account.getUserSubscription.useQuery(undefined, {
+      enabled: auth.status !== "LOADING",
+    });
 
   const createSubscription =
     reactClient.subscriptionPlans.createSubscriptionUrl.useMutation({
@@ -47,80 +36,76 @@ export function PlanCard({
       },
     });
 
-  // const manageSubscription = api.stripe.manageSubscription.useMutation({
-  //   onSuccess: ({ url }) => {
-  //     if (url) {
-  //       window.location.href = url;
-  //     }
-  //   },
-  // });
+  const manageSubscription =
+    reactClient.subscriptionPlans.manageSubscription.useMutation({
+      onSuccess: ({ url }) => {
+        if (url) {
+          window.location.href = url;
+        }
+      },
+    });
 
-  // const getPlanStatus = (): PlanStatus | null => {
-  //   if (plan.displayName === "Targon Enterprise") return PlanStatus.ENTERPRISE;
-  //   if (!planDetails) return null;
-  //   if (!user) return PlanStatus.UNAUTHED;
-  //   if (!currentPlan?.stripeId) return PlanStatus.UPGRADE;
-  //   if (currentPlan?.planId === planDetails.id) return PlanStatus.CURRENT;
-  //
-  //   return planDetails.id > currentPlan.planId
-  //     ? PlanStatus.UPGRADE
-  //     : PlanStatus.DOWNGRADE;
-  // };
+  const getPlanStatus = (): PlanStatus | null => {
+    if (plan.displayName === "Targon Enterprise") return PlanStatus.ENTERPRISE;
+    if (!currentPlan?.planId) return PlanStatus.UNAUTHED;
+    if (!user) return PlanStatus.UNAUTHED;
+    if (!currentPlan?.stripeId) return PlanStatus.UPGRADE;
+    if (currentPlan?.planId === plan.id) return PlanStatus.CURRENT;
 
-  // const handleSubscribe = () => {
-  //   const status = getPlanStatus();
-  //   switch (status) {
-  //     case PlanStatus.ENTERPRISE:
-  //       router.push("/pricing/enterprise");
-  //       return;
-  //     case null:
-  //       router.push("/sign-in");
-  //       return;
-  //     case PlanStatus.UNAUTHED:
-  //       router.push("/sign-in");
-  //       return;
-  //     case PlanStatus.CURRENT:
-  //       manageSubscription.mutate();
-  //       return;
-  //     case PlanStatus.DOWNGRADE:
-  //     case PlanStatus.UPGRADE:
-  //       if (currentPlan?.planId === 1) {
-  //         if (!priceId) return;
-  //         createSubscription.mutate({ priceID: priceId });
-  //       } else {
-  //         manageSubscription.mutate();
-  //       }
-  //       return;
-  //   }
-  // };
+    return plan.id > currentPlan.planId
+      ? PlanStatus.UPGRADE
+      : PlanStatus.DOWNGRADE;
+  };
+
+  const handleSubscribe = (priceId: string) => {
+    const status = getPlanStatus();
+    switch (status) {
+      case PlanStatus.ENTERPRISE:
+        router.push("/pricing/enterprise");
+        return;
+      case null:
+        router.push("/sign-in");
+        return;
+      case PlanStatus.UNAUTHED:
+        router.push("/sign-in");
+        return;
+      case PlanStatus.CURRENT:
+        manageSubscription.mutate();
+        return;
+      case PlanStatus.DOWNGRADE:
+      case PlanStatus.UPGRADE:
+        if (currentPlan?.planId === 1) {
+          createSubscription.mutate({ priceID: priceId });
+        } else {
+          manageSubscription.mutate();
+        }
+        return;
+    }
+  };
 
   const renderButtonLabel = () => {
-    // const status = getPlanStatus();
-    //
-    // switch (status) {
-    //   case PlanStatus.ENTERPRISE:
-    //     return "Let's Talk";
-    //   case PlanStatus.UNAUTHED:
-    //     return "Start Plan";
-    //   case PlanStatus.CURRENT:
-    //     return "View Plan";
-    //   case PlanStatus.UPGRADE:
-    //     if (currentPlan?.planId === 1) return "Start Plan";
-    //     return "Upgrade";
-    //   case PlanStatus.DOWNGRADE:
-    //     return "Downgrade";
-    //   default:
-    //     return "Start Plan";
-    // }
-    return "Start Plan";
+    const status = getPlanStatus();
+
+    switch (status) {
+      case PlanStatus.ENTERPRISE:
+        return "Let's Talk";
+      case PlanStatus.UNAUTHED:
+        return "Start Plan";
+      case PlanStatus.CURRENT:
+        return "View Plan";
+      case PlanStatus.UPGRADE:
+        if (currentPlan?.planId === 1) return "Start Plan";
+        return "Upgrade";
+      case PlanStatus.DOWNGRADE:
+        return "Downgrade";
+      default:
+        return "Start Plan";
+    }
   };
 
   return (
     <div
-      className={`bg-mf-ash-800/50 transition-colors duration-300 hover:opacity-90 flex flex-col gap-4 rounded-md p-5 flex-1 border ${
-        clickedPlan ? "border-mf-sally-500" : "border-mf-night-600"
-      }`}
-      onClick={onClick}
+      className={`bg-mf-ash-800/50 transition-colors duration-300 hover:opacity-90 flex flex-col gap-4 rounded-md p-5 flex-1 border`}
     >
       <div className="bg-mf-dark-gray flex py-12 items-center justify-center gap-1 rounded-md py-auto">
         <Image src="/sybil.svg" alt="Targon" width={60} height={60} priority />
@@ -153,7 +138,7 @@ export function PlanCard({
         height="sm"
         className="whitespace-nowrap"
         onClick={() => {
-          createSubscription.mutate({ priceID: plan.stripePriceId });
+          handleSubscribe(plan.stripePriceId);
         }}
         buttonText={renderButtonLabel()}
       />
