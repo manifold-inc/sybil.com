@@ -1,8 +1,8 @@
 "use client";
 
 import { Card } from "@/_components/Card";
-import { CREDIT_PER_DOLLAR } from "@/constant";
-import { reactClient } from "@/trpc/react";
+import { CREDIT_PER_DOLLAR } from "@/constants";
+import { api } from "@/trpc/react";
 import {
   ArrowPathIcon,
   CreditCardIcon,
@@ -14,29 +14,27 @@ import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 
 export function BillingSettings() {
-  const { data: user } = reactClient.account.getUser.useQuery();
-  const { data: paymentMethodsData } =
-    reactClient.stripe.getPaymentMethods.useQuery();
+  const { data: user } = api.account.getUser.useQuery();
+  const { data: paymentMethodsData } = api.stripe.getPaymentMethods.useQuery();
 
   const [purchaseAmount, setPurchaseAmount] = useState<number>(0);
   const [isCustom, setIsCustom] = useState<boolean>(false);
   const [customValue, setCustomValue] = useState<string>("");
   const [isAddingCredits, setIsAddingCredits] = useState(false);
 
-  const createCheckoutSession =
-    reactClient.stripe.createCheckoutSession.useMutation({
-      onSuccess: (data) => {
-        if (data.url) window.location.href = data.url;
-      },
-    });
-
-  const getBillingPortal = reactClient.stripe.getBillingPortal.useMutation({
+  const createCheckoutSession = api.stripe.createCheckoutSession.useMutation({
     onSuccess: (data) => {
       if (data.url) window.location.href = data.url;
     },
   });
 
-  const createSetupSession = reactClient.stripe.createSetupSession.useMutation({
+  const getBillingPortal = api.stripe.getBillingPortal.useMutation({
+    onSuccess: (data) => {
+      if (data.url) window.location.href = data.url;
+    },
+  });
+
+  const createSetupSession = api.stripe.createSetupSession.useMutation({
     onSuccess: (data) => {
       if (data.url) window.location.href = data.url;
     },

@@ -86,7 +86,6 @@ export const accountRouter = createTRPCRouter({
       return;
     }),
   getUser: publicProcedure.query(async ({ ctx }) => {
-    // Public so it doesn't error if not logged in
     if (!ctx.user?.id) return null;
     const [user] = await ctx.db
       .select({
@@ -97,7 +96,7 @@ export const accountRouter = createTRPCRouter({
         apiKey: ApiKey.id,
       })
       .from(User)
-      .innerJoin(ApiKey, eq(ApiKey.userId, User.id))
+      .leftJoin(ApiKey, eq(ApiKey.userId, User.id))
       .where(eq(User.id, ctx.user.id))
       .limit(1);
     return user ?? null;

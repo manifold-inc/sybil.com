@@ -9,6 +9,7 @@ import { Locale } from "@/locales";
 import type { SourceSchema } from "@/server/api/schema";
 import { useControllerStore } from "@/store/controller";
 import { useModelStore } from "@/store/model";
+import { api } from "@/trpc/react";
 import { copyToClipboard } from "@/utils/os";
 import { search } from "@/utils/search";
 import { useMutation } from "@tanstack/react-query";
@@ -48,11 +49,17 @@ export default function ClientPage({
     finished: false,
   } as Data);
   const { selectedModel } = useModelStore();
+  const { data: apiKeys } = api.apiKey.listApiKeys.useQuery();
 
   return (
     <div className="relative box-border flex">
       <div className="relative w-full px-4 pt-8 pb-32 sm:px-8 lg:px-36">
-        <Thread data={data} setData={setData} selectedModel={selectedModel} />
+        <Thread
+          data={data}
+          setData={setData}
+          selectedModel={selectedModel}
+          apiKey={apiKeys?.[0]?.id}
+        />
       </div>
     </div>
   );
@@ -62,7 +69,9 @@ function Thread(props: {
   data: Data;
   setData: Dispatch<SetStateAction<Data>>;
   selectedModel: string;
+  apiKey?: string;
 }) {
+  const { data, setData, selectedModel, apiKey } = props;
   const controllerStore = useControllerStore();
   const [isLoading, setIsLoading] = useState(true);
   const isFirstRun = useRef(true);
@@ -71,6 +80,16 @@ function Thread(props: {
 
   const doSearch = useCallback(
     (payload: { query: string; files: ThreadFile[] }) => {
+      if (!apiKey) {
+        setIsLoading(false);
+        setData((d) => ({
+          ...d,
+          answer: "⚠️ **API Key Required**",
+          finished: true,
+        }));
+        return;
+      }
+
       setIsLoading(true);
 
       const validFiles = payload.files
@@ -80,21 +99,22 @@ function Thread(props: {
       let answerText = "";
       const controller = search(
         {
-          model: props.selectedModel,
+          model: selectedModel,
           query: payload.query,
           files: validFiles,
+          apiKey: apiKey,
         },
         {
           onChunk(chunk) {
             match(chunk)
               .with({ type: "heroCard" }, (chunk) => {
-                props.setData((d) => ({
+                setData((d) => ({
                   ...d,
                   heroCard: chunk.heroCard,
                 }));
               })
               .with({ type: "sources" }, (chunk) => {
-                props.setData((d) => ({
+                setData((d) => ({
                   ...d,
                   sources: chunk.sources,
                 }));
@@ -111,13 +131,13 @@ function Thread(props: {
                   }
                 });
                 answerText += text;
-                props.setData((d) => ({
+                setData((d) => ({
                   ...d,
                   answer: answerText,
                 }));
               })
               .with({ type: "related" }, (chunk) => {
-                props.setData((d) => ({
+                setData((d) => ({
                   ...d,
                   followups: chunk.followups,
                 }));
@@ -127,7 +147,7 @@ function Thread(props: {
             setIsLoading(false);
             controllerStore.stop("query");
             if (reason === "normal") {
-              props.setData((d) => ({
+              setData((d) => ({
                 ...d,
                 answer: answerText,
                 finished: true,
@@ -145,49 +165,49 @@ function Thread(props: {
         controllerStore.stop("query");
       });
     },
-    [controllerStore, props]
+    [controllerStore, selectedModel, apiKey, setData]
   );
 
   const retry = useCallback(() => {
     controllerStore.stop("query");
-    props.setData((d) => ({ ...d, answer: "" }));
-    void doSearch({ query: props.data.query, files: [] });
-  }, [doSearch, controllerStore, props]);
+    setData((d) => ({ ...d, answer: "" }));
+    void doSearch({ query: data.query, files: [] });
+  }, [doSearch, controllerStore, setData, data.query]);
 
   useEffect(() => {
     if (!isFirstRun.current) return;
     isFirstRun.current = false;
     /*
-        const cache = localStorage.getItem(`q_${props.data.query}`);
+        const cache = localStorage.getItem(`q_${data.query}`);
         if (cache?.length) {
-          const data = JSON.parse(cache) as Data; // TODO
-          props.dispatch({ type: "UPDATE_DATA", data: data });
+          const cachedData = JSON.parse(cache) as Data; // TODO
+          props.dispatch({ type: "UPDATE_DATA", data: cachedData });
           return
         }
     */
     void retry();
-  }, [retry, props]);
+  }, [retry]);
 
   const loadMoreSources = useMutation({
     mutationFn: (p: number) => {
       return fetch(`${Path.API.Search}/sources`, {
         method: "POST",
-        body: JSON.stringify({ query: props.data.query, page: p }),
+        body: JSON.stringify({ query: data.query, page: p }),
       });
     },
     onSuccess: async (res: Response) => {
       const newSources = (await res.json()) as SourceSchema.UrlSource[];
       setPage((p) => p + 1);
-      props.setData((d) => ({
+      setData((d) => ({
         ...d,
-        sources: props.data.sources?.concat(newSources),
+        sources: data.sources?.concat(newSources),
       }));
     },
   });
 
   let herocard = <Skeleton className="h-16 w-full rounded-md" />;
-  if (props.data.heroCard == null && props.data.sources.length > 0) {
-    const fs = props.data.sources[0];
+  if (data.heroCard == null && data.sources.length > 0) {
+    const fs = data.sources[0];
     if (fs) {
       herocard = (
         <Card
@@ -205,8 +225,8 @@ function Thread(props: {
       );
     }
   }
-  if (props.data.heroCard) {
-    herocard = <Card card={props.data.heroCard} />;
+  if (data.heroCard) {
+    herocard = <Card card={data.heroCard} />;
   }
 
   return (
@@ -229,15 +249,15 @@ function Thread(props: {
         {herocard}
         <div className="pt-4 sm:pt-6" />
         <AnswerBox
-          answer={props.data.answer ?? ""}
-          isLoading={props.data.answer.length === 0 && isLoading}
+          answer={data.answer ?? ""}
+          isLoading={data.answer.length === 0 && isLoading}
           retry={retry}
         />
         <div className="flex justify-between pt-6">
           <ThreadSectionTitle icon={<List />} title={Locale.Thread.Sources} />
         </div>
         <div className="dark:divide-mf-ash-300 divide-y divide-gray-200">
-          {props.data.sources.length === 0 &&
+          {data.sources.length === 0 &&
             new Array(4).fill(0).map((_, i) => (
               <div key={i} className="py-4">
                 <Skeleton className={`h-4 w-3/4`} />
@@ -246,8 +266,8 @@ function Thread(props: {
                 <Skeleton className={`my-4 h-4 w-5/6`} />
               </div>
             ))}
-          {props.data.sources.length !== 0 &&
-            new Array(props.data.sources.length + 1).fill(null).map((_, i) => {
+          {data.sources.length !== 0 &&
+            new Array(data.sources.length + 1).fill(null).map((_, i) => {
               // if (i === 4) {
               //   return (
               //     <div
@@ -289,8 +309,7 @@ function Thread(props: {
               //     </div>
               //   );
               // }
-              const s =
-                i < 4 ? props.data.sources.at(i) : props.data.sources.at(i - 1);
+              const s = i < 4 ? data.sources.at(i) : data.sources.at(i - 1);
               if (!s) return;
               const hostname = tryCatch(
                 () => new URL(s.url).hostname.replace("www.", ""),
@@ -344,7 +363,7 @@ function Thread(props: {
       </div>
       <div className="w-full sm:sticky sm:top-16 sm:self-start">
         <div className="grid h-fit w-full grid-cols-2 gap-2 sm:grid-cols-1 md:grid-cols-2">
-          {props.data.relatedCards.map((card, i) => (
+          {data.relatedCards.map((card, i) => (
             <Card
               card={card}
               key={i}

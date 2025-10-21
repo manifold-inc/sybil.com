@@ -2,7 +2,7 @@ import { useAuth } from "@/_components/providers";
 import Modal from "@/_components/shared/modal";
 import { ACCEPT_FILES } from "@/constant";
 import { Locale } from "@/locales";
-import { reactClient } from "@/trpc/react";
+import { api } from "@/trpc/react";
 import { formatBytes } from "@/utils/format";
 import { createLogger } from "@/utils/logger";
 import to from "await-to-js";
@@ -70,8 +70,8 @@ export function FileListModel(props: {
   updateFiles: (updater: (files: ThreadFile[]) => ThreadFile[] | void) => void;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const createFile = reactClient.file.createFile.useMutation();
-  const deleteFiles = reactClient.file.deleteFiles.useMutation();
+  const createFile = api.file.createFile.useMutation();
+  const deleteFiles = api.file.deleteFiles.useMutation();
 
   function updateFile(id: string, updater: (file: ThreadFile) => void) {
     props.updateFiles((files) => {

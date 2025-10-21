@@ -52,6 +52,7 @@ export default function SettingsPage() {
           </div>
           <ActionButton
             href="/sign-out"
+            tag="a"
             buttonText="Sign Out"
             variant="noir"
             width="sm"

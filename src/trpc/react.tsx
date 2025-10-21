@@ -8,13 +8,13 @@ import { useState } from "react";
 
 import { getUrl, transformer } from "./shared";
 
-export const reactClient = createTRPCReact<AppRouter>();
+export const api = createTRPCReact<AppRouter>();
 
 export function TRPCReactProvider(props: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
 
   const [trpcClient] = useState(() =>
-    reactClient.createClient({
+    api.createClient({
       transformer,
       links: [
         httpBatchLink({
@@ -24,6 +24,12 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
               "x-trpc-source": "react",
             };
           },
+          fetch(url, options) {
+            return fetch(url, {
+              ...options,
+              credentials: "include",
+            });
+          },
         }),
       ],
     })
@@ -31,9 +37,9 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <reactClient.Provider client={trpcClient} queryClient={queryClient}>
+      <api.Provider client={trpcClient} queryClient={queryClient}>
         {props.children}
-      </reactClient.Provider>
+      </api.Provider>
     </QueryClientProvider>
   );
 }

@@ -29,7 +29,7 @@ interface OpenAIStreamChunk {
 }
 
 export function search(
-  params: SearchSchema.SearchPayload,
+  params: SearchSchema.SearchPayload & { apiKey?: string },
   options: {
     onChunk: (chunk: SearchSchema.SearchResponse) => void;
     onFinished: (reason: FinishReason) => void;
@@ -82,7 +82,7 @@ export function search(
   void fetchEventSource(chatApiUrl, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${Path.API.ApiKey}`,
+      Authorization: `Bearer ${params.apiKey ?? Path.API.ApiKey}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(chatPayload),
