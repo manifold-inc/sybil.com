@@ -3,7 +3,7 @@
 import { ActionButton } from "@/_components/ActionButton";
 import { Card } from "@/_components/Card";
 import { showTargonToast } from "@/_components/TargonToast";
-import { reactClient } from "@/trpc/react";
+import { api } from "@/trpc/react";
 import { copyToClipboard } from "@/utils/utils";
 import {
   EyeIcon,
@@ -32,8 +32,8 @@ export function APIKeysSettings() {
   const [showCurlKey, setShowCurlKey] = useState(false);
   const [showPythonKey, setShowPythonKey] = useState(false);
 
-  const { data: keys, isLoading } = reactClient.apiKey.listApiKeys.useQuery();
-  const utils = reactClient.useUtils();
+  const { data: keys, isLoading } = api.apiKey.listApiKeys.useQuery();
+  const utils = api.useUtils();
 
   const getCurlCode = (showKey: boolean) => {
     const apiKey = showKey ? keys?.[0]?.id ?? "YOUR_API_KEY" : "YOUR_API_KEY";
@@ -58,7 +58,7 @@ export function APIKeysSettings() {
     return `${mm}.${dd}.${yy}`;
   };
 
-  const createApiKey = reactClient.apiKey.createApiKey.useMutation({
+  const createApiKey = api.apiKey.createApiKey.useMutation({
     onSuccess: () => {
       void utils.apiKey.listApiKeys.invalidate();
       showTargonToast("API key created successfully");
@@ -68,7 +68,7 @@ export function APIKeysSettings() {
     },
   });
 
-  const deleteApiKey = reactClient.apiKey.deleteApiKey.useMutation({
+  const deleteApiKey = api.apiKey.deleteApiKey.useMutation({
     onSuccess: () => {
       void utils.apiKey.listApiKeys.invalidate();
       showTargonToast("API key deleted");
@@ -78,7 +78,7 @@ export function APIKeysSettings() {
     },
   });
 
-  const updateApiKeyName = reactClient.apiKey.updateApiKeyName.useMutation({
+  const updateApiKeyName = api.apiKey.updateApiKeyName.useMutation({
     onSuccess: () => {
       void utils.apiKey.listApiKeys.invalidate();
       showTargonToast("API key name updated");

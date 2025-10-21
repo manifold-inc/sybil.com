@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/_components/providers";
-import { reactClient } from "@/trpc/react";
+import { api } from "@/trpc/react";
 import clsx from "clsx";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import Image from "next/image";
@@ -30,7 +30,7 @@ export default function Page() {
     getValues,
     formState: { errors },
   } = useForm<Inputs>();
-  const createAccount = reactClient.account.createAccount.useMutation({
+  const createAccount = api.account.createAccount.useMutation({
     onError: (e) => {
       toast.error(e.message);
     },
