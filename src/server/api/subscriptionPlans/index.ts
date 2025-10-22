@@ -17,6 +17,7 @@ export const subscriptionPlansRouter = createTRPCRouter({
         monthlyFee: SubscriptionPlan.monthlyFee,
         advertisedMonthlyRequests: SubscriptionPlan.advertisedMonthlyRequests,
         stripePriceId: SubscriptionPlan.stripePriceId,
+        iconPath: SubscriptionPlan.iconPath,
       })
       .from(SubscriptionPlan)
       .where(
@@ -78,7 +79,6 @@ export const subscriptionPlansRouter = createTRPCRouter({
       .from(User)
       .where(eq(User.id, ctx.user.id))
       .innerJoin(SubscriptionPlan, eq(SubscriptionPlan.id, User.planId));
-
     return subscription;
   }),
   manageSubscription: protectedProcedure.mutation(async ({ ctx }) => {

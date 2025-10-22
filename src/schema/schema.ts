@@ -213,6 +213,7 @@ export const SubscriptionPlan = mysqlTable("subscription_plan", {
     .notNull()
     .default("prepaid"),
   stripePriceId: varchar("stripe_price_id", { length: 64 }).notNull(),
+  iconPath: varchar("icon_path", { length: 64 }),
 });
 
 export const Subscription = mysqlTable("subscription", {

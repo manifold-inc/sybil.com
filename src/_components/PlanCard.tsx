@@ -7,6 +7,8 @@ import type { RouterOutputs } from "@/trpc/shared";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
+import { Card } from "./Card";
+
 enum PlanStatus {
   NULL = "null",
   UNAUTHED = "unauthed",
@@ -103,26 +105,33 @@ export function PlanCard({ plan }: { plan: PlanOutput }) {
   };
 
   return (
-    <div
-      className={`bg-mf-new-900 transition-colors duration-300 hover:opacity-90 flex flex-col gap-4 rounded-md p-5 flex-1 border border-mf-new-500`}
+    <Card
+      className={` transition-colors duration-300 hover:opacity-90 flex flex-col gap-4 rounded-md p-8 flex-1 border border-mf-new-500`}
     >
-      <div className="bg-mf-dark-gray flex py-12 items-center justify-center gap-1 rounded-md py-auto">
-        <Image src="/sybil.svg" alt="Targon" width={60} height={60} priority />
+      <div className="bg-mf-dark-gray flex items-center justify-center gap-1 rounded-md py-auto pb-4">
+        <Image
+          src={plan.iconPath ?? "/sybil-starter.svg"}
+          alt="Targon"
+          width={60}
+          height={60}
+          priority
+          className="w-full h-full"
+        />
       </div>
 
       <div className="flex my-auto justify-between">
         <p className={`xl:text-lg text-mf-edge-500`}>{plan.displayName}</p>
         <p className={`xl:text-lg text-mf-sybil-300`}>
-          ${Number(plan.monthlyFee)}
+          ${Number(plan.monthlyFee)} Mo
         </p>
       </div>
 
-      <div className="flex">
+      <div className="flex pb-6">
         <ul className="font-poppins text-xs xl:text-sm font-light whitespace-nowrap flex flex-col gap-5">
           <li className="flex items-center">
             <div className="bg-mf-sybil-300 h-3 w-3 rounded-xs" />
             <p className="pl-2">
-              {plan.advertisedMonthlyRequests} of requests included
+              {plan.advertisedMonthlyRequests} monthly requests included
             </p>
           </li>
         </ul>
@@ -131,12 +140,13 @@ export function PlanCard({ plan }: { plan: PlanOutput }) {
       <ActionButton
         width="md"
         height="sm"
+        textSize="sm"
         className="whitespace-nowrap"
         onClick={() => {
           handleSubscribe(plan.stripePriceId);
         }}
         buttonText={renderButtonLabel()}
       />
-    </div>
+    </Card>
   );
 }

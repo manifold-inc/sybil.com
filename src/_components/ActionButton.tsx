@@ -29,7 +29,7 @@ export const ActionButton: React.FC<{
   const bgColor =
     variant === "noir"
       ? "bg-mf-new-800 border border-mf-new-500"
-      : "border border-white bg-mf-green-500";
+      : "bg-mf-green-500";
   const textColor =
     variant === "noir" ? "text-mf-silver-500" : "text-mf-night-500";
 
