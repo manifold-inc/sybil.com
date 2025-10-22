@@ -5,8 +5,6 @@ import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
 import type Stripe from "stripe";
 
-import { creditPurchaseFailure } from "./emailFails";
-
 const handleCheckoutCredits = async (
   lineItem: Stripe.LineItem,
   customerId: string
@@ -33,13 +31,10 @@ const handleCheckoutCredits = async (
       .update(User)
       .set({ credits: (user.credits ?? 0) + creditsPurchased })
       .where(eq(User.id, user.id));
-  } catch (error) {
-    await creditPurchaseFailure({
-      userStripeCustomerId: customerId,
-      quantity,
-      creditsAttempted: creditsPurchased,
-      error:
-        error instanceof Error ? error.message.toString() : "Unknown Error",
+  } catch {
+    throw new TRPCError({
+      code: "CONFLICT",
+      message: "User not issued credits",
     });
   }
 };

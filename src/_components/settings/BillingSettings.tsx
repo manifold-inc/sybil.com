@@ -1,7 +1,7 @@
 "use client";
 
 import { Card } from "@/_components/Card";
-import { CREDIT_PER_DOLLAR } from "@/constants";
+import { CREDIT_PER_DOLLAR } from "@/constant";
 import { api } from "@/trpc/react";
 import {
   ArrowPathIcon,
@@ -27,6 +27,9 @@ export function BillingSettings() {
       if (data.url) window.location.href = data.url;
     },
   });
+
+  const { data: userSubscription } =
+    api.subscriptionPlans.getUserSubscription.useQuery();
 
   const getBillingPortal = api.stripe.getBillingPortal.useMutation({
     onSuccess: (data) => {
@@ -86,17 +89,35 @@ export function BillingSettings() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.1 }}
       >
+        <Card className="my-6">
+          <p>{userSubscription?.subscriptionName ?? "No Subscription"}</p>
+        </Card>
         <Card>
           <h2 className="mb-4 text-lg font-medium">Account Balance</h2>
-          <div className="mb-6 flex items-center justify-between">
-            <div>
-              <div className="flex items-center space-x-3">
-                <WalletIcon className="h-6 w-6 opacity-70" />
-                <div>
-                  <div className="text-3xl font-light">
-                    {formatCurrency((totalCredits || 0) / CREDIT_PER_DOLLAR)}
+          <div className="flex items-center">
+            <div className="mb-6 flex items-center justify-between">
+              <div>
+                <div className="flex items-center space-x-3">
+                  <WalletIcon className="h-6 w-6 opacity-70" />
+                  <div>
+                    <div className="text-3xl font-light">
+                      {formatCurrency((totalCredits || 0) / CREDIT_PER_DOLLAR)}
+                    </div>
+                    <div className="text-sm opacity-70">Available credits</div>
                   </div>
-                  <div className="text-sm opacity-70">Available credits</div>
+                </div>
+              </div>
+            </div>
+            <div className="mb-6 flex items-center justify-between">
+              <div>
+                <div className="flex items-center space-x-3">
+                  <WalletIcon className="h-6 w-6 opacity-70" />
+                  <div>
+                    <div className="text-3xl font-light">
+                      {user?.planRequests ?? 0}
+                    </div>
+                    <div className="text-sm opacity-70">Available Requests</div>
+                  </div>
                 </div>
               </div>
             </div>

@@ -8,7 +8,7 @@ import { z } from "zod";
 import { stripe } from "../stripe/stripe";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
-export const subscriptionPlans = createTRPCRouter({
+export const subscriptionPlansRouter = createTRPCRouter({
   getPlans: publicProcedure.query(async ({ ctx }) => {
     return ctx.db
       .select({
@@ -79,7 +79,6 @@ export const subscriptionPlans = createTRPCRouter({
       .where(eq(User.id, ctx.user.id))
       .innerJoin(SubscriptionPlan, eq(SubscriptionPlan.id, User.planId));
 
-    if (!subscription) throw new TRPCError({ code: "UNAUTHORIZED" });
     return subscription;
   }),
   manageSubscription: protectedProcedure.mutation(async ({ ctx }) => {

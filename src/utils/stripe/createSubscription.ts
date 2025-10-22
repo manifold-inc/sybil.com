@@ -89,7 +89,7 @@ const createSubscription = async (
         await tx
           .update(User)
           .set({
-            monthlyRequests: plan.monthlyRequests,
+            planRequests: plan.monthlyRequests,
           })
           .where(eq(User.id, user.id));
       }

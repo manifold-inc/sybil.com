@@ -1,4 +1,4 @@
-import { CREDIT_PER_DOLLAR } from "@/constants";
+import { CREDIT_PER_DOLLAR } from "@/constant";
 import { api } from "@/trpc/react";
 import { formatNumber } from "@/utils/utils";
 import { useState } from "react";

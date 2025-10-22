@@ -1,4 +1,4 @@
-import { PlanCard } from "@/_components/PlanCards";
+import { PlanCard } from "@/_components/PlanCard";
 import { serverClient } from "@/trpc/server";
 
 export default async function page() {

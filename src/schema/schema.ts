@@ -44,7 +44,7 @@ export const User = mysqlTable("user", {
   emailVerified: boolean("email_verified").notNull().default(false),
   twoFactorSecret: varchar("two_factor_secret", { length: 255 }),
   planId: int("plan_id"),
-  monthlyRequests: int("monthly_requests"),
+  planRequests: int("plan_requests"),
 });
 
 export const Session = mysqlTable("session", {

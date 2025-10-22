@@ -94,6 +94,7 @@ export const accountRouter = createTRPCRouter({
         name: User.name,
         email: User.email,
         apiKey: ApiKey.id,
+        planRequests: User.planRequests,
       })
       .from(User)
       .leftJoin(ApiKey, eq(ApiKey.userId, User.id))

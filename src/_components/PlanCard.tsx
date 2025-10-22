@@ -2,12 +2,13 @@
 
 import { ActionButton } from "@/_components/ActionButton";
 import { useAuth } from "@/_components/providers";
-import { reactClient } from "@/trpc/react";
-import { RouterOutputs } from "@/trpc/shared";
+import { api } from "@/trpc/react";
+import type { RouterOutputs } from "@/trpc/shared";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 enum PlanStatus {
+  NULL = "null",
   UNAUTHED = "unauthed",
   CURRENT = "current",
   UPGRADE = "upgrade",
@@ -22,13 +23,15 @@ export function PlanCard({ plan }: { plan: PlanOutput }) {
   const router = useRouter();
   const { user } = useAuth();
 
-  const { data: currentPlan } =
-    reactClient.account.getUserSubscription.useQuery(undefined, {
+  const { data: currentPlan } = api.account.getUserSubscription.useQuery(
+    undefined,
+    {
       enabled: auth.status !== "LOADING",
-    });
+    }
+  );
 
   const createSubscription =
-    reactClient.subscriptionPlans.createSubscriptionUrl.useMutation({
+    api.subscriptionPlans.createSubscriptionUrl.useMutation({
       onSuccess: ({ url }) => {
         if (url) {
           window.location.href = url;
@@ -37,7 +40,7 @@ export function PlanCard({ plan }: { plan: PlanOutput }) {
     });
 
   const manageSubscription =
-    reactClient.subscriptionPlans.manageSubscription.useMutation({
+    api.subscriptionPlans.manageSubscription.useMutation({
       onSuccess: ({ url }) => {
         if (url) {
           window.location.href = url;
@@ -47,10 +50,9 @@ export function PlanCard({ plan }: { plan: PlanOutput }) {
 
   const getPlanStatus = (): PlanStatus | null => {
     if (plan.displayName === "Targon Enterprise") return PlanStatus.ENTERPRISE;
-    if (!currentPlan?.planId) return PlanStatus.UNAUTHED;
     if (!user) return PlanStatus.UNAUTHED;
-    if (!currentPlan?.stripeId) return PlanStatus.UPGRADE;
     if (currentPlan?.planId === plan.id) return PlanStatus.CURRENT;
+    if (!currentPlan?.planId) return PlanStatus.NULL;
 
     return plan.id > currentPlan.planId
       ? PlanStatus.UPGRADE
@@ -70,16 +72,12 @@ export function PlanCard({ plan }: { plan: PlanOutput }) {
         router.push("/sign-in");
         return;
       case PlanStatus.CURRENT:
-        manageSubscription.mutate();
-        return;
       case PlanStatus.DOWNGRADE:
       case PlanStatus.UPGRADE:
-        if (currentPlan?.planId === 1) {
-          createSubscription.mutate({ priceID: priceId });
-        } else {
-          manageSubscription.mutate();
-        }
+        manageSubscription.mutate();
         return;
+      case PlanStatus.NULL:
+        createSubscription.mutate({ priceID: priceId });
     }
   };
 
@@ -93,8 +91,9 @@ export function PlanCard({ plan }: { plan: PlanOutput }) {
         return "Start Plan";
       case PlanStatus.CURRENT:
         return "View Plan";
+      case PlanStatus.NULL:
+        return "Start Plan";
       case PlanStatus.UPGRADE:
-        if (currentPlan?.planId === 1) return "Start Plan";
         return "Upgrade";
       case PlanStatus.DOWNGRADE:
         return "Downgrade";
@@ -105,27 +104,23 @@ export function PlanCard({ plan }: { plan: PlanOutput }) {
 
   return (
     <div
-      className={`bg-mf-ash-800/50 transition-colors duration-300 hover:opacity-90 flex flex-col gap-4 rounded-md p-5 flex-1 border`}
+      className={`bg-mf-new-900 transition-colors duration-300 hover:opacity-90 flex flex-col gap-4 rounded-md p-5 flex-1 border border-mf-new-500`}
     >
       <div className="bg-mf-dark-gray flex py-12 items-center justify-center gap-1 rounded-md py-auto">
         <Image src="/sybil.svg" alt="Targon" width={60} height={60} priority />
       </div>
 
       <div className="flex my-auto justify-between">
-        <p className={`xl:text-lg ${currentPlan ? "text-mf-sally-500" : ""}`}>
-          {plan.displayName}
-        </p>
-        <p
-          className={`xl:text-lg ${currentPlan ? "text-mf-sybil-500" : "text-mf-sally-500"} `}
-        >
-          {plan.monthlyFee}
+        <p className={`xl:text-lg text-mf-edge-500`}>{plan.displayName}</p>
+        <p className={`xl:text-lg text-mf-sybil-300`}>
+          ${Number(plan.monthlyFee)}
         </p>
       </div>
 
       <div className="flex">
         <ul className="font-poppins text-xs xl:text-sm font-light whitespace-nowrap flex flex-col gap-5">
           <li className="flex items-center">
-            <div className="bg-mf-sally-700 h-3 w-3 rounded-xs"></div>
+            <div className="bg-mf-sybil-300 h-3 w-3 rounded-xs" />
             <p className="pl-2">
               {plan.advertisedMonthlyRequests} of requests included
             </p>
