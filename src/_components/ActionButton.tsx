@@ -92,7 +92,7 @@ export const ActionButton: React.FC<{
           ${widthClass}
           ${heightClass}
           ${textSizeClass}
-          font-semibold font-saira
+          font-poppins 
           whitespace-nowrap
           ${bgColor}
           rounded-[4px]

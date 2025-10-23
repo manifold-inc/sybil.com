@@ -7,9 +7,9 @@ import { ChatBubbleOvalLeftIcon } from "@heroicons/react/24/solid";
 export default async function page() {
   const plans = await serverClient.subscriptionPlans.getPlans.query();
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center">
+    <div className="flex flex-col min-h-screen items-center p-4 justify-center">
       <div className="flex flex-col items-center gap-2">
-        <h1 className="text-4xl">Sybil Pricing Plans</h1>
+        <h1 className="text-4xl py-4">Sybil Pricing Plans</h1>
         <Card className="flex items-center h-12 gap-2">
           <div className="rounded-sm">
             {" "}
@@ -33,10 +33,11 @@ export default async function page() {
             variant="noir"
             width="md"
             height="sm"
-            buttonText="Creator"
+            buttonText="Support"
+            href="mailto:devs@manifold.inc"
           />
           <ActionButton
-            href="/pricing/enterprise"
+            href="mailto:james@manifold.inc"
             width="md"
             height="sm"
             buttonText="Enterprise"

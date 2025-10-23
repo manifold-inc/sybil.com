@@ -49,15 +49,14 @@ export default function SettingsPage() {
         {/* Header */}
         <div className="mt-24 mb-8 flex items-center justify-between">
           <div className="flex items-center gap-2 ">
-            <Cog6ToothIcon className="w-8 h-8 text-mf-sybil-300" />
-            <h1 className="font-saira text-2xl sm:text-3xl">Settings</h1>
+            <Cog6ToothIcon className="w-8 h-8 text-mf-sybil-500" />
+            <h1 className="text-2xl sm:text-3xl">Settings</h1>
           </div>
           <ActionButton
             href="mailto:devs@manifold.inc"
             buttonText="Support"
             variant="noir"
             width="md"
-            className="bg-mf-ash-700 border-none"
             height="md"
           />
         </div>
@@ -79,7 +78,7 @@ export default function SettingsPage() {
                 <Icon
                   className={`h-4 w-4 ${
                     activeTab === tab.id
-                      ? "text-mf-sybil-300"
+                      ? "text-mf-sybil-500"
                       : "text-mf-ash-300"
                   }`}
                 />

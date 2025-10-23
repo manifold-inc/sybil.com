@@ -54,14 +54,14 @@ export const ChatCodeExample = ({ model }: ChatCodeExampleProps) => {
     setTimeout(() => setIsCopied(false), 3000);
     showTargonToast("Copied to clipboard");
   };
-  const getCodeExample = (lang: typeof selectedLang) => {
+  export const getCodeExample = (lang: typeof selectedLang) => {
     const examples = {
       curl: `curl ${env.NEXT_PUBLIC_CHAT_API}/v1/chat/completions \\
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer ${showApiKey ? apiKey.data?.[0]?.id : "YOUR_API_KEY"}" \\
   -N \\
   -d '{
-    "model": "${model}",
+    "model": "${model ?? "EXAMPLE_MODEL"}",
     "stream": true,
     "messages": [
       {"role": "system", "content": "You are a helpful programming assistant."},

@@ -107,7 +107,7 @@ export function BillingSettings() {
   }, [paymentMethodsData?.paymentMethods]);
 
   const handleBuy = () => {
-    const amount = isCustom ? parseInt(customValue) || 0 : purchaseAmount;
+    const amount = purchaseAmount;
     if (amount > 0) {
       setIsAddingCredits(true);
       createCheckoutSession.mutate({ quantity: amount });
@@ -124,8 +124,6 @@ export function BillingSettings() {
     createSetupSession.mutate();
   };
 
-  const totalCredits = user?.credits ?? 0;
-
   return (
     <div className="space-y-6">
       {/* Credit Balance Section */}
@@ -135,21 +133,21 @@ export function BillingSettings() {
         transition={{ duration: 0.6, delay: 0.1 }}
         className="space-y-6"
       >
-        <Card className="px-8">
-          <h2 className=" pb-4 text-lg font-medium">Profile Details</h2>
+        <Card className="px-8 py-6">
+          <h2 className=" pb-4 -mt-1 text-lg font-medium">Profile Details</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
             {/* Left: Name + Plan */}
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full bg-mf-gray/10 border border-mf-gray/15 rounded-md px-3 py-2 focus:ring-1 focus:ring-mf-noir-400 focus:border-mf-noir-400"
+              className="w-full bg-mf-new-700 rounded-md px-3 py-2 focus:ring-1 focus:ring-mf-noir-400 focus:border-mf-noir-400"
             />
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-mf-gray/10 border border-mf-gray/15 rounded-md px-3 py-2 focus:ring-1 focus:ring-mf-noir-400 focus:border-mf-noir-400"
+              className="w-full bg-mf-new-700 rounded-md px-3 py-2 focus:ring-1 focus:ring-mf-noir-400 focus:border-mf-noir-400"
             />
             <div className="flex items-center space-x-2 bg-mf-gray/10 rounded-md px-3 py-2">
               <Image
@@ -185,20 +183,54 @@ export function BillingSettings() {
             </div>
           </div>
         </Card>
-        <Card className="px-8">
+        <Card className="px-8 py-6">
           <div className="flex flex-col sm:flex-row gap-2 justify-between items-center mb-4 ">
-            <h2 className="text-lg font-medium">Account Balance</h2>
+            <div className="flex items-center gap-2">
+              <h2 className="text-lg font-medium">Account Balance</h2>
+              <div
+                className={`text-mf-sybil-500 flex items-center ${isCustom ? "" : "hidden"}`}
+              >
+                <span className="text-xs">$</span>
+                {((user?.credits ?? 0) / CREDIT_PER_DOLLAR).toFixed(2)}
+              </div>
+            </div>
             <div className="text-xs bg-mf-new-500 p-2 px-4 rounded-sm">
-              <span className="text-mf-sybil-300">
+              <span className="text-mf-sybil-500">
                 {user?.planRequests ?? 0}
               </span>{" "}
               Total Available Request
             </div>
           </div>
-          <div className="text-4xl justify-self-center pb-8">
-            <span className="text-mf-sybil-300">$</span>
-            {((totalCredits || 0) / CREDIT_PER_DOLLAR).toFixed(2)}
-          </div>
+          {isCustom ? (
+            <div className="text-4xl justify-self-center pb-8">
+              <span className="text-mf-sybil-500 -translate-y-0.25 ">$</span>
+              <input
+                type="number"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                value={purchaseAmount.toString()}
+                onChange={(e) => {
+                  setPurchaseAmount(Number(e.target.value));
+                }}
+                placeholder="0.00"
+                onKeyDown={(e) => {
+                  if (
+                    e.key === "Enter" &&
+                    !isAddingCredits &&
+                    (purchaseAmount !== 0 || (isCustom && customValue !== ""))
+                  ) {
+                    handleBuy();
+                  }
+                }}
+                className="w-24 bg-transparent focus:outline-none"
+              />
+            </div>
+          ) : (
+            <div className="text-4xl justify-self-center pb-8">
+              <span className="text-mf-sybil-500">$</span>
+              {((user?.credits || 0) / CREDIT_PER_DOLLAR).toFixed(2)}
+            </div>
+          )}
 
           {/* Quick add amounts and Add Credits button */}
           <div
@@ -238,7 +270,6 @@ export function BillingSettings() {
               whileTap={{ scale: 0.98 }}
               onClick={() => {
                 setIsCustom(true);
-                setCustomValue("");
               }}
               disabled={isAddingCredits}
               className={`rounded-md px-4 py-2 transition-colors disabled:opacity-50 ${
@@ -253,15 +284,9 @@ export function BillingSettings() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={handleBuy}
-              disabled={
-                isAddingCredits ||
-                purchaseAmount === 0 ||
-                (isCustom && customValue === "")
-              }
+              disabled={isAddingCredits || purchaseAmount === 0}
               className={`flex items-center justify-center space-x-2 rounded-md px-4 py-2 transition-colors disabled:opacity-50 ${
-                isAddingCredits ||
-                purchaseAmount === 0 ||
-                (isCustom && customValue === "")
+                isAddingCredits || purchaseAmount === 0
                   ? "bg-mf-gray/10 border-mf-gray/10 !disabled:hover:bg-mf-gray/20 border"
                   : "bg-mf-sybil-300 text-mf-ash-700"
               }`}
@@ -276,50 +301,15 @@ export function BillingSettings() {
               </span>
             </motion.button>
           </div>
-
-          {/* Custom amount input */}
-          {isCustom && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              className="mt-4"
-            >
-              <div className="flex items-center space-x-2">
-                <span className="text-mf-sybil-300 -translate-y-0.25 text-2xl">
-                  $
-                </span>
-                <input
-                  type="number"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  value={customValue}
-                  onChange={(e) => {
-                    setCustomValue(e.target.value);
-                  }}
-                  placeholder="0.00"
-                  onKeyDown={(e) => {
-                    if (
-                      e.key === "Enter" &&
-                      !isAddingCredits &&
-                      (purchaseAmount !== 0 || (isCustom && customValue !== ""))
-                    ) {
-                      handleBuy();
-                    }
-                  }}
-                  className="flex-1 bg-transparent text-2xl focus:outline-none"
-                />
-              </div>
-            </motion.div>
-          )}
-
-          <div className="flex items-center justify-between my-4 mt-8">
+          <div className="flex items-center justify-between my-6">
             <h2 className=" text-lg font-medium">Payment Methods</h2>
-            <button
+            <ActionButton
               onClick={handleAddPaymentMethod}
-              className="bg-mf-ash-700 hover:opacity-70 cursor-pointer text-mf-sybil-300 rounded-sm p-2 px-12 text-sm transition-colors"
-            >
-              Add Card
-            </button>
+              buttonText="Add Card"
+              variant="noir"
+              width="md"
+              height="md"
+            />
           </div>
           <div className="space-y-4">
             {uniquePaymentMethods.map((method) => (
@@ -329,7 +319,7 @@ export function BillingSettings() {
               >
                 <div className="flex items-center space-x-3">
                   <div className="bg-[#1f222E]/30 flex items-center justify-center rounded">
-                    <CreditCardIcon className="h-5 w-5 text-mf-sybil-300" />
+                    <CreditCardIcon className="h-5 w-5 text-mf-sybil-500" />
                   </div>
                   <div className="">•••• •••• •••• {method.last4}</div>
                 </div>
