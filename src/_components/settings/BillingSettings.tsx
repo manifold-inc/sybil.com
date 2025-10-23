@@ -22,7 +22,6 @@ export function BillingSettings() {
 
   const [purchaseAmount, setPurchaseAmount] = useState<number>(0);
   const [isCustom, setIsCustom] = useState<boolean>(false);
-  const [customValue, setCustomValue] = useState<string>("");
   const [isAddingCredits, setIsAddingCredits] = useState(false);
   const [name, setName] = useState(user?.name ?? "");
   const [email, setEmail] = useState(user?.email ?? "");
@@ -214,11 +213,7 @@ export function BillingSettings() {
                 }}
                 placeholder="0.00"
                 onKeyDown={(e) => {
-                  if (
-                    e.key === "Enter" &&
-                    !isAddingCredits &&
-                    (purchaseAmount !== 0 || (isCustom && customValue !== ""))
-                  ) {
+                  if (e.key === "Enter" && !isAddingCredits) {
                     handleBuy();
                   }
                 }}
@@ -239,7 +234,7 @@ export function BillingSettings() {
               if (
                 e.key === "Enter" &&
                 !isAddingCredits &&
-                (purchaseAmount !== 0 || (isCustom && customValue !== ""))
+                purchaseAmount !== 0
               ) {
                 handleBuy();
               }
