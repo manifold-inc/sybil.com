@@ -8,7 +8,7 @@ export const ActionButton: React.FC<{
   onClick?: () => void;
   className?: string;
   variant?: "noir";
-  width: "sm" | "md" | "lg" | "fit" | "full";
+  width?: "sm" | "md" | "lg" | "fit" | "full";
   height: "sm" | "md" | "lg";
   disabled?: boolean;
   tag?: "a" | "link" | "button";
@@ -29,11 +29,11 @@ export const ActionButton: React.FC<{
   const bgColor =
     variant === "noir"
       ? "bg-mf-new-800 border border-mf-new-500"
-      : "border border-white bg-mf-green-500";
+      : "bg-mf-green-500";
   const textColor =
     variant === "noir" ? "text-mf-silver-500" : "text-mf-night-500";
 
-  let widthClass = "";
+  let widthClass = "w-fit";
   switch (width) {
     case "sm":
       widthClass = "w-28";
@@ -92,7 +92,7 @@ export const ActionButton: React.FC<{
           ${widthClass}
           ${heightClass}
           ${textSizeClass}
-          font-semibold font-saira
+          font-poppins 
           whitespace-nowrap
           ${bgColor}
           rounded-[4px]
