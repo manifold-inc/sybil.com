@@ -6,23 +6,37 @@ import { api } from "@/trpc/react";
 import {
   ArrowPathIcon,
   CreditCardIcon,
-  PencilIcon,
   PlusIcon,
-  WalletIcon,
-} from "@heroicons/react/24/outline";
+} from "@heroicons/react/24/solid";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { useMemo, useState } from "react";
 
 import { ActionButton } from "../ActionButton";
+import { useAuth } from "../providers";
+import { showTargonToast } from "../TargonToast";
 
 export function BillingSettings() {
-  const { data: user } = api.account.getUser.useQuery();
   const { data: paymentMethodsData } = api.stripe.getPaymentMethods.useQuery();
+  const { user, status } = useAuth();
 
   const [purchaseAmount, setPurchaseAmount] = useState<number>(0);
   const [isCustom, setIsCustom] = useState<boolean>(false);
   const [customValue, setCustomValue] = useState<string>("");
   const [isAddingCredits, setIsAddingCredits] = useState(false);
+  const [name, setName] = useState(user?.name ?? "");
+  const [email, setEmail] = useState(user?.email ?? "");
+
+  const hasChanges = useMemo(() => {
+    return name !== (user?.name ?? "") || email !== (user?.email ?? "");
+  }, [name, email, user?.name, user?.email]);
+
+  useMemo(() => {
+    if (status === "AUTHED" && user) {
+      setName(user.name ?? "");
+      setEmail(user.email ?? "");
+    }
+  }, [user, status]);
 
   const createCheckoutSession = api.stripe.createCheckoutSession.useMutation({
     onSuccess: (data) => {
@@ -44,6 +58,42 @@ export function BillingSettings() {
       if (data.url) window.location.href = data.url;
     },
   });
+
+  const updateUsername = api.account.updateUsername.useMutation({
+    onError: (error) => {
+      showTargonToast(`Error updating name: ${error.message}`);
+    },
+  });
+
+  const updateEmail = api.account.updateEmail.useMutation({
+    onError: (error) => {
+      showTargonToast(`Error updating email: ${error.message}`);
+    },
+  });
+
+  const handleSave = async () => {
+    try {
+      const promises = [];
+
+      if (name.trim()) {
+        promises.push(updateUsername.mutateAsync({ username: name }));
+      }
+
+      if (email.trim()) {
+        promises.push(updateEmail.mutateAsync({ email }));
+      }
+
+      if (promises.length > 0) {
+        await Promise.all(promises);
+        showTargonToast("Profile updated successfully");
+      } else {
+        showTargonToast("No changes to save");
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      showTargonToast(`Error saving profile changes: ${message}`);
+    }
+  };
 
   const uniquePaymentMethods = useMemo(() => {
     if (!paymentMethodsData?.paymentMethods) return [];
@@ -76,13 +126,6 @@ export function BillingSettings() {
 
   const totalCredits = user?.credits ?? 0;
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(amount);
-  };
-
   return (
     <div className="space-y-6">
       {/* Credit Balance Section */}
@@ -92,47 +135,67 @@ export function BillingSettings() {
         transition={{ duration: 0.6, delay: 0.1 }}
         className="space-y-6"
       >
-        <Card>
+        <Card className="px-8">
+          <h2 className=" pb-4 text-lg font-medium">Profile Details</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
             {/* Left: Name + Plan */}
             <input
               type="text"
-              value={"First Last"}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className="w-full bg-mf-gray/10 border border-mf-gray/15 rounded-md px-3 py-2 focus:ring-1 focus:ring-mf-noir-400 focus:border-mf-noir-400"
             />
             <input
               type="email"
-              value={"email@email.com"}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full bg-mf-gray/10 border border-mf-gray/15 rounded-md px-3 py-2 focus:ring-1 focus:ring-mf-noir-400 focus:border-mf-noir-400"
             />
             <div className="flex items-center space-x-2 bg-mf-gray/10 rounded-md px-3 py-2">
-              <WalletIcon className="w-4 h-4 text-mf-sally-500" />
+              <Image
+                src="/sybil.svg"
+                alt="sybil"
+                height={10}
+                width={10}
+                className="h-4 w-4"
+              />
               <span>
                 {userSubscription?.subscriptionName ?? "Pay as you go"}
               </span>
             </div>
 
             {/* Right: Email + Buttons */}
-            <div className="flex items-center space-x-4 justify-self-end">
+            <div className="flex w-full items-center space-x-4 justify-end">
               <ActionButton
                 width="lg"
                 height="lg"
                 variant="noir"
-                buttonText="Change Plan"
+                buttonText={userSubscription ? "Change Plan" : "View Plans"}
+                className="w-full md:w-50"
+                href="/plans"
               />
-              <ActionButton width="lg" height="lg" buttonText="Save Changes" />
+              <ActionButton
+                width="lg"
+                height="lg"
+                onClick={handleSave}
+                disabled={!hasChanges}
+                className={`w-full md:w-50 ${hasChanges ? " text-mf-background hover:opacity-70" : "opacity-50 cursor-not-allowed"}`}
+                buttonText="Save Changes"
+              />
             </div>
           </div>
         </Card>
-        <Card>
-          <div className="flex justify-between items-center mb-4 ">
+        <Card className="px-8">
+          <div className="flex flex-col sm:flex-row gap-2 justify-between items-center mb-4 ">
             <h2 className="text-lg font-medium">Account Balance</h2>
             <div className="text-xs bg-mf-new-500 p-2 px-4 rounded-sm">
-              <span className="text-mf-sybil-300">{user?.planRequests}</span>{" "}
+              <span className="text-mf-sybil-300">
+                {user?.planRequests ?? 0}
+              </span>{" "}
               Total Available Request
             </div>
           </div>
-          <div className="text-4xl font-light justify-self-center pb-8">
+          <div className="text-4xl justify-self-center pb-8">
             <span className="text-mf-sybil-300">$</span>
             {((totalCredits || 0) / CREDIT_PER_DOLLAR).toFixed(2)}
           </div>
@@ -226,12 +289,12 @@ export function BillingSettings() {
                   $
                 </span>
                 <input
-                  type="text"
+                  type="number"
                   inputMode="numeric"
                   pattern="[0-9]*"
-                  value={purchaseAmount.toString()}
+                  value={customValue}
                   onChange={(e) => {
-                    setPurchaseAmount(Number(e.target.value));
+                    setCustomValue(e.target.value);
                   }}
                   placeholder="0.00"
                   onKeyDown={(e) => {
@@ -249,42 +312,41 @@ export function BillingSettings() {
             </motion.div>
           )}
 
-          <h2 className="my-4 text-lg font-medium">Payment Methods</h2>
+          <div className="flex items-center justify-between my-4 mt-8">
+            <h2 className=" text-lg font-medium">Payment Methods</h2>
+            <button
+              onClick={handleAddPaymentMethod}
+              className="bg-mf-ash-700 hover:opacity-70 cursor-pointer text-mf-sybil-300 rounded-sm p-2 px-12 text-sm transition-colors"
+            >
+              Add Card
+            </button>
+          </div>
           <div className="space-y-4">
             {uniquePaymentMethods.map((method) => (
               <div
                 key={method.id}
-                className="bg-mf-gray/10 border-mf-gray/10 flex items-center justify-between rounded-lg border p-4"
+                className="bg-mf-gray/10 flex px-6 items-center justify-between rounded-sm p-2"
               >
                 <div className="flex items-center space-x-3">
-                  <div className="bg-[#1f222E]/30 flex h-8 w-12 items-center justify-center rounded">
-                    <CreditCardIcon className="h-5 w-5 opacity-70" />
+                  <div className="bg-[#1f222E]/30 flex items-center justify-center rounded">
+                    <CreditCardIcon className="h-5 w-5 text-mf-sybil-300" />
                   </div>
-                  <div>
-                    <div className="">•••• {method.last4}</div>
-                    <div className="text-xs opacity-70">
-                      Expires {method.expMonth?.toString().padStart(2, "0")}/
-                      {method.expYear?.toString().slice(-2)}
-                    </div>
-                  </div>
+                  <div className="">•••• •••• •••• {method.last4}</div>
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className=" text-sm opacity-70">
+                  Expires {method.expMonth?.toString().padStart(2, "0")}/
+                  {method.expYear?.toString().slice(-2)}
+                </div>
+                <div className="flex justify-end space-x-2 md:w-23">
                   <button
                     onClick={handleManagePaymentMethods}
-                    className="hover: p-2 opacity-70"
+                    className=" hover:opacity-70 hover:cursor-pointer"
                   >
-                    <PencilIcon className="h-4 w-4" />
+                    Edit
                   </button>
                 </div>
               </div>
             ))}
-
-            <button
-              onClick={handleAddPaymentMethod}
-              className="border-mf-gray/30 hover:border-mf-gray/40 w-full rounded-md border border-dashed px-4 py-2 opacity-70 transition-colors"
-            >
-              + Add Payment Method
-            </button>
           </div>
         </Card>
       </motion.div>

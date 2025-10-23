@@ -5,8 +5,11 @@ import { useAuth } from "@/_components/providers";
 import { APIKeysSettings } from "@/_components/settings/APIKeysSettings";
 import { BillingSettings } from "@/_components/settings/BillingSettings";
 import { showTargonToast } from "@/_components/TargonToast";
-import { CreditCardIcon, KeyIcon } from "@heroicons/react/24/solid";
-import { Cog6ToothIcon } from "@heroicons/react/24/solid";
+import {
+  Cog6ToothIcon,
+  CreditCardIcon,
+  KeyIcon,
+} from "@heroicons/react/24/solid";
 import { motion } from "framer-motion";
 import { redirect } from "next/navigation";
 import { useState } from "react";
@@ -36,7 +39,7 @@ export default function SettingsPage() {
   ];
 
   return (
-    <div className="no-scrollbar min-h-screen py-6 sm:px-6 sm:py-8">
+    <div className="no-scrollbar min-h-screen px-6 sm:py-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -45,9 +48,9 @@ export default function SettingsPage() {
       >
         {/* Header */}
         <div className="mt-24 mb-8 flex items-center justify-between">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 ">
             <Cog6ToothIcon className="w-8 h-8 text-mf-sybil-300" />
-            <h1 className="font-saira text-3xl">Settings</h1>
+            <h1 className="font-saira text-2xl sm:text-3xl">Settings</h1>
           </div>
           <ActionButton
             href="mailto:devs@manifold.inc"

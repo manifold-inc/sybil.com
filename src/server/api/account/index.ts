@@ -117,4 +117,40 @@ export const accountRouter = createTRPCRouter({
     if (!subscription) throw new TRPCError({ code: "UNAUTHORIZED" });
     return subscription;
   }),
+  updateUsername: protectedProcedure
+    .input(z.object({ username: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .update(User)
+        .set({
+          name: input.username,
+        })
+        .where(eq(User.id, ctx.user.id));
+      return;
+    }),
+
+  updateEmail: protectedProcedure
+    .input(z.object({ email: z.string().email() }))
+    .mutation(async ({ ctx, input }) => {
+      // Check if email is already taken
+      const [existing] = await ctx.db
+        .select({ id: User.id })
+        .from(User)
+        .where(eq(User.email, input.email));
+
+      if (existing && existing.id !== ctx.user.id) {
+        throw new TRPCError({
+          code: "CONFLICT",
+          message: "Email already in use",
+        });
+      }
+
+      await ctx.db
+        .update(User)
+        .set({
+          email: input.email,
+        })
+        .where(eq(User.id, ctx.user.id));
+      return;
+    }),
 });
