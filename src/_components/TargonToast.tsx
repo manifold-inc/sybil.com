@@ -64,7 +64,7 @@ export function showTargonToast(
     />,
     {
       style: {
-        background: "#1A191C",
+        background: "#15161B",
         color: "#E7E6E7",
         border: "0px",
         borderRadius: "0.25rem",

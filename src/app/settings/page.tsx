@@ -5,6 +5,7 @@ import { useAuth } from "@/_components/providers";
 import { APIKeysSettings } from "@/_components/settings/APIKeysSettings";
 import { BillingSettings } from "@/_components/settings/BillingSettings";
 import { showTargonToast } from "@/_components/TargonToast";
+import useSidebarStore from "@/app/stores/sidebar-store";
 import { CreditCardIcon, KeyIcon } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
 import { redirect } from "next/navigation";
@@ -15,6 +16,7 @@ type SettingsTab = "api-keys" | "billing";
 export default function SettingsPage() {
   const { status } = useAuth();
   const [activeTab, setActiveTab] = useState<SettingsTab>("billing");
+  const { isExpanded } = useSidebarStore();
 
   if (status === "UNAUTHED") {
     showTargonToast("Please sign in to continue", "Sign In", "/sign-in");
@@ -35,7 +37,9 @@ export default function SettingsPage() {
   ];
 
   return (
-    <div className="no-scrollbar min-h-screen py-6 sm:px-6 sm:py-8">
+    <div
+      className={`no-scrollbar min-h-screen py-6 sm:px-6 sm:py-8 transition-all duration-300 ease-in-out ${isExpanded ? "ml-64" : "ml-0"}`}
+    >
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

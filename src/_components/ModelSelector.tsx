@@ -89,8 +89,8 @@ export default function ModelSelector() {
         <div
           className="pointer-events-auto absolute rounded-full"
           style={{
-            width: "200px",
-            height: "200px",
+            width: "250px",
+            height: "250px",
             left: "50%",
             top: "50%",
             transform: "translate(-50%, -50%)",

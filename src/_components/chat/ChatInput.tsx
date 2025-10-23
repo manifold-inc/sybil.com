@@ -104,10 +104,7 @@ export function ChatInput({
                   title={sendDisabled ? "Stop generation" : "Send message"}
                 >
                   {sendDisabled ? (
-                    <Square
-                      className="h-5 w-5 text-red-400 transition-colors"
-                      fill="currentColor"
-                    />
+                    <Square className="h-5 w-5 text-mf-ash-500 opacity-50 transition-colors" />
                   ) : (
                     <SendHorizontal
                       className={clsx(

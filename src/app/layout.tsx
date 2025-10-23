@@ -1,8 +1,8 @@
 import Countdown from "@/_components/Countdown";
-import Footer from "@/_components/Footer";
 import Header from "@/_components/Header";
 import PostHogPageView from "@/_components/PosthogPageView";
 import { WithGlobalProvider } from "@/_components/providers";
+import Sidebar from "@/_components/Sidebar";
 import { env } from "@/env.mjs";
 import "@/styles/globals.css";
 import { Analytics } from "@vercel/analytics/react";
@@ -105,9 +105,11 @@ export default function RootLayout({
             </>
           ) : (
             <>
-              <Header />
-              {children}
-              <Footer />
+              <Sidebar />
+              <div className="flex min-h-screen flex-col overflow-x-hidden no-scrollbar">
+                <Header />
+                {children}
+              </div>
             </>
           )}
         </WithGlobalProvider>

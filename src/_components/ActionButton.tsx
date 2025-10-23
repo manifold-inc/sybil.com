@@ -93,7 +93,6 @@ export const ActionButton: React.FC<{
     heightClass,
     textSizeClass,
     "font-semibold",
-    "font-saira",
     "whitespace-nowrap",
     bgColor,
     "rounded-[4px]",

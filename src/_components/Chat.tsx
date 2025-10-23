@@ -16,12 +16,13 @@ import { api } from "@/trpc/react";
 import { type ChatMessage, sendModelMessage } from "@/utils/sendModelMessage";
 import Image from "next/image";
 import { OpenAI } from "openai";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 const TIMEOUT_DURATION = 180000;
 
 export function Chat() {
   const auth = useAuth();
+  const utils = api.useUtils();
   const { model, textParameters } = usePlaygroundStore();
   const [input, setInput] = useState("");
   const [chat, setChat] = useState<ChatMessage[]>([]);
@@ -130,19 +131,13 @@ export function Chat() {
     });
   }
 
-  const { data: mostRecentKey } = api.apiKey.listApiKeys.useQuery(undefined, {
+  const {
+    data: mostRecentKey,
+    isLoading: isLoadingKey,
+    error: keyError,
+  } = api.apiKey.getLatestApiKey.useQuery(undefined, {
     enabled: auth.status === "AUTHED",
-    select: (data) => data[0]?.id,
   });
-
-  const client = useMemo(() => {
-    if (!mostRecentKey) return null;
-    return new OpenAI({
-      baseURL: env.NEXT_PUBLIC_CHAT_API + "/v1",
-      apiKey: mostRecentKey,
-      dangerouslyAllowBrowser: true,
-    });
-  }, [mostRecentKey]);
 
   const sendMessage = async (message: string) => {
     if (auth.status === "UNAUTHED") {
@@ -153,7 +148,36 @@ export function Chat() {
       return;
     }
 
-    if (!client) return;
+    // Wait for API key to load if it's still loading
+    let apiKey = mostRecentKey;
+    if (isLoadingKey || !apiKey) {
+      try {
+        apiKey = await utils.apiKey.getLatestApiKey.ensureData();
+      } catch {
+        if (keyError) {
+          showTargonToast("Error loading API keys: " + keyError.message);
+        } else {
+          showTargonToast("Failed to load API key. Please try again.");
+        }
+        return;
+      }
+    }
+
+    if (!apiKey) {
+      showTargonToast(
+        "No API key found. Please add an API key in settings.",
+        "Settings",
+        "/settings"
+      );
+      return;
+    }
+
+    // Create client with the API key
+    const messageClient = new OpenAI({
+      baseURL: env.NEXT_PUBLIC_CHAT_API + "/v1",
+      apiKey: apiKey,
+      dangerouslyAllowBrowser: true,
+    });
 
     setIsLoading(true);
     stopFlagRef.current = false;
@@ -182,7 +206,7 @@ export function Chat() {
 
     try {
       await sendModelMessage({
-        client,
+        client: messageClient,
         model,
         message,
         chat: updatedChat,
