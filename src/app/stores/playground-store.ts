@@ -1,4 +1,4 @@
-import type { GetModalityModels } from "@/constants";
+import type { GetModalityModels } from "@/constant";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 

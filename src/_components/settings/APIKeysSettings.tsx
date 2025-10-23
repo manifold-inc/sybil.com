@@ -14,7 +14,7 @@ import {
 } from "@heroicons/react/24/outline";
 import {
   ArrowPathIcon,
-  CodeBracketIcon,
+  CodeBracketSquareIcon,
   ExclamationCircleIcon,
   KeyIcon,
   PencilSquareIcon,
@@ -29,22 +29,14 @@ export function APIKeysSettings() {
   const [editedNames, setEditedNames] = useState<Record<string, string>>({});
   const [showKey, setShowKey] = useState<string | null>(null);
   const [isCopied, setIsCopied] = useState<string | null>(null);
-  const [showCurlKey, setShowCurlKey] = useState(false);
-  const [showPythonKey, setShowPythonKey] = useState(false);
 
   const { data: keys, isLoading } = api.apiKey.listApiKeys.useQuery();
   const utils = api.useUtils();
 
-  const getCurlCode = (showKey: boolean) => {
-    const apiKey = showKey ? keys?.[0]?.id ?? "YOUR_API_KEY" : "YOUR_API_KEY";
+  const getCurlCode = () => {
     return `curl -X GET \\
-  https://api.targon.com/v1/deployments \\
-  -H "Authorization: Bearer ${apiKey}"`;
-  };
-
-  const getPythonCode = (showKey: boolean) => {
-    const apiKey = showKey ? keys?.[0]?.id ?? "YOUR_API_KEY" : "YOUR_API_KEY";
-    return `import targon\nclient = targon.Client(api_key="${apiKey}")\ndeployments = client.deployments.list()`;
+  https://api.sybil.com/v1/models \\
+  -H "Authorization: Bearer YOUR_API_KEY"`;
   };
 
   const formatDateDots = (
@@ -101,7 +93,7 @@ export function APIKeysSettings() {
     if (!key) return "••••••••••••••••••••••••••••••••••••";
     const prefix = key.substring(0, 7);
     const suffix = key.substring(key.length - 4);
-    return `${prefix}${"•".repeat(24)}${suffix}`;
+    return `${prefix}${"•".repeat(10)}${suffix}`;
   };
 
   return (
@@ -115,15 +107,16 @@ export function APIKeysSettings() {
         <Card>
           <div className="mb-6 flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <KeyIcon className="h-5 w-5" />
-              <h2 className="text-lg font-medium">Manage API Keys</h2>
+              <KeyIcon className="h-5 w-5 text-mf-sybil-500" />
+              <h2 className="text-lg font-medium">API Keys</h2>
             </div>
             <ActionButton
               onClick={() => createApiKey.mutate()}
               disabled={createApiKey.isLoading}
               width="md"
               height="sm"
-              className="bg-mf-white text-mf-background hover:bg-mf-edge-300"
+              variant="noir"
+              className="bg-mf-ash-500 text-mf-sybil-500 hover:opacity-70"
               icon={
                 createApiKey.isLoading ? (
                   <ArrowPathIcon className="h-4 w-4 animate-spin" />
@@ -146,7 +139,6 @@ export function APIKeysSettings() {
             </div>
           ) : !keys || keys.length === 0 ? (
             <div className="py-12 text-center">
-              <KeyIcon className="text-mf-noir-500 mx-auto mb-3 h-12 w-12" />
               <p className="opacity-70">No API keys yet</p>
               <p className="mt-1 text-sm opacity-70">
                 Create your first API key to get started
@@ -160,7 +152,7 @@ export function APIKeysSettings() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.4, delay: index * 0.05 }}
-                  className="bg-mf-gray/10 border-mf-gray/10 rounded-lg border p-4"
+                  className="bg-mf-new-700 rounded p-4"
                 >
                   <div className="mb-2 flex items-center justify-between">
                     <div>
@@ -212,16 +204,35 @@ export function APIKeysSettings() {
                           </>
                         )}
                       </div>
-                      <div className="text-xs opacity-70">
-                        Created {formatDateDots(apiKey.createdAt)}
-                      </div>
+                    </div>
+                    <div className="text-xs text-mf-sybil-500">
+                      Created {formatDateDots(apiKey.createdAt)}
                     </div>
                     <div className="flex items-center space-x-2">
                       <button
                         onClick={() =>
+                          deleteApiKey.mutate({ apiKey: apiKey.id })
+                        }
+                        disabled={deleteApiKey.isLoading}
+                        className="p-1 text-mf-safety-300 hover:opacity-70"
+                      >
+                        {deleteApiKey.isLoading ? (
+                          <ArrowPathIcon className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <TrashIcon className="h-4 w-4" />
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                  <div className="bg-mf-new-500 justify-between flex items-center rounded-sm p-2 font-mono text-xs">
+                    {showKey === apiKey.id ? apiKey.id : maskApiKey(apiKey.id)}
+
+                    <div className="flex items-center text-mf-sybil-500">
+                      <button
+                        onClick={() =>
                           setShowKey(showKey === apiKey.id ? null : apiKey.id)
                         }
-                        className="hover: p-1 opacity-70"
+                        className="hover: p-1 hover:opacity-70"
                       >
                         {showKey === apiKey.id ? (
                           <EyeSlashIcon className="h-4 w-4" />
@@ -239,23 +250,7 @@ export function APIKeysSettings() {
                           <Square2StackIcon className="h-4 w-4" />
                         )}
                       </button>
-                      <button
-                        onClick={() =>
-                          deleteApiKey.mutate({ apiKey: apiKey.id })
-                        }
-                        disabled={deleteApiKey.isLoading}
-                        className="p-1 text-red-400 hover:text-red-300"
-                      >
-                        {deleteApiKey.isLoading ? (
-                          <ArrowPathIcon className="h-4 w-4 animate-spin" />
-                        ) : (
-                          <TrashIcon className="h-4 w-4" />
-                        )}
-                      </button>
                     </div>
-                  </div>
-                  <div className="bg-mf-noir-800 text-mf-sally-500 rounded p-2 font-mono text-xs">
-                    {showKey === apiKey.id ? apiKey.id : maskApiKey(apiKey.id)}
                   </div>
                 </motion.div>
               ))}
@@ -272,7 +267,7 @@ export function APIKeysSettings() {
       >
         <Card>
           <div className="mb-4 flex items-center space-x-3">
-            <CodeBracketIcon className="h-5 w-5" />
+            <CodeBracketSquareIcon className="h-5 w-5 text-mf-sybil-500" />
             <h2 className="text-lg font-medium">Quick Start</h2>
           </div>
 
@@ -282,76 +277,24 @@ export function APIKeysSettings() {
 
           <div className="space-y-4">
             <div>
-              <div className="mb-2 text-sm font-medium opacity-70">
-                Example Request
-              </div>
+              <div className="mb-2 text-sm font-medium">Example Request</div>
               <div className="bg-mf-gray/10 group relative rounded-lg p-4 font-mono text-xs">
-                {getCurlCode(showCurlKey)
+                {getCurlCode()
                   .split("\n")
                   .map((line, i) => (
                     <div
                       key={i}
-                      className={`pb-2 ${i === 2 ? "text-mf-sally-500" : "text-mf-sybil-300"} ${i > 0 ? "ml-4" : ""}`}
+                      className={`pb-2 ${i === 2 ? "text-mf-sally-500" : "text-mf-sybil-500"} ${i > 0 ? "ml-4" : ""}`}
                     >
                       {line}
                     </div>
                   ))}
                 <div className="absolute top-2 right-2 flex space-x-1">
                   <button
-                    onClick={() => setShowCurlKey(!showCurlKey)}
+                    onClick={() => handleCopyClipboard(getCurlCode())}
                     className="p-1 opacity-70 hover:opacity-100"
                   >
-                    {showCurlKey ? (
-                      <EyeSlashIcon className="h-4 w-4" />
-                    ) : (
-                      <EyeIcon className="h-4 w-4" />
-                    )}
-                  </button>
-                  <button
-                    onClick={() => handleCopyClipboard(getCurlCode(true))}
-                    className="p-1 opacity-70 hover:opacity-100"
-                  >
-                    {isCopied === getCurlCode(true) ? (
-                      <Square2StackIconSolid className="h-4 w-4" />
-                    ) : (
-                      <Square2StackIcon className="h-4 w-4" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <div className="mb-2 text-sm font-medium opacity-70">
-                Python SDK
-              </div>
-              <div className="bg-mf-gray/10 group relative rounded-lg p-4 font-mono text-xs">
-                {getPythonCode(showPythonKey)
-                  .split("\n")
-                  .map((line, i) => (
-                    <div
-                      key={i}
-                      className={`${i === 1 ? "text-mf-sally-500" : "text-mf-sybil-300"} ${i > 0 ? "mt-2" : ""}`}
-                    >
-                      {line}
-                    </div>
-                  ))}
-                <div className="absolute top-2 right-2 flex space-x-1">
-                  <button
-                    onClick={() => setShowPythonKey(!showPythonKey)}
-                    className="p-1 opacity-70 hover:opacity-100"
-                  >
-                    {showPythonKey ? (
-                      <EyeSlashIcon className="h-4 w-4" />
-                    ) : (
-                      <EyeIcon className="h-4 w-4" />
-                    )}
-                  </button>
-                  <button
-                    onClick={() => handleCopyClipboard(getPythonCode(true))}
-                    className="p-1 opacity-70 hover:opacity-100"
-                  >
-                    {isCopied === getPythonCode(true) ? (
+                    {isCopied === getCurlCode() ? (
                       <Square2StackIconSolid className="h-4 w-4" />
                     ) : (
                       <Square2StackIcon className="h-4 w-4" />
@@ -372,32 +315,26 @@ export function APIKeysSettings() {
       >
         <Card>
           <div className="mb-4 flex items-center space-x-3">
-            <ShieldCheckIcon className="h-5 w-5" />
+            <ShieldCheckIcon className="h-5 w-5 text-mf-sybil-500" />
             <h2 className="text-lg font-medium">Security Best Practices</h2>
           </div>
 
           <div className="space-y-3">
             <div className="flex items-start space-x-2">
-              <div className="bg-mf-sally-500 mt-1.5 h-1.5 w-1.5 rounded-full"></div>
+              <div className="bg-mf-sybil-300 mt-1.5 h-1.5 w-1.5 rounded-full" />
               <p className="text-sm opacity-70">
                 Never share your API keys in public repositories or client-side
                 code
               </p>
             </div>
             <div className="flex items-start space-x-2">
-              <div className="bg-mf-sally-500 mt-1.5 h-1.5 w-1.5 rounded-full"></div>
-              <p className="text-sm opacity-70">
-                Use environment variables to store API keys in your applications
-              </p>
-            </div>
-            <div className="flex items-start space-x-2">
-              <div className="bg-mf-sally-500 mt-1.5 h-1.5 w-1.5 rounded-full"></div>
+              <div className="bg-mf-sybil-300 mt-1.5 h-1.5 w-1.5 rounded-full" />
               <p className="text-sm opacity-70">
                 Rotate your keys regularly and delete unused ones
               </p>
             </div>
             <div className="flex items-start space-x-2">
-              <div className="bg-mf-sally-500 mt-1.5 h-1.5 w-1.5 rounded-full"></div>
+              <div className="bg-mf-sybil-300 mt-1.5 h-1.5 w-1.5 rounded-full" />
               <p className="text-sm opacity-70">
                 Use scoped keys with minimal permissions for each use case
               </p>

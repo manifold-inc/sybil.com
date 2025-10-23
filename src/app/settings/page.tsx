@@ -7,6 +7,7 @@ import { BillingSettings } from "@/_components/settings/BillingSettings";
 import { showTargonToast } from "@/_components/TargonToast";
 import useSidebarStore from "@/app/stores/sidebar-store";
 import { CreditCardIcon, KeyIcon } from "@heroicons/react/24/outline";
+import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import { motion } from "framer-motion";
 import { redirect } from "next/navigation";
 import { useState } from "react";
@@ -48,45 +49,41 @@ export default function SettingsPage() {
       >
         {/* Header */}
         <div className="mt-24 mb-8 flex items-center justify-between">
-          <div className="flex flex-col gap-2">
-            <h1 className="font-saira mb-2 text-3xl">Settings</h1>
-            <p className="text-sm opacity-70">
-              Manage your API keys, billing, and account preferences
-            </p>
+          <div className="flex items-center gap-2 ">
+            <Cog6ToothIcon className="w-8 h-8 text-mf-sybil-500" />
+            <h1 className="text-2xl sm:text-3xl">Settings</h1>
           </div>
           <ActionButton
-            href="/sign-out"
-            tag="a"
-            buttonText="Sign Out"
+            href="mailto:devs@manifold.inc"
+            buttonText="Support"
             variant="noir"
-            width="sm"
+            width="md"
             height="md"
           />
         </div>
 
         {/* Tabs */}
-        <div className="border-mf-gray/10 mb-8 flex space-x-1 border-b">
+        <div className="mb-8 flex space-x-1">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             return (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`relative flex items-center space-x-2 px-4 py-3 transition-colors ${
+                className={`border border-mf-new-500 cursor-pointer rounded-md relative flex items-center justify-center space-x-2 w-46 px-4 py-2 transition-colors ${
                   activeTab === tab.id
-                    ? "text-mf-sally-500"
+                    ? "bg-mf-new-700"
                     : "opacity-70 hover:opacity-100"
                 }`}
               >
-                <Icon className="h-4 w-4" />
+                <Icon
+                  className={`h-4 w-4 ${
+                    activeTab === tab.id
+                      ? "text-mf-sybil-500"
+                      : "text-mf-ash-300"
+                  }`}
+                />
                 <span>{tab.label}</span>
-                {activeTab === tab.id && (
-                  <motion.div
-                    layoutId="activeTab"
-                    className="bg-mf-sally-500 absolute right-0 bottom-0 left-0 h-0.5"
-                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  />
-                )}
               </button>
             );
           })}

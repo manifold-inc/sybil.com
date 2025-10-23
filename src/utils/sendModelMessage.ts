@@ -2,7 +2,7 @@ import type {
   PlaygroundModel,
   PlaygroundTextParameters,
 } from "@/app/stores/playground-store";
-import { MODEL_SYSTEM_PROMPT, THINKING_MODELS } from "@/constants";
+import { MODEL_SYSTEM_PROMPT, THINKING_MODELS } from "@/constant";
 import type { OpenAI } from "openai";
 
 export type ChatMessage = {

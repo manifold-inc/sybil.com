@@ -61,7 +61,7 @@ export const ChatCodeExample = ({ model }: ChatCodeExampleProps) => {
   -H "Authorization: Bearer ${showApiKey ? apiKey.data?.[0]?.id : "YOUR_API_KEY"}" \\
   -N \\
   -d '{
-    "model": "${model}",
+    "model": "${model ?? "EXAMPLE_MODEL"}",
     "stream": true,
     "messages": [
       {"role": "system", "content": "You are a helpful programming assistant."},

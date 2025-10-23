@@ -13,7 +13,7 @@ export const Card = ({
     return (
       <Link href={link}>
         <div
-          className={`bg-mf-card-dark border-mf-metal-300 rounded-md border p-4 transition-colors hover:opacity-90 ${className} `}
+          className={`bg-mf-new-900 border-mf-metal-300 rounded-md border p-4 transition-colors hover:opacity-90 ${className} `}
         >
           {children}
         </div>
@@ -22,7 +22,7 @@ export const Card = ({
   }
   return (
     <div
-      className={`bg-mf-card-dark border-mf-metal-300 rounded-md border p-4 ${className} `}
+      className={`bg-mf-new-900 border-mf-metal-300 rounded-md border p-4 ${className} `}
     >
       {children}
     </div>

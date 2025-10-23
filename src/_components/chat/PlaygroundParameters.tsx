@@ -6,7 +6,7 @@ import { ToggleParameter } from "@/_components/chat/parameters/ToggleParameter";
 import usePlaygroundStore, {
   type PlaygroundTextParameters,
 } from "@/app/stores/playground-store";
-import { MODEL_SYSTEM_PROMPT_TOKENS } from "@/constants";
+import { MODEL_SYSTEM_PROMPT_TOKENS } from "@/constant";
 import { api } from "@/trpc/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 

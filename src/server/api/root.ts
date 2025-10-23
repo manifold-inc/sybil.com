@@ -7,6 +7,7 @@ import { fileRouter } from "./file";
 import { apiKeyRouter } from "./keys";
 import { modelRouter } from "./model";
 import { stripeRouter } from "./stripe";
+import { subscriptionPlansRouter } from "./subscriptionPlans";
 
 /**
  * This is the primary router for your server.
@@ -19,6 +20,7 @@ export const appRouter = createTRPCRouter({
   apiKey: apiKeyRouter,
   stripe: stripeRouter,
   model: modelRouter,
+  subscriptionPlans: subscriptionPlansRouter,
 });
 
 export type ReactQueryOptions = inferReactQueryProcedureOptions<AppRouter>;

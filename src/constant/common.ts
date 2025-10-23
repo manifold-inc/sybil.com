@@ -1,25 +1,33 @@
-export enum StoreKey {
-  Client = "client",
-  Thread = "thread",
-  KV = "idb-kv",
-  Block = "block",
-  Answer = "answer",
-  File = "file",
-  Model = "model-v2",
-}
+export const CREDIT_PER_DOLLAR = 100_000_000 as number;
 
-export const MAX_VERSION = 99999999;
+export const MODEL_SYSTEM_PROMPT_TOKENS = 100;
 
-export const ACCEPT_FILES = [".txt", ".pdf"];
+// models that support reasoning
+export const THINKING_MODELS = ["deepseek-ai/DeepSeek-R1"];
 
-export enum SlotId {
-  PendingTheadBlock = "thread-block-action",
-  ThreadInputBox = "thread-input-box",
-}
+// system prompt for reasoning
+export const REASONING_SYSTEM_PROMPT = `
+  - Please reason for only two to three sentences.
+  `;
 
-export const MOBILE_WIDTH = 640;
+// system prompt for models that do not support reasoning
+export const MODEL_SYSTEM_PROMPT = `
+  You are a helpful and knowledgeable AI assistant.
 
-export enum DefaultValue {
-  Avatar = "DEFAULT_AVATAR",
-  ThreadIcon = "DEFAULT_THREAD_ICON",
-}
+  Important Rules:
+  - Do not include any reasoning in your response.
+  - Do not include the </think> tag in your response.
+  - Do not include HTML, JSX, or code unless the user specifically asks for it.
+  - Always respond in English.
+  - Format your response using Markdown if appropriate.
+  `;
+
+export type GetModalityModels = {
+  id: number;
+  name: string | null;
+  description: string | null;
+  modality: "text-to-text" | "text-to-image";
+  supportedEndpoints: string[];
+  enabled: boolean;
+  allowedUserId: number | null;
+};
