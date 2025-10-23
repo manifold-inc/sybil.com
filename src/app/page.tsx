@@ -1,15 +1,7 @@
-import AskBox from "@/_components/AskBox";
-import ClientUtils from "@/_components/ClientUtils";
-import TrendingCarousel from "@/_components/TrendingCarousel";
+import { Chat } from "@/_components/Chat";
 import Image from "next/image";
-import { Suspense } from "react";
 
 export default function Home() {
-  const trendings = [
-    "How do I live a meaningful life?",
-    "Where did Sybil's name come from?",
-    "How tall is a cow?",
-  ];
   return (
     <div>
       <div className="relative flex h-screen w-full flex-col items-center justify-center">
@@ -18,14 +10,10 @@ export default function Home() {
             <Image src="/sybil-text.svg" alt="Sybil" width={80} height={50} />
           </div>
           <div className="py-8 sm:p-8">
-            <AskBox autofocus />
+            <Chat />
           </div>
-          <TrendingCarousel trendings={trendings} />
         </div>
       </div>
-      <Suspense fallback={null}>
-        <ClientUtils />
-      </Suspense>
     </div>
   );
 }

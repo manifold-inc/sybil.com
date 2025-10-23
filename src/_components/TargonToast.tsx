@@ -27,8 +27,8 @@ export function TargonToast({
   return (
     <div className="relative flex w-full items-center gap-2">
       <Image
-        src="/targon-logo.svg"
-        alt="Toast"
+        src="/sybil-bg.svg"
+        alt="Sybil"
         className="h-6 w-6"
         width={24}
         height={24}

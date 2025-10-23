@@ -111,8 +111,8 @@ export default function RootLayout({
             </>
           )}
         </WithGlobalProvider>
+        <Toaster position="top-right" richColors />
       </body>
-      <Toaster />
       <Analytics />
       <AxiomWebVitals />
     </html>

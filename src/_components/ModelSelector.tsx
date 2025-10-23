@@ -1,6 +1,8 @@
 "use client";
 
-import { useModelStore } from "@/store/model";
+import usePlaygroundStore, {
+  type PlaygroundModel,
+} from "@/app/stores/playground-store";
 import { clsx } from "clsx";
 import Image from "next/image";
 import { useState } from "react";
@@ -9,43 +11,50 @@ const MODEL_OPTIONS: {
   name: string;
   logo: string;
   fullName: string;
-  disabled: boolean;
+  org: string;
+  description: string;
 }[] = [
   {
-    name: "deepseek-ai",
+    name: "deepseek-ai/DeepSeek-V3",
     logo: "/deepseek.svg",
     fullName: "deepseek-ai/DeepSeek-V3",
-    disabled: false,
+    org: "deepseek-ai",
+    description: "DeepSeek's V3 model",
   },
   {
     name: "hone",
     logo: "/hone.svg",
     fullName: "hone/hone-chat",
-    disabled: true,
+    org: "hone",
+    description: "Hone's Chat model",
   },
   {
     name: "moonshot",
     logo: "/moonshot.svg",
     fullName: "moonshot/moonshot-v1",
-    disabled: true,
+    org: "moonshot",
+    description: "Moonshot's v1 model",
   },
   {
     name: "openai",
     logo: "/openai.svg",
     fullName: "openai/gpt-4",
-    disabled: true,
+    org: "openai",
+    description: "OpenAI's GPT-4 model",
   },
   {
     name: "qwen",
     logo: "/qwen.svg",
     fullName: "qwen/qwen-turbo",
-    disabled: true,
+    org: "qwen",
+    description: "Qwen's Turbo model",
   },
   {
     name: "zai-org",
     logo: "/zai.svg",
     fullName: "zai-org/GLM-4.6-FP8",
-    disabled: false,
+    org: "zai-org",
+    description: "GLM 4.6 FP8 model",
   },
 ];
 
@@ -63,7 +72,7 @@ function getModelLogo(modelName: string): string {
 }
 
 export default function ModelSelector() {
-  const { selectedModel, setSelectedModel } = useModelStore();
+  const { model, setModel } = usePlaygroundStore();
   const [isHovering, setIsHovering] = useState(false);
   const [blockHover, setBlockHover] = useState(false);
 
@@ -80,12 +89,14 @@ export default function ModelSelector() {
         <div
           className="pointer-events-auto absolute rounded-full"
           style={{
-            width: "140px",
-            height: "140px",
+            width: "200px",
+            height: "200px",
             left: "50%",
             top: "50%",
             transform: "translate(-50%, -50%)",
             zIndex: 1,
+            background:
+              "radial-gradient(circle, rgba(18, 19, 24, 1) 0%, rgba(18, 19, 24, 0) 70%)",
           }}
         />
       )}
@@ -100,7 +111,7 @@ export default function ModelSelector() {
         onMouseEnter={() => !blockHover && setIsHovering(true)}
       >
         <Image
-          src={isHovering ? "/selector.svg" : getModelLogo(selectedModel)}
+          src={isHovering ? "/selector.svg" : getModelLogo(model.name)}
           alt="Model Logo"
           width={16}
           height={16}
@@ -111,28 +122,34 @@ export default function ModelSelector() {
       {/* Surrounding model logos */}
       {isHovering && (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          {MODEL_OPTIONS.map((model, index) => {
-            const angle = index * 60 - 90; // Start from top, spread evenly
-            const radius = 50; // Distance from center
+          {MODEL_OPTIONS.map((modelOption, index) => {
+            const angle = index * 60 - 90;
+            const radius = 50;
             const x = Math.cos((angle * Math.PI) / 180) * radius;
             const y = Math.sin((angle * Math.PI) / 180) * radius;
 
             return (
               <button
-                key={model.name}
-                disabled={model.disabled}
+                key={modelOption.name}
                 onClick={() => {
-                  if (model.disabled) return;
-                  setSelectedModel(model.fullName);
+                  const newModel: PlaygroundModel = {
+                    id: index,
+                    name: modelOption.fullName,
+                    org: modelOption.org,
+                    description: modelOption.description,
+                    modality: "text-to-text",
+                    supportedEndpoints: ["CHAT"],
+                    enabled: true,
+                    allowedUserId: null,
+                  };
+                  setModel(newModel);
                   setIsHovering(false);
                   setBlockHover(true);
                   setTimeout(() => setBlockHover(false), 300);
                 }}
                 className={clsx(
                   "animate-in fade-in zoom-in pointer-events-auto absolute flex items-center justify-center rounded-full border transition-all duration-200",
-                  model.disabled
-                    ? "border-mf-new-500/50 bg-mf-new-600/40 cursor-not-allowed opacity-50"
-                    : "border-mf-new-500 bg-mf-new-600/80 hover:bg-mf-new-600 hover:scale-110"
+                  "border-mf-new-500 bg-mf-new-600/80 hover:bg-mf-new-600 hover:scale-110"
                 )}
                 style={{
                   width: "32px",
@@ -144,14 +161,11 @@ export default function ModelSelector() {
                 }}
               >
                 <Image
-                  src={model.logo}
-                  alt={model.name}
+                  src={modelOption.logo}
+                  alt={modelOption.name}
                   width={14}
                   height={14}
-                  className={clsx(
-                    "h-3.5 w-3.5 flex-shrink-0",
-                    model.disabled && "opacity-60 grayscale"
-                  )}
+                  className="h-3.5 w-3.5 flex-shrink-0"
                 />
               </button>
             );
