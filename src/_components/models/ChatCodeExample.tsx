@@ -54,7 +54,7 @@ export const ChatCodeExample = ({ model }: ChatCodeExampleProps) => {
     setTimeout(() => setIsCopied(false), 3000);
     showTargonToast("Copied to clipboard");
   };
-  export const getCodeExample = (lang: typeof selectedLang) => {
+  const getCodeExample = (lang: typeof selectedLang) => {
     const examples = {
       curl: `curl ${env.NEXT_PUBLIC_CHAT_API}/v1/chat/completions \\
   -H "Content-Type: application/json" \\

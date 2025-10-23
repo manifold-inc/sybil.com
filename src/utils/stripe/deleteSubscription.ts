@@ -41,7 +41,7 @@ const deleteSubscription = async (
       .update(User)
       .set({
         planId: 1,
-        monthlyRequests: 0,
+        planRequests: 0,
       })
       .where(eq(User.id, user.userId));
   });

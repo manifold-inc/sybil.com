@@ -4,6 +4,8 @@ import { PlanCard } from "@/_components/PlanCard";
 import { serverClient } from "@/trpc/server";
 import { ChatBubbleOvalLeftIcon } from "@heroicons/react/24/solid";
 
+export const dynamic = "force-dynamic";
+
 export default async function page() {
   const plans = await serverClient.subscriptionPlans.getPlans.query();
   return (
