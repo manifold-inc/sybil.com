@@ -13,6 +13,8 @@ import {
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 
+import { ActionButton } from "../ActionButton";
+
 export function BillingSettings() {
   const { data: user } = api.account.getUser.useQuery();
   const { data: paymentMethodsData } = api.stripe.getPaymentMethods.useQuery();
@@ -88,39 +90,51 @@ export function BillingSettings() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.1 }}
+        className="space-y-6"
       >
-        <Card className="my-6">
-          <p>{userSubscription?.subscriptionName ?? "No Subscription"}</p>
+        <Card>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+            {/* Left: Name + Plan */}
+            <input
+              type="text"
+              value={"First Last"}
+              className="w-full bg-mf-gray/10 border border-mf-gray/15 rounded-md px-3 py-2 focus:ring-1 focus:ring-mf-noir-400 focus:border-mf-noir-400"
+            />
+            <input
+              type="email"
+              value={"email@email.com"}
+              className="w-full bg-mf-gray/10 border border-mf-gray/15 rounded-md px-3 py-2 focus:ring-1 focus:ring-mf-noir-400 focus:border-mf-noir-400"
+            />
+            <div className="flex items-center space-x-2 bg-mf-gray/10 rounded-md px-3 py-2">
+              <WalletIcon className="w-4 h-4 text-mf-sally-500" />
+              <span>
+                {userSubscription?.subscriptionName ?? "Pay as you go"}
+              </span>
+            </div>
+
+            {/* Right: Email + Buttons */}
+            <div className="flex items-center space-x-4 justify-self-end">
+              <ActionButton
+                width="lg"
+                height="lg"
+                variant="noir"
+                buttonText="Change Plan"
+              />
+              <ActionButton width="lg" height="lg" buttonText="Save Changes" />
+            </div>
+          </div>
         </Card>
         <Card>
-          <h2 className="mb-4 text-lg font-medium">Account Balance</h2>
-          <div className="flex items-center">
-            <div className="mb-6 flex items-center justify-between">
-              <div>
-                <div className="flex items-center space-x-3">
-                  <WalletIcon className="h-6 w-6 opacity-70" />
-                  <div>
-                    <div className="text-3xl font-light">
-                      {formatCurrency((totalCredits || 0) / CREDIT_PER_DOLLAR)}
-                    </div>
-                    <div className="text-sm opacity-70">Available credits</div>
-                  </div>
-                </div>
-              </div>
+          <div className="flex justify-between items-center mb-4 ">
+            <h2 className="text-lg font-medium">Account Balance</h2>
+            <div className="text-xs bg-mf-new-500 p-2 px-4 rounded-sm">
+              <span className="text-mf-sybil-300">{user?.planRequests}</span>{" "}
+              Total Available Request
             </div>
-            <div className="mb-6 flex items-center justify-between">
-              <div>
-                <div className="flex items-center space-x-3">
-                  <WalletIcon className="h-6 w-6 opacity-70" />
-                  <div>
-                    <div className="text-3xl font-light">
-                      {user?.planRequests ?? 0}
-                    </div>
-                    <div className="text-sm opacity-70">Available Requests</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          </div>
+          <div className="text-4xl font-light justify-self-center pb-8">
+            <span className="text-mf-sybil-300">$</span>
+            {((totalCredits || 0) / CREDIT_PER_DOLLAR).toFixed(2)}
           </div>
 
           {/* Quick add amounts and Add Credits button */}
@@ -149,8 +163,8 @@ export function BillingSettings() {
                 disabled={isAddingCredits}
                 className={`rounded-md px-4 py-2 transition-colors disabled:opacity-50 ${
                   !isCustom && purchaseAmount === amount
-                    ? "bg-mf-white text-black"
-                    : "bg-mf-gray/10 border-mf-gray/10 hover:bg-mf-gray/20 border"
+                    ? "bg-mf-edge-500 text-black"
+                    : "bg-[#1f222E]/30  hover:bg-mf-gray/20 "
                 }`}
               >
                 +${amount}
@@ -166,8 +180,8 @@ export function BillingSettings() {
               disabled={isAddingCredits}
               className={`rounded-md px-4 py-2 transition-colors disabled:opacity-50 ${
                 isCustom
-                  ? "bg-mf-white text-black"
-                  : "bg-mf-gray/10 border-mf-gray/10 hover:bg-mf-gray/20 border"
+                  ? "bg-mf-edge-500 text-black"
+                  : "bg-[#1f222E]/30  hover:bg-mf-gray/20 "
               }`}
             >
               Custom
@@ -186,7 +200,7 @@ export function BillingSettings() {
                 purchaseAmount === 0 ||
                 (isCustom && customValue === "")
                   ? "bg-mf-gray/10 border-mf-gray/10 !disabled:hover:bg-mf-gray/20 border"
-                  : "bg-mf-sally-500 border-mf-sally-500 text-mf-ash-700"
+                  : "bg-mf-sybil-300 text-mf-ash-700"
               }`}
             >
               {isAddingCredits ? (
@@ -208,7 +222,7 @@ export function BillingSettings() {
               className="mt-4"
             >
               <div className="flex items-center space-x-2">
-                <span className="text-mf-sally-500 -translate-y-0.25 text-2xl">
+                <span className="text-mf-sybil-300 -translate-y-0.25 text-2xl">
                   $
                 </span>
                 <input
@@ -234,17 +248,8 @@ export function BillingSettings() {
               </div>
             </motion.div>
           )}
-        </Card>
-      </motion.div>
 
-      {/* Payment Methods */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-      >
-        <Card>
-          <h2 className="mb-4 text-lg font-medium">Payment Methods</h2>
+          <h2 className="my-4 text-lg font-medium">Payment Methods</h2>
           <div className="space-y-4">
             {uniquePaymentMethods.map((method) => (
               <div
@@ -252,7 +257,7 @@ export function BillingSettings() {
                 className="bg-mf-gray/10 border-mf-gray/10 flex items-center justify-between rounded-lg border p-4"
               >
                 <div className="flex items-center space-x-3">
-                  <div className="bg-mf-gray/10 flex h-8 w-12 items-center justify-center rounded">
+                  <div className="bg-[#1f222E]/30 flex h-8 w-12 items-center justify-center rounded">
                     <CreditCardIcon className="h-5 w-5 opacity-70" />
                   </div>
                   <div>
