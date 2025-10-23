@@ -1,6 +1,6 @@
 import Countdown from "@/_components/Countdown";
-import Footer from "@/_components/footer";
-import Header from "@/_components/header";
+import Footer from "@/_components/Footer";
+import Header from "@/_components/Header";
 import PostHogPageView from "@/_components/PosthogPageView";
 import { WithGlobalProvider } from "@/_components/providers";
 import { env } from "@/env.mjs";
