@@ -28,7 +28,7 @@ export function PlanCard({ plan }: { plan: PlanOutput }) {
   const { data: currentPlan } = api.account.getUserSubscription.useQuery(
     undefined,
     {
-      enabled: auth.status !== "LOADING",
+      enabled: auth.status !== "LOADING" && auth.status !== "UNAUTHED",
     }
   );
 

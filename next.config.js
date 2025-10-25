@@ -9,26 +9,7 @@ import "./src/env.mjs";
 /** @type {import("next").NextConfig} */
 
 const config = {
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "serpapi.com",
-      },
-      {
-        protocol: "https",
-        hostname: "www.micreate.eu",
-      },
-      {
-        protocol: "https",
-        hostname: "www.google.com",
-      },
-      {
-        protocol: "https",
-        hostname: "s2.googleusercontent.com",
-      },
-    ],
-  },
+  devIndicators: false,
 };
 
 export default withAxiom(config);

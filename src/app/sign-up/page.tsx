@@ -12,6 +12,7 @@ import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 
 type Inputs = {
+  name: string;
   email: string;
   password: string;
   password2: string;
@@ -47,10 +48,23 @@ export default function Page() {
     <div className="relative flex p-8">
       <div className="flex h-[80vh] w-full items-center justify-center">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex w-72 max-w-sm flex-col gap-8">
+          <div className="flex w-72 max-w-sm flex-col gap-4">
             <div className="flex flex-col gap-4 items-center justify-center text-center text-3xl pb-6">
               <Image src="/sybil.svg" alt="Logo" width={32} height={32} />
               Join Sybil
+            </div>
+            <div>
+              <input
+                disabled={createAccount.isLoading}
+                {...register("name", { required: false })}
+                placeholder="Enter Name..."
+                type="text"
+                className={clsx(baseStyles, {
+                  "border-mf-safety-500": errors.name,
+                  "border-mf-new-500": !errors.name,
+                })}
+              />
+              <span className={errorStyle}>{errors.email?.message}</span>
             </div>
             <div>
               <input

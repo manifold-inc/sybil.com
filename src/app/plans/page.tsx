@@ -3,6 +3,7 @@ import { Card } from "@/_components/Card";
 import { PlanCard } from "@/_components/PlanCard";
 import { serverClient } from "@/trpc/server";
 import { ChatBubbleOvalLeftIcon } from "@heroicons/react/24/solid";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -19,7 +20,9 @@ export default async function page() {
           </div>
           <div>
             <span>Request Based Usage, </span>
-            <span className="text-mf-sybil-300">or Pay as you go</span>
+            <Link href="/settings" className="text-mf-sybil-300">
+              or Pay as you go
+            </Link>
           </div>
         </Card>
       </div>

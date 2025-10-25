@@ -8,6 +8,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { useAuth } from "./providers";
+
 interface NavItem {
   label: string;
   href: string;
@@ -22,6 +24,7 @@ interface Chat {
 export default function Sidebar() {
   const { isExpanded, toggleSidebar } = useSidebarStore();
   const pathname = usePathname();
+  const { status, user } = useAuth();
 
   const navItems: NavItem[] = [
     {
@@ -35,8 +38,8 @@ export default function Sidebar() {
       icon: <SparkleIcon className="h-5 w-5" />,
     },
     {
-      label: "Pricing",
-      href: "/pricing",
+      label: "Plans",
+      href: "/plans",
       icon: <QueueListIcon className="h-5 w-5" />,
     },
   ];
@@ -48,7 +51,7 @@ export default function Sidebar() {
     { id: "4", name: "TODO Chat" },
   ];
 
-  const userName = "Duke Woodman";
+  const userName = user?.name ?? "User";
 
   const handleSidebarClick = (e: React.MouseEvent) => {
     if ((e.target as HTMLElement).closest("a, button")) {
@@ -56,6 +59,12 @@ export default function Sidebar() {
     }
     toggleSidebar();
   };
+
+  const menuItems = [
+    { label: "Privacy Policy", href: "/privacy" },
+    { label: "Terms of Service", href: "/terms" },
+    { label: "Make Default Search", href: "#" },
+  ];
 
   return (
     <motion.aside
@@ -93,7 +102,7 @@ export default function Sidebar() {
                 onClick={(e) => e.stopPropagation()}
                 className={`flex items-center gap-3 rounded-sm h-8 w-8 transition-colors cursor-pointer border border-mf-new-500 ${
                   pathname === item.href
-                    ? "bg-mf-new-500 text-white"
+                    ? "bg-mf-new-500 text-mf-sybil-500"
                     : "text-gray-400 hover:bg-mf-new-500 hover:text-gray-200"
                 }`}
               >
@@ -165,11 +174,10 @@ export default function Sidebar() {
       </nav>
 
       {/* User Section */}
-      <div className="border-t border-mf-new-500 p-4 pl-5">
+      <div className="border-t border-mf-new-500 p-4 pl-5 relative group">
         <Link
           className="flex w-full items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
           href="/settings"
-          onClick={(e) => e.stopPropagation()}
         >
           <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-sm bg-mf-new-700 border border-mf-new-500">
             <Image
@@ -194,6 +202,53 @@ export default function Sidebar() {
             )}
           </AnimatePresence>
         </Link>
+
+        {/* Popup Menu */}
+        <div className="absolute bottom-full left-4 -mb-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+          <div className="bg-mf-new-800 border border-mf-new-500 rounded-lg shadow-2xl overflow-hidden min-w-[240px] text-sm flex flex-col gap-4 py-5">
+            {menuItems.map((item, index) => (
+              <Link
+                key={index}
+                href={item.href}
+                onClick={(e) => e.stopPropagation()}
+                className="block px-6 transition-colors hover:text-mf-edge-300"
+              >
+                {item.label}
+              </Link>
+            ))}
+            {status === "AUTHED" ? (
+              <>
+                <Link
+                  href="/settings"
+                  className="block px-6 transition-colors hover:text-mf-edge-300"
+                >
+                  Settings
+                </Link>
+                <a
+                  href="/sign-out"
+                  className="block px-6 transition-colors hover:text-mf-edge-300"
+                >
+                  Log Out
+                </a>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/sign-in"
+                  className="block px-6 transition-colors hover:text-mf-edge-300"
+                >
+                  Log In
+                </Link>
+                <Link
+                  href="/sign-up"
+                  className="block px-6 transition-colors text-mf-green-500 hover:text-mf-green-100"
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
       </div>
     </motion.aside>
   );
