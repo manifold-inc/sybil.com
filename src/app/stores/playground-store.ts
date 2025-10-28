@@ -2,11 +2,6 @@ import type { GetModalityModels } from "@/constant";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-export type PlaygroundModel = GetModalityModels & {
-  name: string;
-  org: string;
-};
-
 export type PlaygroundTextParameters = {
   temperature: number;
   max_tokens: number;
@@ -19,24 +14,13 @@ export type PlaygroundTextParameters = {
 };
 
 type PlaygroundStore = {
-  model: PlaygroundModel;
+  model: GetModalityModels;
   textParameters: PlaygroundTextParameters;
-  setModel: (model: PlaygroundModel) => void;
+  setModel: (model: GetModalityModels) => void;
   updateTextParameter: <K extends keyof PlaygroundTextParameters>(
     key: K,
     value: PlaygroundTextParameters[K]
   ) => void;
-};
-
-const DEFAULT_MODEL: PlaygroundModel = {
-  id: 0,
-  name: "deepseek-ai/DeepSeek-V3",
-  org: "deepseek-ai",
-  description: "DeepSeek's V3 model",
-  modality: "text-to-text",
-  supportedEndpoints: ["CHAT"],
-  enabled: true,
-  allowedUserId: null,
 };
 
 const DEFAULT_TEXT_PARAMETERS: PlaygroundTextParameters = {
@@ -53,7 +37,15 @@ const DEFAULT_TEXT_PARAMETERS: PlaygroundTextParameters = {
 const usePlaygroundStore = create<PlaygroundStore>()(
   persist(
     (set) => ({
-      model: DEFAULT_MODEL,
+      model: {
+        id: 0,
+        name: null,
+        description: "",
+        modality: "text-to-text",
+        supportedEndpoints: [],
+        enabled: true,
+        allowedUserId: null,
+      },
       textParameters: DEFAULT_TEXT_PARAMETERS,
       setModel: (model) => set({ model }),
       updateTextParameter: (key, value) =>

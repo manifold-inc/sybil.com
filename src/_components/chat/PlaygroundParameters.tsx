@@ -16,9 +16,8 @@ export const PlaygroundParameters = ({
   closeSidebar: () => void;
 }) => {
   const { textParameters, updateTextParameter, model } = usePlaygroundStore();
-
   const { data: modelData } = api.model.getByNames.useQuery({
-    names: [`${model.org}/${model.name}`],
+    names: [model.name ?? ""],
   });
 
   const currentModel = modelData?.[0];

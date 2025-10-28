@@ -20,17 +20,15 @@ enum PlanStatus {
 
 type PlanOutput = RouterOutputs["subscriptionPlans"]["getPlans"][number];
 
-export function PlanCard({ plan }: { plan: PlanOutput }) {
-  const auth = useAuth();
+export function PlanCard({
+  plan,
+  currentPlan,
+}: {
+  plan: PlanOutput;
+  currentPlan: RouterOutputs["account"]["getUserSubscription"] | null;
+}) {
   const router = useRouter();
   const { user } = useAuth();
-
-  const { data: currentPlan } = api.account.getUserSubscription.useQuery(
-    undefined,
-    {
-      enabled: auth.status !== "LOADING" && auth.status !== "UNAUTHED",
-    }
-  );
 
   const createSubscription =
     api.subscriptionPlans.createSubscriptionUrl.useMutation({

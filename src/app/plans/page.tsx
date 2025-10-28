@@ -9,6 +9,12 @@ export const dynamic = "force-dynamic";
 
 export default async function page() {
   const plans = await serverClient.subscriptionPlans.getPlans.query();
+  let currentPlan = null;
+  try {
+    currentPlan = await serverClient.account.getUserSubscription.query();
+  } catch {
+    currentPlan = null;
+  }
   return (
     <div className="flex flex-col min-h-screen items-center p-4 justify-center">
       <div className="flex flex-col items-center gap-2">
@@ -27,7 +33,9 @@ export default async function page() {
         </Card>
       </div>
       <div className="flex flex-col md:flex-row items-center justify-center gap-6 py-10">
-        {plans?.map((plan) => <PlanCard key={plan.id} plan={plan} />)}
+        {plans?.map((plan) => (
+          <PlanCard key={plan.id} plan={plan} currentPlan={currentPlan} />
+        ))}
       </div>
       <div className="font-poppins text-center text-sm">
         <p className="pb-6 whitespace-nowrap">

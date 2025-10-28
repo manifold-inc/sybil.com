@@ -1,7 +1,5 @@
-import type {
-  PlaygroundModel,
-  PlaygroundTextParameters,
-} from "@/app/stores/playground-store";
+import type { PlaygroundTextParameters } from "@/app/stores/playground-store";
+import type { GetModalityModels } from "@/constant";
 import { MODEL_SYSTEM_PROMPT, THINKING_MODELS } from "@/constant";
 import type { OpenAI } from "openai";
 
@@ -17,7 +15,7 @@ export type ChatMessage = {
 
 type SendMessageParams = {
   client: OpenAI;
-  model: PlaygroundModel;
+  model: GetModalityModels;
   message: string;
   chat: ChatMessage[];
   textParameters: PlaygroundTextParameters;
@@ -86,15 +84,13 @@ export async function sendModelMessage({
 }: SendMessageParams) {
   const systemPrompt = MODEL_SYSTEM_PROMPT;
 
-  const isThinkingModel = THINKING_MODELS.includes(
-    `${model.org}/${model.name}`
-  );
+  const isThinkingModel = THINKING_MODELS.includes(model.name ?? "");
 
   switch (true) {
     case model.supportedEndpoints.includes("CHAT"): {
       const messages = toOpenAIMessages(chat, systemPrompt, message);
       const response = await client.chat.completions.create({
-        model: `${model.org}/${model.name}`,
+        model: model.name ?? "",
         messages,
         ...textParameters,
       });
@@ -146,7 +142,7 @@ export async function sendModelMessage({
     case model.supportedEndpoints.includes("COMPLETION"): {
       const prompt = `${systemPrompt}\n\n${message}`;
       const response = await client.completions.create({
-        model: `${model.org}/${model.name}`,
+        model: model.name ?? "",
         prompt,
         ...textParameters,
       });

@@ -44,8 +44,9 @@ export function BillingSettings() {
   });
 
   const { data: userSubscription } =
-    api.subscriptionPlans.getUserSubscription.useQuery();
-
+    api.subscriptionPlans.getUserSubscription.useQuery(undefined, {
+      enabled: status === "AUTHED" && !!user,
+    });
   const getBillingPortal = api.stripe.getBillingPortal.useMutation({
     onSuccess: (data) => {
       if (data.url) window.location.href = data.url;

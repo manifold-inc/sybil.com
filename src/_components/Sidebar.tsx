@@ -94,20 +94,23 @@ export default function Sidebar() {
 
       {/* Navigation Items */}
       <nav className="flex-1 overflow-y-auto px-4 pl-5 overflow-x-hidden no-scrollbar">
-        <ul className="flex flex-col gap-4">
+        <ul className="flex flex-col">
           {navItems.map((item) => (
             <li key={item.label}>
               <Link
                 href={item.href}
-                onClick={(e) => e.stopPropagation()}
-                className={`flex items-center gap-3 rounded-sm h-8 w-8 transition-colors cursor-pointer border border-mf-new-500 ${
-                  pathname === item.href
-                    ? "bg-mf-new-500 text-mf-sybil-500"
-                    : "text-gray-400 hover:bg-mf-new-500 hover:text-gray-200"
-                }`}
+                className="flex items-center gap-3 py-2 w-5/6"
               >
-                <div className="flex h-7.5 w-7.5 shrink-0 items-center justify-center">
-                  {item.icon}
+                <div
+                  className={`flex items-center gap-3 rounded-sm h-8 w-8 transition-colors cursor-pointer border border-mf-new-500 ${
+                    pathname === item.href
+                      ? "bg-mf-new-500 text-gray-200"
+                      : "text-gray-400 hover:bg-mf-new-500"
+                  }`}
+                >
+                  <div className="flex h-7.5 w-7.5 shrink-0 items-center justify-center">
+                    {item.icon}
+                  </div>
                 </div>
                 <AnimatePresence>
                   {isExpanded && (

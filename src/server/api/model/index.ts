@@ -114,6 +114,7 @@ export const modelRouter = createTRPCRouter({
           supportedEndpoints: Model.supportedEndpoints,
           enabled: Model.enabled,
           allowedUserId: Model.allowedUserId,
+          metadata: Model.metadata,
         })
         .from(Model)
         .where(

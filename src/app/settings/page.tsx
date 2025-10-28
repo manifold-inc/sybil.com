@@ -39,7 +39,7 @@ export default function SettingsPage() {
 
   return (
     <div
-      className={`no-scrollbar min-h-screen py-6 sm:px-6 sm:py-8 transition-all duration-300 ease-in-out ${isExpanded ? "ml-64" : "ml-0"}`}
+      className={`no-scrollbar min-h-screen py-6 sm:px-6 sm:py-8 transition-all duration-300 ease-in-out ${isExpanded ? "sm:ml-64" : "ml-0"}`}
     >
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -54,9 +54,10 @@ export default function SettingsPage() {
             <h1 className="text-2xl sm:text-3xl">Settings</h1>
           </div>
           <ActionButton
-            href="mailto:devs@manifold.inc"
-            buttonText="Support"
+            buttonText="Sign Out"
+            href="/sign-out"
             variant="noir"
+            tag="a"
             width="md"
             height="md"
           />

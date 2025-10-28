@@ -8,12 +8,12 @@ import { Thinking } from "@/_components/chat/Thinking";
 import { UserChatBubble } from "@/_components/chat/UserChatBubble";
 import { useAuth } from "@/_components/providers";
 import { showTargonToast } from "@/_components/TargonToast";
-import usePlaygroundStore, {
-  type PlaygroundModel,
-} from "@/app/stores/playground-store";
+import usePlaygroundStore from "@/app/stores/playground-store";
+import type { GetModalityModels } from "@/constant";
 import { env } from "@/env.mjs";
 import { api } from "@/trpc/react";
 import { type ChatMessage, sendModelMessage } from "@/utils/sendModelMessage";
+import { SettingsIcon } from "lucide-react";
 import Image from "next/image";
 import { OpenAI } from "openai";
 import { useCallback, useRef, useState } from "react";
@@ -31,7 +31,7 @@ export function Chat() {
   const [inputError, setInputError] = useState(false);
   const [isParametersOpen, setIsParametersOpen] = useState(false);
 
-  const currentModelRef = useRef<PlaygroundModel>(model);
+  const currentModelRef = useRef<GetModalityModels | null>(model);
   const currentChatRef = useRef<ChatMessage[]>(chat);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const stopFlagRef = useRef(false);
@@ -101,21 +101,6 @@ export function Chat() {
     stopFlagRef.current = true;
     clearCurrentTimeout();
   }, [clearCurrentTimeout]);
-
-  const handleSend = async () => {
-    if (input.trim() && !isLoading) {
-      if (auth.status === "UNAUTHED") {
-        setInputError(false);
-        setTimeout(() => setInputError(true), 10);
-        showTargonToast("Please Log In to continue", "Log In", "/sign-in");
-        return;
-      }
-      const messageToSend = input;
-      setInput("");
-
-      await sendMessage(messageToSend);
-    }
-  };
 
   if (currentModelRef.current !== model) {
     currentModelRef.current = model;
@@ -244,14 +229,23 @@ export function Chat() {
   return (
     <div className="rounded-sm flex flex-col w-full justify-center">
       {isEmptyChat ? (
-        <div className="min-h-0">
+        <div className="h-2/6 w-[80%] max-w-2xl mx-auto">
+          <div className="flex justify-center pb-8">
+            <Image
+              src="/sybil-text.svg"
+              alt="Sybil"
+              width={80}
+              height={50}
+              priority
+            />
+          </div>
           <div className="flex flex-row gap-1 px-2 justify-center items-center w-full lg:text-md text-sm py-7">
             <div className="w-full">
               <ChatInput
                 setChat={setChat}
                 value={input}
                 setValue={setInput}
-                onSend={handleSend}
+                onSend={() => sendMessage(input)}
                 onStop={stopResponse}
                 sendDisabled={isLoading}
                 hasError={inputError}
@@ -261,9 +255,9 @@ export function Chat() {
           </div>
         </div>
       ) : (
-        <>
+        <div className="h-[calc(100vh-15rem)]">
           <div
-            className="px-4 py-6 sm:px-8 lg:py-10 lg:px-18 xl:px-32 flex-1 min-h-0 max-h-full overflow-y-auto no-scrollbar"
+            className="px-4 py-6 lg:py-10 flex-1 h-full overflow-y-auto no-scrollbar"
             ref={chatContainerRef}
           >
             <div className="flex flex-col sm:gap-4">
@@ -304,13 +298,13 @@ export function Chat() {
               )}
             </div>
           </div>
-          <div className="flex flex-row gap-1 px-2 sm:px-0 sm:w-2/3 md:w-1/2 justify-center items-center w-full max-w-6xl lg:text-md text-sm mx-auto">
+          <div className="flex flex-row gap-1 px-2 sm:px-0 sm:w-2/3 justify-center items-center w-full max-w-6xl lg:text-md text-sm mx-auto">
             <div className="w-full">
               <ChatInput
                 setChat={setChat}
                 value={input}
                 setValue={setInput}
-                onSend={handleSend}
+                onSend={() => sendMessage(input)}
                 onStop={stopResponse}
                 sendDisabled={isLoading}
                 hasError={inputError}
@@ -319,18 +313,12 @@ export function Chat() {
             </div>
             <div className="relative" tabIndex={-1}>
               <button
-                className="min-w-10 min-h-10 rounded-full bg-mf-noir-300/50 flex items-center justify-center cursor-pointer border border-mf-metal-300"
+                className="min-w-11.5 min-h-11.5 rounded-full  bg-mf-new-700 flex items-center justify-center cursor-pointer border border-mf-new-500"
                 onClick={() => setIsParametersOpen(!isParametersOpen)}
                 aria-label="Playground Parameters"
                 title="Playground Parameters"
               >
-                <Image
-                  src="/parameters.svg"
-                  alt="Parameters"
-                  width={17}
-                  height={17}
-                  priority
-                />
+                <SettingsIcon className="w-5 h-5 text-mf-milk-300" />
               </button>
               {isParametersOpen && (
                 <>
@@ -351,7 +339,7 @@ export function Chat() {
               )}
             </div>
           </div>
-        </>
+        </div>
       )}
     </div>
   );

@@ -32,7 +32,7 @@ export default function UserBox() {
   return (
     <Link
       href="/settings"
-      className="bg-mf-new-800 border border-mf-new-500 flex items-center gap-2 rounded-sm px-4 py-0.75"
+      className="bg-mf-new-800 border border-mf-new-500 flex items-center gap-2 rounded-sm px-4 py-0.75 whitespace-nowrap"
     >
       <div className="flex items-baseline gap-2">
         <span className="text-mf-green-500 text-sm">TODO</span>

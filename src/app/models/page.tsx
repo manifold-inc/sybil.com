@@ -12,7 +12,13 @@ export default function PopularModels() {
         {/* All Models Section */}
         <div className="flex min-h-0 flex-1 flex-col">
           <div className="flex min-h-0 flex-1 flex-col justify-between">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-4">
+            <div
+              className={
+                models?.length === 1
+                  ? "flex justify-center py-4"
+                  : "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-4"
+              }
+            >
               {models?.map((model) => (
                 <DetailedModelCard
                   key={model.id}
