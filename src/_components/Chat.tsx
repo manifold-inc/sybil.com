@@ -23,7 +23,7 @@ const TIMEOUT_DURATION = 180000;
 export function Chat() {
   const auth = useAuth();
   const utils = api.useUtils();
-  const { model, textParameters } = usePlaygroundStore();
+  const { model, textParameters, setModel } = usePlaygroundStore();
   const [input, setInput] = useState("");
   const [chat, setChat] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -36,6 +36,37 @@ export function Chat() {
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const stopFlagRef = useRef(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const { data: availableModels } = api.model.getByModality.useQuery({
+    modality: "text-to-text",
+  });
+
+  const hasSetDefaultModel = useRef(false);
+  if (
+    !hasSetDefaultModel.current &&
+    !model.name &&
+    availableModels &&
+    availableModels.length > 0
+  ) {
+    const defaultModel = availableModels[0];
+    if (defaultModel) {
+      const newModel: GetModalityModels = {
+        id: defaultModel.id,
+        name: defaultModel.name ?? "",
+        description: defaultModel.description ?? "",
+        modality: defaultModel.modality,
+        supportedEndpoints: defaultModel.supportedEndpoints,
+        enabled: defaultModel.enabled,
+        allowedUserId: defaultModel.allowedUserId,
+      };
+      setModel(newModel);
+      hasSetDefaultModel.current = true;
+    }
+  }
+
+  if (model.name) {
+    hasSetDefaultModel.current = true;
+  }
 
   const clearCurrentTimeout = useCallback(() => {
     if (timeoutRef.current) {
@@ -133,7 +164,14 @@ export function Chat() {
       return;
     }
 
-    // Wait for API key to load if it's still loading
+    if (!model.name || model.supportedEndpoints.length === 0) {
+      setInputError(false);
+      setTimeout(() => setInputError(true), 10);
+
+      showTargonToast("Please select a model to continue");
+      return;
+    }
+
     let apiKey = mostRecentKey;
     if (isLoadingKey || !apiKey) {
       try {
@@ -157,7 +195,6 @@ export function Chat() {
       return;
     }
 
-    // Create client with the API key
     const messageClient = new OpenAI({
       baseURL: env.NEXT_PUBLIC_CHAT_API + "/v1",
       apiKey: apiKey,
