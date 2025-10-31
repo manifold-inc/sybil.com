@@ -1,7 +1,7 @@
 "use client";
 
 import useSidebarStore from "@/app/stores/sidebar-store";
-import { ChatBubbleLeftIcon, QueueListIcon } from "@heroicons/react/24/outline";
+import { BanknotesIcon, ChatBubbleLeftIcon } from "@heroicons/react/24/outline";
 import { AnimatePresence, motion } from "framer-motion";
 import { MoreVertical, SparkleIcon } from "lucide-react";
 import Image from "next/image";
@@ -40,7 +40,7 @@ export default function Sidebar() {
     {
       label: "Plans",
       href: "/plans",
-      icon: <QueueListIcon className="h-5 w-5" />,
+      icon: <BanknotesIcon className="h-5 w-5" />,
     },
   ];
 
@@ -76,7 +76,13 @@ export default function Sidebar() {
     >
       {/* Toggle Button */}
       <div className="flex h-18 items-center justify-start gap-3 pl-5 px-4 text-gray-400 transition-colors hover:text-gray-200 cursor-pointer">
-        <Image src="/sybil-bg.svg" alt="Sybil" width={32} height={32} />
+        <Image
+          src="/sybil-bg.svg"
+          alt="Sybil"
+          width={32}
+          height={32}
+          priority
+        />
         <AnimatePresence>
           {isExpanded && (
             <motion.span

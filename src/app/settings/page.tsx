@@ -39,7 +39,7 @@ export default function SettingsPage() {
 
   return (
     <div
-      className={`no-scrollbar min-h-screen py-6 sm:px-6 sm:py-8 transition-all duration-300 ease-in-out ${isExpanded ? "sm:ml-64" : "ml-0"}`}
+      className={`no-scrollbar min-h-screen p-4 py-6 sm:px-6 sm:py-8 transition-all duration-300 ease-in-out ${isExpanded ? "sm:ml-64" : "ml-0"}`}
     >
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -50,8 +50,8 @@ export default function SettingsPage() {
         {/* Header */}
         <div className="mt-24 mb-8 flex items-center justify-between">
           <div className="flex items-center gap-2 ">
-            <Cog6ToothIcon className="w-8 h-8 text-mf-sybil-500" />
-            <h1 className="text-2xl sm:text-3xl">Settings</h1>
+            <Cog6ToothIcon className="w-6 h-6 text-mf-sybil-500" />
+            <h1 className="text-2xl">Settings</h1>
           </div>
           <ActionButton
             buttonText="Sign Out"

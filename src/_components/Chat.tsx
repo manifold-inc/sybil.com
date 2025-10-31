@@ -282,7 +282,10 @@ export function Chat() {
                 setChat={setChat}
                 value={input}
                 setValue={setInput}
-                onSend={() => sendMessage(input)}
+                onSend={() => {
+                  void sendMessage(input);
+                  setInput("");
+                }}
                 onStop={stopResponse}
                 sendDisabled={isLoading}
                 hasError={inputError}
@@ -341,7 +344,10 @@ export function Chat() {
                 setChat={setChat}
                 value={input}
                 setValue={setInput}
-                onSend={() => sendMessage(input)}
+                onSend={() => {
+                  void sendMessage(input);
+                  setInput("");
+                }}
                 onStop={stopResponse}
                 sendDisabled={isLoading}
                 hasError={inputError}

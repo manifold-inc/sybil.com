@@ -169,3 +169,27 @@ export function transformToChartData<
   }
   return result;
 }
+
+export function getModelLogo(
+  modelName: string,
+  darkMode: boolean = true
+): string {
+  const modelLower = modelName.toLowerCase().split("/")[0];
+
+  if (modelLower === "deepseek-ai")
+    return darkMode ? "models/deepseek-dark.svg" : "models/deepseek.svg";
+  if (modelLower === "hone")
+    return darkMode ? "models/hone-dark.svg" : "models/hone.svg";
+  if (modelLower === "moonshot")
+    return darkMode ? "models/moonshot-dark.svg" : "models/moonshot.svg";
+  if (modelLower === "openai")
+    return darkMode ? "models/openai-dark.svg" : "models/openai.svg";
+  if (modelLower === "qwen")
+    return darkMode ? "models/qwen-dark.svg" : "models/qwen.svg";
+  if (modelLower === "zai-org")
+    return darkMode ? "models/zai-dark.svg" : "models/zai.svg";
+  if (modelLower === "mistralai")
+    return darkMode ? "models/mistralai-dark.svg" : "models/mistralai.svg";
+
+  return darkMode ? "sybil-dark.svg" : "sybil.svg"; // default fallback
+}

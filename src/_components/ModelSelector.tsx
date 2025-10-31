@@ -3,22 +3,10 @@
 import usePlaygroundStore from "@/app/stores/playground-store";
 import type { GetModalityModels } from "@/constant";
 import { api } from "@/trpc/react";
+import { getModelLogo } from "@/utils/utils";
 import { clsx } from "clsx";
 import Image from "next/image";
 import { useState } from "react";
-
-function getModelLogo(modelName: string): string {
-  const modelLower = modelName.toLowerCase().split("/")[0];
-
-  if (modelLower === "deepseek-ai") return "/deepseek.svg";
-  if (modelLower === "hone") return "/hone.svg";
-  if (modelLower === "moonshot") return "/moonshot.svg";
-  if (modelLower === "openai") return "/openai.svg";
-  if (modelLower === "qwen") return "/qwen.svg";
-  if (modelLower === "zai-org") return "/zai.svg";
-
-  return "/sybil.svg"; // default fallback
-}
 
 export default function ModelSelector() {
   const { model, setModel } = usePlaygroundStore();
@@ -44,6 +32,7 @@ export default function ModelSelector() {
             width={16}
             height={16}
             className="h-4 w-4 flex-shrink-0"
+            style={{ color: "#57E8B4" }}
           />
         </div>
       </div>
@@ -85,7 +74,11 @@ export default function ModelSelector() {
         onMouseEnter={() => !blockHover && setIsHovering(true)}
       >
         <Image
-          src={isHovering ? "/selector.svg" : getModelLogo(model?.name ?? "")}
+          src={
+            isHovering
+              ? "/selector.svg"
+              : getModelLogo(model?.name ?? "", false)
+          }
           alt="Model Logo"
           width={16}
           height={16}
@@ -98,7 +91,8 @@ export default function ModelSelector() {
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
           {modelsData.map((dbModel, index) => {
             const metadata = dbModel.metadata as { logo?: string } | null;
-            const logo = metadata?.logo ?? getModelLogo(dbModel.name ?? "");
+            const logo =
+              metadata?.logo ?? getModelLogo(dbModel.name ?? "", false);
             const modelName = dbModel.name ?? "";
             const org = modelName.split("/")[0] ?? "";
 
