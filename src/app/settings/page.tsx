@@ -5,11 +5,9 @@ import { useAuth } from "@/_components/providers";
 import { APIKeysSettings } from "@/_components/settings/APIKeysSettings";
 import { BillingSettings } from "@/_components/settings/BillingSettings";
 import { showTargonToast } from "@/_components/TargonToast";
-import {
-  Cog6ToothIcon,
-  CreditCardIcon,
-  KeyIcon,
-} from "@heroicons/react/24/solid";
+import useSidebarStore from "@/app/stores/sidebar-store";
+import { CreditCardIcon, KeyIcon } from "@heroicons/react/24/outline";
+import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import { motion } from "framer-motion";
 import { redirect } from "next/navigation";
 import { useState } from "react";
@@ -19,6 +17,7 @@ type SettingsTab = "api-keys" | "billing";
 export default function SettingsPage() {
   const { status } = useAuth();
   const [activeTab, setActiveTab] = useState<SettingsTab>("billing");
+  const { isExpanded } = useSidebarStore();
 
   if (status === "UNAUTHED") {
     showTargonToast("Please sign in to continue", "Sign In", "/sign-in");
@@ -39,7 +38,9 @@ export default function SettingsPage() {
   ];
 
   return (
-    <div className="no-scrollbar min-h-screen px-6 sm:py-8">
+    <div
+      className={`no-scrollbar min-h-screen p-4 py-6 sm:px-6 sm:py-8 transition-all duration-300 ease-in-out ${isExpanded ? "sm:ml-64" : "ml-0"}`}
+    >
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -49,13 +50,14 @@ export default function SettingsPage() {
         {/* Header */}
         <div className="mt-24 mb-8 flex items-center justify-between">
           <div className="flex items-center gap-2 ">
-            <Cog6ToothIcon className="w-8 h-8 text-mf-sybil-500" />
-            <h1 className="text-2xl sm:text-3xl">Settings</h1>
+            <Cog6ToothIcon className="w-6 h-6 text-mf-sybil-500" />
+            <h1 className="text-2xl">Settings</h1>
           </div>
           <ActionButton
-            href="mailto:devs@manifold.inc"
-            buttonText="Support"
+            buttonText="Sign Out"
+            href="/sign-out"
             variant="noir"
+            tag="a"
             width="md"
             height="md"
           />

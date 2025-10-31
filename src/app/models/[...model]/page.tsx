@@ -19,7 +19,7 @@ export default function ModelPage() {
   );
 
   return (
-    <div className="rounded-sm lg:max-w-6xl mx-auto p-4 min-h-screen flex items-center">
+    <div className="rounded-sm lg:max-w-6xl mx-auto p-4 min-h-screen flex items-center sm:py-0 py-24">
       <div className="flex flex-col gap-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div className="bg-mf-card-dark flex flex-grow flex-col rounded-md h-full min-h-32 border border-mf-metal-300">
@@ -29,7 +29,7 @@ export default function ModelPage() {
               </div>
 
               <div className="bg-mf-card-dark flex items-center gap-1.5 rounded-lg px-4 py-0.5">
-                <div className="bg-mf-white h-1 w-1 rounded-full"></div>
+                <div className="bg-mf-sybil-500 h-1 w-1 rounded-full"></div>
                 <p className="text-xs">
                   {model?.[0]?.enabled ? "Live" : "Lease"}
                 </p>

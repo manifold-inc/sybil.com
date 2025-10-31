@@ -1,7 +1,7 @@
 "use client";
 
 import { ActionButton } from "@/_components/ActionButton";
-import Image from "next/image";
+import Link from "next/link";
 
 import { useAuth } from "./providers";
 
@@ -30,11 +30,14 @@ export default function UserBox() {
   }
 
   return (
-    <a
+    <Link
       href="/settings"
-      className="bg-mf-green-500 flex h-9 w-9 items-center justify-center rounded-full"
+      className="bg-mf-new-800 border border-mf-new-500 flex items-center gap-2 rounded-sm px-4 py-0.75 whitespace-nowrap"
     >
-      <Image src="/user.svg" alt="SYBIL" width={16} height={16} />
-    </a>
+      <div className="flex items-baseline gap-2">
+        <span className="text-mf-green-500 text-sm">TODO</span>
+        <span className="text-sm opacity-80">Day Streak</span>
+      </div>
+    </Link>
   );
 }

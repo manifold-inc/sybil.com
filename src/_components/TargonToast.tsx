@@ -27,8 +27,8 @@ export function TargonToast({
   return (
     <div className="relative flex w-full items-center gap-2">
       <Image
-        src="/sybil.svg"
-        alt="Toast"
+        src="/sybil-bg.svg"
+        alt="Sybil"
         className="h-6 w-6"
         width={24}
         height={24}
@@ -64,7 +64,7 @@ export function showTargonToast(
     />,
     {
       style: {
-        background: "#1A191C",
+        background: "#15161B",
         color: "#E7E6E7",
         border: "0px",
         borderRadius: "0.25rem",

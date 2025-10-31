@@ -1,13 +1,12 @@
 "use client";
 
 import { ActionButton } from "@/_components/ActionButton";
+import { Card } from "@/_components/Card";
 import { useAuth } from "@/_components/providers";
 import { api } from "@/trpc/react";
 import type { RouterOutputs } from "@/trpc/shared";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-
-import { Card } from "./Card";
 
 enum PlanStatus {
   NULL = "null",
@@ -20,17 +19,15 @@ enum PlanStatus {
 
 type PlanOutput = RouterOutputs["subscriptionPlans"]["getPlans"][number];
 
-export function PlanCard({ plan }: { plan: PlanOutput }) {
-  const auth = useAuth();
+export function PlanCard({
+  plan,
+  currentPlan,
+}: {
+  plan: PlanOutput;
+  currentPlan: RouterOutputs["account"]["getUserSubscription"] | null;
+}) {
   const router = useRouter();
   const { user } = useAuth();
-
-  const { data: currentPlan } = api.account.getUserSubscription.useQuery(
-    undefined,
-    {
-      enabled: auth.status !== "LOADING",
-    }
-  );
 
   const createSubscription =
     api.subscriptionPlans.createSubscriptionUrl.useMutation({
@@ -106,24 +103,22 @@ export function PlanCard({ plan }: { plan: PlanOutput }) {
 
   return (
     <Card
-      className={` transition-colors duration-300 hover:opacity-90 flex flex-col gap-4 rounded-md p-8 flex-1 border border-mf-new-500`}
+      className={`flex flex-col gap-4 rounded-md p-8 flex-1 border border-mf-new-500`}
     >
-      <div className="bg-mf-dark-gray flex items-center justify-center gap-1 rounded-md py-auto pb-4">
+      <div className="bg-mf-dark-gray flex items-center justify-center gap-1 rounded-md py-auto w-60 h-35 ">
         <Image
-          src={plan.iconPath ?? "/sybil-starter.svg"}
+          src={`/plans/${plan.iconPath ?? "sybil-starter.svg"}`}
           alt="Targon"
           width={60}
           height={60}
           priority
-          className="w-full h-full"
+          className="w-full h-full object-cover"
         />
       </div>
 
       <div className="flex my-auto justify-between">
-        <p className={`xl:text-lg text-mf-edge-500`}>{plan.displayName}</p>
-        <p className={`xl:text-lg text-mf-sybil-300`}>
-          ${Number(plan.monthlyFee)} Mo
-        </p>
+        <p className={`text-mf-edge-500`}>{plan.displayName}</p>
+        <p className={`text-mf-sybil-300`}>${Number(plan.monthlyFee)} Mo</p>
       </div>
 
       <div className="flex pb-6">
@@ -140,7 +135,6 @@ export function PlanCard({ plan }: { plan: PlanOutput }) {
       <ActionButton
         width="md"
         height="sm"
-        textSize="sm"
         className="whitespace-nowrap"
         onClick={() => {
           handleSubscribe(plan.stripePriceId);

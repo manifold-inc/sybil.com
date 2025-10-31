@@ -78,8 +78,8 @@ export const subscriptionPlansRouter = createTRPCRouter({
       })
       .from(User)
       .where(eq(User.id, ctx.user.id))
-      .innerJoin(SubscriptionPlan, eq(SubscriptionPlan.id, User.planId));
-    return subscription;
+      .leftJoin(SubscriptionPlan, eq(SubscriptionPlan.id, User.planId));
+    return subscription ?? null;
   }),
   manageSubscription: protectedProcedure.mutation(async ({ ctx }) => {
     const { user } = ctx;

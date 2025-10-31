@@ -4,6 +4,18 @@ import { and, desc, eq } from "drizzle-orm";
 import { z } from "zod";
 
 export const apiKeyRouter = createTRPCRouter({
+  getLatestApiKey: protectedProcedure.query(async ({ ctx }) => {
+    const result = await ctx.db
+      .select({
+        id: ApiKey.id,
+      })
+      .from(ApiKey)
+      .where(eq(ApiKey.userId, ctx.user.id))
+      .orderBy(desc(ApiKey.createdAt))
+      .limit(1);
+
+    return result[0]?.id ?? null;
+  }),
   listApiKeys: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.db
       .select({

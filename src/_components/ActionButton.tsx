@@ -29,7 +29,7 @@ export const ActionButton: React.FC<{
   const bgColor =
     variant === "noir"
       ? "bg-mf-new-800 border border-mf-new-500"
-      : "bg-mf-green-500";
+      : "border border-mf-green-500 bg-mf-green-500";
   const textColor =
     variant === "noir" ? "text-mf-silver-500" : "text-mf-night-500";
 
@@ -87,20 +87,28 @@ export const ActionButton: React.FC<{
     }
   }
 
-  const baseClasses = `
-          flex
-          ${widthClass}
-          ${heightClass}
-          ${textSizeClass}
-          font-poppins 
-          whitespace-nowrap
-          ${bgColor}
-          rounded-[4px]
-          transition hover:opacity-80 items-center justify-center gap-1
-          ${textColor}
-          ${className}
-          ${disabled ? "cursor-not-allowed opacity-50 pointer-events-none" : "cursor-pointer"}
-        `;
+  const baseClasses = [
+    "flex",
+    widthClass,
+    heightClass,
+    textSizeClass,
+    "font-semibold",
+    "whitespace-nowrap",
+    bgColor,
+    "rounded-[4px]",
+    "transition",
+    "hover:opacity-80",
+    "items-center",
+    "justify-center",
+    "gap-1",
+    textColor,
+    className,
+    disabled
+      ? "cursor-not-allowed opacity-50 pointer-events-none"
+      : "cursor-pointer",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   if (tag === "a" && href) {
     return (

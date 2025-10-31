@@ -135,6 +135,15 @@
 }
 
 @layer utilities {
+  input:-webkit-autofill,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1px #22242e inset !important;
+    box-shadow: 0 0 0 1px #22242e inset !important;
+    -webkit-text-fill-color: #d7e5ff !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
   .animate-shake {
     animation: shake 0.5s;
   }
